@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{layout}
+
+
+\begin{document}
+\begin{titlepage}
+\begin{center}
+\Huge Rapport 01
+
+\normalsize
+\vspace{0.5cm}
+\Large {\underline{ Groupe 3 Bleu : Sokoban} }
+
+\vspace{1cm}
+\normalsize
+Goron Nathan, De La Rosa Louis-David, Basset Emilien, Demé Quentin
+\newline
+\newline
+
+23/09/2016
+
+\vspace{14cm}
+L2 informatique 2016-2017 Université de Caen Basse-Normandie
+\end{center}
+\end{titlepage}
+
+
+\newpage
+\begin{center}
+\section{Choix du projet, mise en place des premiers fichiers }
+\end{center}
+Malgré les difficultés potentielles que semblent engendrer ce projet, notamment au niveau de l'IA , nous pensons que le Sokoban offre une grande liberté quant aux fonctionnalités et aux choix de conceptions contrairement au gestionnaire de wargame ou encore au lecteur de musique.\newline
+Après avoir songer à l'utilisation de l'Unreal Development Kit(IDK) , nous avons décidé de développer ce projet en Python avec l'aide du module PyGame.\newline
+Nous nous sommes donc penchés depuis la première séance de TPA sur les possibilités et limites de PyGame , puis nous avons établi notre découpage modulaire de la manière suivante:
+\vspace{0.3cm}
+\begin{itemize}
+
+\item \underline{classes:}
+Toutes les classes nécessaire au fonctionnement du jeu seront regroupée dans ce module
+\item \underline{sokoban:}
+Module principal du jeu , tout les calculs de déplacement , conditions de victoire ou défaite et gestion de l'affichage 
+\item \underline{constantes:}
+Regroupement de toutes les variables d'appel d'images , taille de l'affichage , couleurs ... etc
+\end{itemize}
+
+
+\section{Régles de bases:}
+
+Un personnage se déplace dans une arène constitué de cases de 5 types différents:
+\begin{itemize}
+
+\item[1) Les cases vides , sur lesquelles le personnage peut se déplacer]
+\item[2) La case occupée par le joueur]
+\item[3) les cases contenant les caisses à déplacer]
+\item[4) Les cases cibles , ou les caisses doivent être déplacées]
+\item[5) les cases murs , où ni les caisses ni le personnage ne peuvent aller ]
+\end{itemize}
+\vspace{0.5cm}
+Pour gagner , le joueur doit pousser(impossible de tirer) une ou plusieurs caisses sur des cases cibles .La partie est perdue si le joueur bloque sa caisse(situation dans laquelle il est impossible de pousser la caisse dans aucune direction et ou la caisse ne se situe pas sur une case cible)
+
+
+\section{\underline{A résoudre d'ici le prochain rapport}}
+\subsection{Design des différents niveaux}
+\subsection{Implémentation des premières classes}
+\subsection{Réflexion sur le design du menu}
+
+
+\newpage
+\end{document}

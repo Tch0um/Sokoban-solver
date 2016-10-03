@@ -7,6 +7,7 @@ pygame.init()
 nombre_sprite_cote = 20
 taille_sprite = 34
 cote_fenetre = nombre_sprite_cote * taille_sprite
+collection = "AC_Diamonds"
 
 #Chargement des images
 tileset = pygame.image.load("images/palette.png")
@@ -19,6 +20,13 @@ puit = tileset.subsurface(63,327,67,90)
 caisse = tileset.subsurface(256,0,129,129)
 herbe = tileset.subsurface(160,449,33,33)
 route = tileset_route.subsurface(16,136,35,35)
+
+space = herbe
+wall = tileset_route.subsurface(193,0,30,30)
+target = tileset_route.subsurface(193,96,30,30)
+element = tileset.subsurface(448,33,32,32)
+elementOnTarget = tileset.subsurface(352,321,32,32)
+pOnTarget = target
 
 
 #variables du personnage

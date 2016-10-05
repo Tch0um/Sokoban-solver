@@ -15,14 +15,13 @@ pygame.display.set_icon(icone)
 pygame.display.set_caption('Sokoban')
 
 niveaux = LevelCollection("levels/"+collection+".slc")
-niveaux.loadLevel(2)
+niveaux.loadLevel(6)
 fenetre= pygame.display.set_mode((niveaux.width*taille_sprite,niveaux.height*taille_sprite))
 
 #Chargement et collage du fond
 fond = pygame.image.load("images/"+collection+"_bg.png").convert()
 fenetre.blit(fond, (0,0))
 playerStart = niveaux.afficheLevel(fenetre)
-print(str(playerStart))
 #Création du personnage
 perso = Perso(niveaux,playerStart)
 

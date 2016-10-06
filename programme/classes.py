@@ -3,6 +3,15 @@ from pygame.locals import *
 from constantes import *
 import xml.etree.ElementTree as ET
 
+
+def update(niveaux,perso,fenetre):
+    #recalcule toute la fenetre
+    fenetre.blit(fond, (0,0))
+    niveaux.afficheLevel(fenetre)
+    fenetre.blit(perso.direction,(perso.x,perso.y))
+    pygame.display.flip()
+
+
 class LevelCollection(object):
     def __init__(self, file):
             self.structure = []
@@ -12,7 +21,7 @@ class LevelCollection(object):
             self.height = 0
 
 
-    def loadLevel(self,level):
+    def loadLevel(self,level,fenetre):
         dicoAttrib = self.root[3][level].attrib
         self.width = int(dicoAttrib["Width"])
         self.height = int(dicoAttrib["Height"])
@@ -24,6 +33,21 @@ class LevelCollection(object):
             for char in chaine:
                 line+=[char]
             self.structure+=[line]
+        
+        if self.width>11 or self.height>11:
+            global taille_sprite,space,wall,target,element,elementOnTarget,pOnTarget,perso_sprite
+            taille_sprite=32
+            space = tileset_col_mini.subsurface(32,32,0,0)
+            wall = tileset_col_mini.subsurface(0,0,32,32)
+            target = tileset_col_mini.subsurface(0,32,32,32)
+            element = tileset_col_mini.subsurface(32,32,32,32)
+            elementOnTarget = tileset_col_mini.subsurface(32,0,32,32)
+            pOnTarget = target
+            #modif du personnage
+            perso_sprite = [tileset_perso_mini.subsurface(224,96,32,32),tileset_perso_mini.subsurface(192,96,32,32),tileset_perso_mini.subsurface(256,96,32,32),tileset_perso_mini.subsurface(224,0,32,32),tileset_perso_mini.subsurface(192,0,32,32),tileset_perso_mini.subsurface(256,0,32,32),tileset_perso_mini.subsurface(224,32,32,32),tileset_perso_mini.subsurface(192,32,32,32),tileset_perso_mini.subsurface(256,32,32,32),tileset_perso_mini.subsurface(224,64,32,32),tileset_perso_mini.subsurface(192,64,32,32),tileset_perso_mini.subsurface(256,64,32,32)]
+
+        fenetre= pygame.display.set_mode((self.width*taille_sprite,self.height*taille_sprite))
+
 
 
     def deleteLevel(self):
@@ -93,7 +117,7 @@ class LevelCollection(object):
 
 class Perso:
 
-        def __init__(self, niveau,playerStart):
+        def __init__(self,niveau,playerStart):
                 self.playerPos = playerStart # colonne,ligne
                 
                 self.x = playerStart[1]*taille_sprite
@@ -126,3 +150,21 @@ class Perso:
                             return True
                 
                 return False
+    
+        def animatePerso(self,direction,fen):
+                print(str(self.playerPos))
+                animation = (1,0,2,0)
+                for n in animation:
+                    self.direction=perso_sprite[n+direction*3]
+                    if direction in (2,3):
+                        if direction%2==0:
+                            self.x -= taille_sprite//len(animation)
+                        else:
+                            self.x += taille_sprite//len(animation)
+                    else:
+                        if direction%2==0:
+                            self.y-= taille_sprite//len(animation)
+                        else:
+                            self.y+= taille_sprite//len(animation)
+                    pygame.time.wait(p_speed)
+                    update(self.niveau,self,fen)

@@ -1,25 +1,27 @@
 from math import *
-from classes import *
+from classes import * #importation de constante.py , pygame et constante pygame incluses
 
 pygame.init()
 
-#Création de la fenêtre
+#Création de la fenêtre avec ses attributs
 fenetre= pygame.display.set_mode((640,480))
-taille_sprite
-#Icone
 icone = perso_sprite[0]
-#pygame.display.set_icon(icone)
-#Titre
+pygame.display.set_icon(icone)
 pygame.display.set_caption('Sokoban')
 
+
+
+
 niveaux = LevelCollection("levels/"+collection+".slc")
-niveaux.loadLevel(19,fenetre)
+niveaux.loadLevel(2,fenetre)
 
+
+
+#Création du personnage et premier affichage
 playerStart = niveaux.afficheLevel(fenetre)
-#Création du personnage
 perso = Perso(niveaux,playerStart)
-
 update(niveaux,perso,fenetre)
+
 
 #BOUCLE INFINI
 continuer = 1
@@ -43,10 +45,5 @@ while continuer:
                     perso.animatePerso(1,fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
-
-    #niveau = Niveau(c_fichier_niveau)      #Doit-on le mettre la ou à l'exterieur de la boucle ?
-    #niveau.generer()
-    #niveau.afficher(fenetre)
-    
-
+                
 pygame.quit()

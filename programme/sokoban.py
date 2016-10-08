@@ -23,7 +23,6 @@ perso = Perso(niveaux,playerStart)
 update(niveaux,perso,fenetre)
 
 
-#BOUCLE INFINI
 continuer = 1
 while continuer:
     pygame.time.Clock().tick(30) #limitation "fps"

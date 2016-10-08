@@ -2,6 +2,11 @@ from constantes import * #importation de pygame et constante de pygame incluses
 import xml.etree.ElementTree as ET
 
 
+##
+# rafraichit la fenetre pygame en fonction de perso et de niveaux
+# @param niveaux:la grille correspondant au niveau actuel
+# @param perso:l'instance du personnage
+# @param fenetre:l'instance de la fenetre à rafraichir
 def update(niveaux,perso,fenetre):
     fenetre.blit(fond, (0,0))
     niveaux.afficheLevel(fenetre)
@@ -13,6 +18,9 @@ def update(niveaux,perso,fenetre):
 
 
 class LevelCollection(object):
+    ##
+    # constructeur de la collection de niveaux
+    # @param file:fichier contenant la collection de niveaux
     def __init__(self, file):
             self.structure = []
             tree = ET.parse(file)
@@ -20,7 +28,10 @@ class LevelCollection(object):
             self.width = 0
             self.height = 0
 
-
+    ##
+    # charge un niveau parmit la collection de niveaux. change la taille de la fenetre en fonction de la taille du niveau
+    # @param level:numero du niveau dans la collection
+    # @param fenetre:la fenetre à redimensionner
     def loadLevel(self,level,fenetre):
         dicoAttrib = self.root[3][level].attrib
         self.width = int(dicoAttrib["Width"])
@@ -33,7 +44,8 @@ class LevelCollection(object):
             for char in chaine:
                 line+=[char]
             self.structure+=[line]
-        
+
+        #change la taille de la fenetre et des sprites en fonction de la taille du niveau
         if self.width>11 or self.height>11:
             global taille_sprite,space,wall,target,element,elementOnTarget,pOnTarget,perso_sprite
             taille_sprite,space,wall,target,element,elementOnTarget,pOnTarget,perso_sprite  =  taille_sprite_mini,space_mini,wall_mini,target_mini,element_mini,elementOnTarget_mini,pOnTarget_mini,perso_sprite_mini
@@ -41,10 +53,14 @@ class LevelCollection(object):
         fenetre= pygame.display.set_mode((self.width*taille_sprite,self.height*taille_sprite))
 
 
-
+    ##
+    # supprime le niveau chargé
     def deleteLevel(self):
         self.structure = []
 
+    ##
+    # affiche le niveau dans la fenetre avec les sprites
+    # @param fen:la fenetre dans laquelle le niveau sera affiché
     def afficheLevel(self,fen):
         playerStart = ()
         for xi in range(self.width):
@@ -67,7 +83,12 @@ class LevelCollection(object):
                     fen.blit(elementOnTarget,(x,y))
         return playerStart
 
-    def caisseAdjacente(self,direc,perso):  # direc prend les valeurs suivantes dans lordre des direciton : -1,1,-2,2
+    ##
+    # verifie si dans la case de destination du joueur se trouve une caisse ou une target avec une caisse dessus
+    # @param direc:donne la direction du joueur (-1,1,-2,2) pour (gauche,droite,haut,bas)
+    # @param perso:l'instance du personnage
+    # @return vrai/faux
+    def caisseAdjacente(self,direc,perso):
         if direc**2 == 1:
             if self.structure[perso.playerPos[0]][perso.playerPos[1]+direc]=='$': # depart element = element simple
                 return self.caisseMovableLigne(direc,' ',perso)
@@ -83,7 +104,13 @@ class LevelCollection(object):
                 return self.caisseMovableColonne(direc,'.',perso)
             else:
                 return True
-            
+
+    ##
+    # verifie la case direction du personnage +2 pour gauche/droite si celle ci est disponible pour une caisse
+    # @param direc:donne la direction du joueur
+    # @param char:donnée de la case adjacente au joueur
+    # @param perso:l'instance du personnage
+    # @return vrai/faux
     def caisseMovableLigne(self,direc,char,perso):
         if self.structure[perso.playerPos[0]][perso.playerPos[1]+2*direc]=='.':
             self.structure[perso.playerPos[0]][perso.playerPos[1]+2*direc]='*'
@@ -95,6 +122,12 @@ class LevelCollection(object):
             return True
         return False
 
+    ##
+    # verifie la case direction du personnage +2 pour haut/bas si celle ci est disponible pour une caisse
+    # @param direc:donne la direction du joueur
+    # @param char:donnée de la case adjacente au joueur
+    # @param perso:l'instance du personnage
+    # @return vrai/faux
     def caisseMovableColonne(self,direc,char,perso):
         if self.structure[perso.playerPos[0]+2*direc][perso.playerPos[1]]=='.':
             self.structure[perso.playerPos[0]+2*direc][perso.playerPos[1]]='*'
@@ -108,7 +141,10 @@ class LevelCollection(object):
 
 
 class Perso:
-
+        ##
+        # constructeur du personnage
+        # @param niveau:instance du niveau du jeu
+        # @param playerStart:point de départ du personnage lu dans le niveau
         def __init__(self,niveau,playerStart):
                 self.playerPos = playerStart # colonne,ligne
                 self.x = playerStart[1]*taille_sprite
@@ -116,8 +152,13 @@ class Perso:
                 self.direction = perso_sprite[9]
                 self.niveau = niveau
 
+        ##
+        # execute le déplacement du personnage puis appele les fonctions qui se charge du déplacement des caisses
+        # @param direction: direction du personnage
+        # @param fenetre:fenetre dans laquelle le personnage et les caisse se déplacent
+        # @return vrai/faux
         def deplacer(self, direction,fenetre):
-                if direction == 'haut' and self.niveau.structure[self.playerPos[0]-1][self.playerPos[1]]!="#":
+                if direction == 'haut' and self.niveau.structure[self.playerPos[0]-1][self.playerPos[1]]!="#": #test si un mur est présent
                         if self.niveau.caisseAdjacente(-2,self):
                             self.playerPos[0]-=1
                             return True
@@ -138,7 +179,11 @@ class Perso:
                             return True
                 
                 return False
-    
+
+        ##
+        # créé une animation du déplacement du personnage
+        # @param direction:direction du personnage
+        # @param fen:fenetre dans laquelle le personnage est déplacé
         def animatePerso(self,direction,fen):
                 animation = (1,0,2,0)
                 for n in animation:

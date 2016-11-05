@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
 
-
+dWidth=0
+dHeight=0
 
 #variables du personnage
 nb_pas = 3            #nb de boucle de 3 pas par changement de cases

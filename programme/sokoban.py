@@ -13,35 +13,30 @@ pygame.display.set_caption('Sokoban')
 
 
 niveaux = LevelCollection("levels/"+collection+".slc")
-niveaux.loadLevel(2,fenetre)
+grilleNiveau = niveaux.loadLevel(0,fenetre)
+niveau = Niveau(grilleNiveau[0],grilleNiveau[1])
 
 
-
-#Création du personnage et premier affichage
-playerStart = niveaux.afficheLevel(fenetre)
-perso = Perso(niveaux,playerStart)
-update(niveaux,perso,fenetre)
-
+niveau.gameConstructor()
+niveau.afficheNiveau(fenetre)
+print(niveau.gameO,niveau.gameP,sep='\n')
 
 continuer = 1
 while continuer:
     pygame.time.Clock().tick(30) #limitation "fps"
     for event in pygame.event.get():
+        coordPerso = niveau.findPersonnage()
         if event.type == pygame.QUIT:
             continuer = 0
         elif event.type == KEYDOWN:
             if event.key == K_RIGHT:
-                if perso.deplacer('droite',fenetre):
-                    perso.animatePerso(3,fenetre)
+                niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau)
             if event.key == K_LEFT:
-                if perso.deplacer('gauche',fenetre):
-                    perso.animatePerso(2,fenetre)
+                niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-2,niveau)
             if event.key == K_UP:
-                if perso.deplacer('haut',fenetre):
-                    perso.animatePerso(0,fenetre)
+                niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-1,niveau)
             if event.key == K_DOWN:
-                if perso.deplacer('bas',fenetre):
-                    perso.animatePerso(1,fenetre)
+                niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau)
             if event.key == K_ESCAPE:
                 continuer = 0
                 

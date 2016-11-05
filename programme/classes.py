@@ -2,6 +2,152 @@ from constantes import * #importation de pygame et constante de pygame incluses
 import xml.etree.ElementTree as ET
 
 
+class Sprite(object):
+    def __init__(self,surface,rep,xmax=dWidth,ymax=dHeight,x=0,y=0):
+        if x>xmax:
+            self.__x=xmax
+        elif x<0:
+            self.__x=0
+        else:
+            self.__x=x
+        if y>ymax:
+            self.__y=ymax
+        elif y<0:
+            self.__y=0
+        else:
+            self.__y=y
+        self.__xmax=xmax
+        self.__ymax=ymax
+        self.__surface=surface
+        if rep not in ('#','$',' ','+','@','.'):
+            raise ValueError(rep+" ne peut pas être représenté")
+        else:
+            self.repr=rep
+
+
+    def coordPossible(self,x,y):
+        return x>self.__xmax and x<0 and y<0 and y>self.__ymax
+
+
+    def displaySprite(self,fen):
+        fen.blit(self.__surface,(self.__x*taille_sprite,self.__y*taille_sprite))
+
+    def setCoord(self,x,y):
+        if self.coordPossible(x,y):
+            self.__x=x
+            self.__y=y
+        else:
+            raise ValueError("coordonné impossible")
+
+    def getCoord(self):
+        return (self.__x,self.__y)
+
+    def getMax(self):
+        return (self.__xmax,self.__ymax)
+
+    def __getitem__(self,cle):
+        return self
+
+
+
+class Personnage(Sprite):
+    def __init__(self,surface,xmax,ymax,x=0,y=0):
+        Sprite.__init__(self,surface,xmax,ymax,x,y)
+
+    def deplace(self,direction,niveau):
+        if direction**2==1:
+            if niveau.gameO[self.__x+direction][self.__y].repr!='#':
+                if niveau.gameO[self.__x+direction][self.__y].deplace(direction,niveau):
+                    self.__x+=direction
+                    niveau.gameO[self.__x+direction][self.__y]=self
+                    niveau.gameO[self.__x+direction][self.__y]=False
+                    
+        else:
+            direction=int(direction/2)
+            if niveau[self.__x][self.__y+direction].repr!='#':
+                #if niveau.gameO[self.__x][self.__y+direction].deplace(direction*2,niveau)
+                self.__y+=direction
+                niveau.gameO[self.__x][self.__y+direction]=self
+                niveau.gameO[self.__x][self.__y]=False
+                    
+
+
+
+class Caisse(Sprite):
+    def deplace(self,direction,niveau):#haut,bas,gauche,droite : -1,1,-2,2
+        if direction**2==1 and self.coordPossible(self.__x+direction,self.__y):
+            if not niveau.gameO[self.__x+direction][self.__y].repr:
+                niveau.gameO[self.__x+direction][self.__y]=self
+                niveau.gameO[self.__x][self.__y]=False
+                return True
+        elif self.coordPossible(self.__x,self.__y+int(direction/2)):
+            direction=int(direction/2)
+            if not niveau.gameO[self.__x][self.__y+direction].repr:
+                niveau.gameO[self.__x][self.__y+direction]=self
+                niveau.gameO[self.__x][self.__y]=False
+                return True
+        return False
+            
+            
+
+class Niveau(object):
+    def __init__(self,grillePlan,grilleObstacle):
+        self.grilleP=grillePlan #contient vides, platformes --- ' ', '+', False
+        self.grilleO=grilleObstacle # contient murs, caisses --- '#', '$','@', False
+        self.gameP=[]
+        self.gameO=[]
+
+        
+    def gameConstructor(self): # construit les grilles gameP et gameO avec des objets
+        for x in range(len(self.grilleP)):
+            line=[]
+            for y in range(len(self.grilleP[0])):
+                if self.grilleP[x][y]:
+                    if self.grilleP[x][y]==' ':
+                        line+=[Sprite(space,' ',dWidth,dHeight,x,y)]
+                    elif self.grilleP[x][y]=='+':
+                        line+=[Sprite(target,'.',dWidth,dHeight,x,y)]
+                    else:
+                        line+=[False]
+                else:
+                    line+=[False]
+            self.gameP+=[line]
+            
+        for x in range(len(self.grilleO)):
+            line=[]
+            for y in range(len(self.grilleO[0])):
+                if self.grilleO[x][y]:
+                    if self.grilleO[x][y]=='$':
+                        line+=[Caisse(element,' ',dWidth,dHeight,x,y)]
+                    elif self.grilleO[x][y]=='#':
+                        line+=[Sprite(wall,'.',dWidth,dHeight,x,y)]
+                    elif self.grilleO[x][y]=='@':
+                        line+=[Personnage(perso_sprite[6],'@',x,y)]
+                    else:
+                        line+=[False]
+                else:
+                    line+=[False]
+            self.gameO+=[line]
+
+            
+    def afficheNiveau(self,fen):
+        fen.blit(fond,(0,0))
+        for x in self.gameP:
+            for y in x:
+                if y:
+                    y.displaySprite(fen)
+        for x in self.gameO:
+            for y in x:
+                if y:
+                    y.displaySprite(fen)
+
+    def findPersonnage(self):
+        for x in range (len(self.grilleO)):
+            for y in range(len(self.grilleO[0])):
+                if self.grilleO[x][y]=='@':
+                    return (x,y)
+
+
 ##
 # rafraichit la fenetre pygame en fonction de perso et de niveaux
 # @param niveaux:la grille correspondant au niveau actuel
@@ -45,158 +191,32 @@ class LevelCollection(object):
                 line+=[char]
             self.structure+=[line]
 
+            
+        grilleP,grilleO=[],[]
+        for x in range(len(self.structure)):
+            lineP,lineO=[],[]
+            for y in range(len(self.structure[0])):
+                if self.structure[x][y] in ('@','#','$'):
+                    lineO+=[self.structure[x][y]]
+                    lineP+=[False]
+                else:
+                    lineP+=[self.structure[x][y]]
+                    lineO+=[False]
+            grilleP+=[lineP]
+            grilleO+=[lineO]
+
         #change la taille de la fenetre et des sprites en fonction de la taille du niveau
         if self.width>11 or self.height>11:
-            global taille_sprite,space,wall,target,element,elementOnTarget,pOnTarget,perso_sprite
+            global taille_sprite,space,wall,target,element,elementOnTarget,pOnTarget,perso_sprite,dWidth,dHeight
             taille_sprite,space,wall,target,element,elementOnTarget,pOnTarget,perso_sprite  =  taille_sprite_mini,space_mini,wall_mini,target_mini,element_mini,elementOnTarget_mini,pOnTarget_mini,perso_sprite_mini
-
+            
         fenetre= pygame.display.set_mode((self.width*taille_sprite,self.height*taille_sprite))
-
+        dWidth,dHeight=self.width,self.height
+        
+        return (grilleP,grilleO)
+        
 
     ##
     # supprime le niveau chargé
     def deleteLevel(self):
         self.structure = []
-
-    ##
-    # affiche le niveau dans la fenetre avec les sprites
-    # @param fen:la fenetre dans laquelle le niveau sera affiché
-    def afficheLevel(self,fen):
-        playerStart = ()
-        for xi in range(self.width):
-            x = xi*taille_sprite
-            for yi in range(self.height):
-                y = yi*taille_sprite
-                if self.structure[yi][xi] in ('+','@'):
-                    playerStart = [yi,xi]
-                    self.structure[yi][xi] = " "
-                    fen.blit(space,(x,y))
-                elif self.structure[yi][xi] == ' ':
-                    fen.blit(space,(x,y))
-                elif self.structure[yi][xi] == "#":
-                    fen.blit(wall,(x,y))
-                elif self.structure[yi][xi] == ".":
-                    fen.blit(target,(x,y))
-                elif self.structure[yi][xi] == "$":
-                    fen.blit(element,(x,y))
-                elif self.structure[yi][xi] == "*":
-                    fen.blit(elementOnTarget,(x,y))
-        return playerStart
-
-    ##
-    # verifie si dans la case de destination du joueur se trouve une caisse ou une target avec une caisse dessus
-    # @param direc:donne la direction du joueur (-1,1,-2,2) pour (gauche,droite,haut,bas)
-    # @param perso:l'instance du personnage
-    # @return vrai/faux
-    def caisseAdjacente(self,direc,perso):
-        if direc**2 == 1:
-            if self.structure[perso.playerPos[0]][perso.playerPos[1]+direc]=='$': # depart element = element simple
-                return self.caisseMovableLigne(direc,' ',perso)
-            elif self.structure[perso.playerPos[0]][perso.playerPos[1]+direc]=='*':
-                return self.caisseMovableLigne(direc,'.',perso)
-            else:
-                return True
-        else:
-            direc=int(direc/2)
-            if self.structure[perso.playerPos[0]+direc][perso.playerPos[1]]=='$': # depart element = element simple
-                return self.caisseMovableColonne(direc,' ',perso)
-            elif self.structure[perso.playerPos[0]+direc][perso.playerPos[1]]=='*':
-                return self.caisseMovableColonne(direc,'.',perso)
-            else:
-                return True
-
-    ##
-    # verifie la case direction du personnage +2 pour gauche/droite si celle ci est disponible pour une caisse
-    # @param direc:donne la direction du joueur
-    # @param char:donnée de la case adjacente au joueur
-    # @param perso:l'instance du personnage
-    # @return vrai/faux
-    def caisseMovableLigne(self,direc,char,perso):
-        if self.structure[perso.playerPos[0]][perso.playerPos[1]+2*direc]=='.':
-            self.structure[perso.playerPos[0]][perso.playerPos[1]+2*direc]='*'
-            self.structure[perso.playerPos[0]][perso.playerPos[1]+direc]=char
-            return True
-        elif self.structure[perso.playerPos[0]][perso.playerPos[1]+2*direc]==' ':
-            self.structure[perso.playerPos[0]][perso.playerPos[1]+2*direc]='$'
-            self.structure[perso.playerPos[0]][perso.playerPos[1]+direc]=char
-            return True
-        return False
-
-    ##
-    # verifie la case direction du personnage +2 pour haut/bas si celle ci est disponible pour une caisse
-    # @param direc:donne la direction du joueur
-    # @param char:donnée de la case adjacente au joueur
-    # @param perso:l'instance du personnage
-    # @return vrai/faux
-    def caisseMovableColonne(self,direc,char,perso):
-        if self.structure[perso.playerPos[0]+2*direc][perso.playerPos[1]]=='.':
-            self.structure[perso.playerPos[0]+2*direc][perso.playerPos[1]]='*'
-            self.structure[perso.playerPos[0]+direc][perso.playerPos[1]]=char
-            return True
-        elif self.structure[perso.playerPos[0]+2*direc][perso.playerPos[1]]==' ':
-            self.structure[perso.playerPos[0]+2*direc][perso.playerPos[1]]='$'
-            self.structure[perso.playerPos[0]+direc][perso.playerPos[1]]=char
-            return True
-        return False
-
-
-class Perso:
-        ##
-        # constructeur du personnage
-        # @param niveau:instance du niveau du jeu
-        # @param playerStart:point de départ du personnage lu dans le niveau
-        def __init__(self,niveau,playerStart):
-                self.playerPos = playerStart # colonne,ligne
-                self.x = playerStart[1]*taille_sprite
-                self.y = playerStart[0]*taille_sprite
-                self.direction = perso_sprite[9]
-                self.niveau = niveau
-
-        ##
-        # execute le déplacement du personnage puis appele les fonctions qui se charge du déplacement des caisses
-        # @param direction: direction du personnage
-        # @param fenetre:fenetre dans laquelle le personnage et les caisse se déplacent
-        # @return vrai/faux
-        def deplacer(self, direction,fenetre):
-                if direction == 'haut' and self.niveau.structure[self.playerPos[0]-1][self.playerPos[1]]!="#": #test si un mur est présent
-                        if self.niveau.caisseAdjacente(-2,self):
-                            self.playerPos[0]-=1
-                            return True
-                    
-                if direction == 'bas' and self.niveau.structure[self.playerPos[0]+1][self.playerPos[1]]!="#":
-                        if self.niveau.caisseAdjacente(2,self):
-                            self.playerPos[0]+=1
-                            return True
-                    
-                if direction == 'gauche' and self.niveau.structure[self.playerPos[0]][self.playerPos[1]-1]!="#":
-                        if self.niveau.caisseAdjacente(-1,self):
-                            self.playerPos[1]-=1
-                            return True
-                    
-                if direction == 'droite' and self.niveau.structure[self.playerPos[0]][self.playerPos[1]+1]!="#":
-                        if self.niveau.caisseAdjacente(1,self):
-                            self.playerPos[1]+=1
-                            return True
-                
-                return False
-
-        ##
-        # créé une animation du déplacement du personnage
-        # @param direction:direction du personnage
-        # @param fen:fenetre dans laquelle le personnage est déplacé
-        def animatePerso(self,direction,fen):
-                animation = (1,0,2,0)
-                for n in animation:
-                    self.direction=perso_sprite[n+direction*3]
-                    if direction in (2,3):
-                        if direction%2==0:
-                            self.x -= taille_sprite//len(animation)
-                        else:
-                            self.x += taille_sprite//len(animation)
-                    else:
-                        if direction%2==0:
-                            self.y-= taille_sprite//len(animation)
-                        else:
-                            self.y+= taille_sprite//len(animation)
-                    pygame.time.wait(p_speed)
-                    update(self.niveau,self,fen)

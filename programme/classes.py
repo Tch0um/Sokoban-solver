@@ -4,11 +4,11 @@ import xml.etree.ElementTree as ET
 
 class Sprite(object):
     def __init__(self,surface,rep,x,y,xmax=dWidth,ymax=dHeight):
-        self.__x=x
-        self.__y=y
-        self.__xmax=xmax
-        self.__ymax=ymax
-        self.__surface=surface
+        self.x=x
+        self.y=y
+        self.xmax=xmax
+        self.ymax=ymax
+        self.surface=surface
         if rep not in ('#','$',' ','+','@','.'):
             raise ValueError(rep+" ne peut pas être représenté")
         else:
@@ -16,24 +16,24 @@ class Sprite(object):
 
 
     def coordPossible(self,x,y):
-        return x>self.__xmax and x<0 and y<0 and y>self.__ymax
+        return x>self.xmax and x<0 and y<0 and y>self.ymax
 
 
     def displaySprite(self,fen):
-        fen.blit(self.__surface,(self.__x*taille_sprite,self.__y*taille_sprite))
+        fen.blit(self.surface,(self.x*taille_sprite,self.y*taille_sprite))
 
     def setCoord(self,x,y):
         if self.coordPossible(x,y):
-            self.__x=x
-            self.__y=y
+            self.x=x
+            self.y=y
         else:
             raise ValueError("coordonné impossible")
 
     def getCoord(self):
-        return (self.__x,self.__y)
+        return (self.x,self.y)
 
     def getMax(self):
-        return (self.__xmax,self.__ymax)
+        return (self.xmax,self.ymax)
 
     def __getitem__(self,cle):
         return self
@@ -45,39 +45,38 @@ class Personnage(Sprite):
         Sprite.__init__(self,surface,'@',x,y)
 
     def deplace(self,direction,niveau):
-        print(self,direction,niveau,str(Sprite.__y))
+        print(self,direction,niveau,str(self.y))
         if direction**2==1:
-            if niveau.gameO[self.__x+direction][self.__y].repr!='#':
-                if niveau.gameO[self.__x+direction][self.__y].deplace(direction,niveau):
-                    self.__x+=direction
-                    niveau.gameO[self.__x+direction][self.__y]=self
-                    niveau.gameO[self.__x+direction][self.__y]=False
+            if niveau.gameO[self.x+direction][self.y] and niveau.gameO[self.x+direction][self.y].repr!='#':
+                if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau):
+                    self.x+=direction
+                    niveau.gameO[self.x+direction][self.y]=self
+                    niveau.gameO[self.x+direction][self.y]=False
                     
         else:
             direction=int(direction/2)
             print(niveau.gameO[5][5+direction])
-            if niveau.gameO[self.__x][self.__y+direction]:
-                if niveau.gameO[self.__x][self.__y+direction].repr!='#':
-                    #if niveau.gameO[self.__x][self.__y+direction].deplace(direction*2,niveau)
-                    self.__y+=direction
-                    niveau.gameO[self.__x][self.__y+direction]=self
-                    niveau.gameO[self.__x][self.__y]=False
+            if niveau.gameO[self.x][self.y+direction] and niveau.gameO[self.x][self.y+direction].repr!='#':
+                if niveau.gameO[self.x][self.y+direction].deplace(direction,niveau):
+                    self.y+=direction
+                    niveau.gameO[self.x][self.y+direction]=self
+                    niveau.gameO[self.x][self.y]=False
                     
 
 
 
 class Caisse(Sprite):
     def deplace(self,direction,niveau):#haut,bas,gauche,droite : -1,1,-2,2
-        if direction**2==1 and self.coordPossible(self.__x+direction,self.__y):
-            if not niveau.gameO[self.__x+direction][self.__y].repr:
-                niveau.gameO[self.__x+direction][self.__y]=self
-                niveau.gameO[self.__x][self.__y]=False
+        if direction**2==1 and self.coordPossible(self.x+direction,self.y):
+            if not niveau.gameO[self.x+direction][self.y].repr:
+                niveau.gameO[self.x+direction][self.y]=self
+                niveau.gameO[self.x][self.y]=False
                 return True
-        elif self.coordPossible(self.__x,self.__y+int(direction/2)):
+        elif self.coordPossible(self.x,self.y+int(direction/2)):
             direction=int(direction/2)
-            if not niveau.gameO[self.__x][self.__y+direction].repr:
-                niveau.gameO[self.__x][self.__y+direction]=self
-                niveau.gameO[self.__x][self.__y]=False
+            if not niveau.gameO[self.x][self.y+direction].repr:
+                niveau.gameO[self.x][self.y+direction]=self
+                niveau.gameO[self.x][self.y]=False
                 return True
         return False
             
@@ -133,6 +132,7 @@ class Niveau(object):
             for y in x:
                 if y:
                     y.displaySprite(fen)
+        pygame.display.flip()
 
     def findPersonnage(self):
         for x in range (len(self.grilleO)):

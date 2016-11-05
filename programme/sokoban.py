@@ -19,24 +19,28 @@ niveau = Niveau(grilleNiveau[0],grilleNiveau[1])
 
 niveau.gameConstructor()
 niveau.afficheNiveau(fenetre)
-#print(niveau.gameO,niveau.gameP,sep='\n')
 
 continuer = 1
 while continuer:
     pygame.time.Clock().tick(30) #limitation "fps"
     for event in pygame.event.get():
         coordPerso = niveau.findPersonnage()
+        print(str(coordPerso[0]),str(coordPerso[1]),sep=', ')
         if event.type == pygame.QUIT:
             continuer = 0
         elif event.type == KEYDOWN:
             if event.key == K_RIGHT:
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau)
+                niveau.afficheNiveau(fenetre)
             if event.key == K_LEFT:
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-2,niveau)
+                niveau.afficheNiveau(fenetre)
             if event.key == K_UP:
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-1,niveau)
+                niveau.afficheNiveau(fenetre)
             if event.key == K_DOWN:
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau)
+                niveau.afficheNiveau(fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
                 

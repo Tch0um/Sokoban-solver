@@ -19,7 +19,7 @@ niveau = Niveau(grilleNiveau[0],grilleNiveau[1])
 
 niveau.gameConstructor()
 niveau.afficheNiveau(fenetre)
-print(niveau.gameO,niveau.gameP,sep='\n')
+#print(niveau.gameO,niveau.gameP,sep='\n')
 
 continuer = 1
 while continuer:

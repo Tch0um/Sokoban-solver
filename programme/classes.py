@@ -3,19 +3,9 @@ import xml.etree.ElementTree as ET
 
 
 class Sprite(object):
-    def __init__(self,surface,rep,xmax=dWidth,ymax=dHeight,x=0,y=0):
-        if x>xmax:
-            self.__x=xmax
-        elif x<0:
-            self.__x=0
-        else:
-            self.__x=x
-        if y>ymax:
-            self.__y=ymax
-        elif y<0:
-            self.__y=0
-        else:
-            self.__y=y
+    def __init__(self,surface,rep,x,y,xmax=dWidth,ymax=dHeight):
+        self.__x=x
+        self.__y=y
         self.__xmax=xmax
         self.__ymax=ymax
         self.__surface=surface
@@ -51,10 +41,11 @@ class Sprite(object):
 
 
 class Personnage(Sprite):
-    def __init__(self,surface,xmax,ymax,x=0,y=0):
-        Sprite.__init__(self,surface,xmax,ymax,x,y)
+    def __init__(self,surface,x,y):
+        Sprite.__init__(self,surface,'@',x,y)
 
     def deplace(self,direction,niveau):
+        print(self,direction,niveau,str(Sprite.__y))
         if direction**2==1:
             if niveau.gameO[self.__x+direction][self.__y].repr!='#':
                 if niveau.gameO[self.__x+direction][self.__y].deplace(direction,niveau):
@@ -64,11 +55,13 @@ class Personnage(Sprite):
                     
         else:
             direction=int(direction/2)
-            if niveau[self.__x][self.__y+direction].repr!='#':
-                #if niveau.gameO[self.__x][self.__y+direction].deplace(direction*2,niveau)
-                self.__y+=direction
-                niveau.gameO[self.__x][self.__y+direction]=self
-                niveau.gameO[self.__x][self.__y]=False
+            print(niveau.gameO[5][5+direction])
+            if niveau.gameO[self.__x][self.__y+direction]:
+                if niveau.gameO[self.__x][self.__y+direction].repr!='#':
+                    #if niveau.gameO[self.__x][self.__y+direction].deplace(direction*2,niveau)
+                    self.__y+=direction
+                    niveau.gameO[self.__x][self.__y+direction]=self
+                    niveau.gameO[self.__x][self.__y]=False
                     
 
 
@@ -104,9 +97,9 @@ class Niveau(object):
             for y in range(len(self.grilleP[0])):
                 if self.grilleP[x][y]:
                     if self.grilleP[x][y]==' ':
-                        line+=[Sprite(space,' ',dWidth,dHeight,x,y)]
+                        line+=[Sprite(space,' ',x,y)]
                     elif self.grilleP[x][y]=='+':
-                        line+=[Sprite(target,'.',dWidth,dHeight,x,y)]
+                        line+=[Sprite(target,'.',x,y)]
                     else:
                         line+=[False]
                 else:
@@ -118,11 +111,11 @@ class Niveau(object):
             for y in range(len(self.grilleO[0])):
                 if self.grilleO[x][y]:
                     if self.grilleO[x][y]=='$':
-                        line+=[Caisse(element,' ',dWidth,dHeight,x,y)]
+                        line+=[Caisse(element,' ',x,y)]
                     elif self.grilleO[x][y]=='#':
-                        line+=[Sprite(wall,'.',dWidth,dHeight,x,y)]
+                        line+=[Sprite(wall,'.',x,y)]
                     elif self.grilleO[x][y]=='@':
-                        line+=[Personnage(perso_sprite[6],'@',x,y)]
+                        line+=[Personnage(perso_sprite[6],x,y)]
                     else:
                         line+=[False]
                 else:

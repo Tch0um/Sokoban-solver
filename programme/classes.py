@@ -38,6 +38,9 @@ class Sprite(object):
     def __getitem__(self,cle):
         return self
 
+    def deplace(self,direction,niveau):
+        return False
+
 
 
 class Personnage(Sprite):
@@ -45,22 +48,23 @@ class Personnage(Sprite):
         Sprite.__init__(self,surface,'@',x,y)
 
     def deplace(self,direction,niveau):
-        print(self,direction,niveau,str(self.y))
+        print(direction,str(self.x)+str(self.y)+' '*5+'C line 51') ### debugger
         if direction**2==1:
             if niveau.gameO[self.x+direction][self.y] and niveau.gameO[self.x+direction][self.y].repr!='#':
                 if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau):
                     self.x+=direction
-                    niveau.gameO[self.x+direction][self.y]=self
-                    niveau.gameO[self.x+direction][self.y]=False
+                    niveau.gameO[self.x+direction][self.y]=niveau.gameO[self.x+direction][self.y]
+                    niveau.gameO[self.x+direction][self.y]=None
                     
         else:
             direction=int(direction/2)
-            print(niveau.gameO[5][5+direction])
             if niveau.gameO[self.x][self.y+direction] and niveau.gameO[self.x][self.y+direction].repr!='#':
                 if niveau.gameO[self.x][self.y+direction].deplace(direction,niveau):
                     self.y+=direction
-                    niveau.gameO[self.x][self.y+direction]=self
-                    niveau.gameO[self.x][self.y]=False
+                    niveau.gameO[self.x][self.y+direction]=niveau.gameO[self.x][self.y]
+                    niveau.gameO[self.x][self.y]=None
+        print(str(self.x),str(self.y)+' '*5+'C line 66',sep=', ')
+        print(niveau)
                     
 
 
@@ -69,14 +73,14 @@ class Caisse(Sprite):
     def deplace(self,direction,niveau):#haut,bas,gauche,droite : -1,1,-2,2
         if direction**2==1 and self.coordPossible(self.x+direction,self.y):
             if not niveau.gameO[self.x+direction][self.y].repr:
-                niveau.gameO[self.x+direction][self.y]=self
-                niveau.gameO[self.x][self.y]=False
+                niveau.gameO[self.x+direction][self.y]=niveau.gameO[self.x][self.y]
+                niveau.gameO[self.x][self.y]=None
                 return True
         elif self.coordPossible(self.x,self.y+int(direction/2)):
             direction=int(direction/2)
             if not niveau.gameO[self.x][self.y+direction].repr:
-                niveau.gameO[self.x][self.y+direction]=self
-                niveau.gameO[self.x][self.y]=False
+                niveau.gameO[self.x][self.y+direction]=niveau.gameO[self.x][self.y]
+                niveau.gameO[self.x][self.y]=None
                 return True
         return False
             
@@ -98,11 +102,11 @@ class Niveau(object):
                     if self.grilleP[x][y]==' ':
                         line+=[Sprite(space,' ',x,y)]
                     elif self.grilleP[x][y]=='+':
-                        line+=[Sprite(target,'.',x,y)]
+                        line+=[Sprite(target,'+',x,y)]
                     else:
-                        line+=[False]
+                        line+=[None]
                 else:
-                    line+=[False]
+                    line+=[None]
             self.gameP+=[line]
             
         for x in range(len(self.grilleO)):
@@ -110,15 +114,15 @@ class Niveau(object):
             for y in range(len(self.grilleO[0])):
                 if self.grilleO[x][y]:
                     if self.grilleO[x][y]=='$':
-                        line+=[Caisse(element,' ',x,y)]
+                        line+=[Caisse(element,'$',x,y)]
                     elif self.grilleO[x][y]=='#':
-                        line+=[Sprite(wall,'.',x,y)]
+                        line+=[Sprite(wall,'#',x,y)]
                     elif self.grilleO[x][y]=='@':
                         line+=[Personnage(perso_sprite[6],x,y)]
                     else:
-                        line+=[False]
+                        line+=[None]
                 else:
-                    line+=[False]
+                    line+=[None]
             self.gameO+=[line]
 
             
@@ -139,6 +143,31 @@ class Niveau(object):
             for y in range(len(self.grilleO[0])):
                 if self.grilleO[x][y]=='@':
                     return (x,y)
+
+                
+    def __repr__(self):
+        ch=''
+        for x in self.gameP:
+            ch+='|'
+            for y in x:
+                if y:
+                    if y.repr==' ':
+                        ch+='s '
+                    else:
+                        ch+=y.repr+' '
+                else:
+                    ch+=': '
+            ch+='|\n'
+        ch+='\n'*5
+        for x in self.gameO:
+            ch+='|'
+            for y in x:
+                if y:
+                    ch+=y.repr+' '
+                else:
+                    ch+=': '
+            ch+='|\n'
+        return ch
 
 
 ##

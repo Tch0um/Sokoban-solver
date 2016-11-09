@@ -13,7 +13,7 @@ pygame.display.set_caption('Sokoban')
 
 
 niveaux = LevelCollection("levels/"+collection+".slc")
-grilleNiveau = niveaux.loadLevel(0,fenetre)
+grilleNiveau = niveaux.loadLevel(7,fenetre)
 niveau = Niveau(grilleNiveau[0],grilleNiveau[1])
 
 
@@ -30,7 +30,7 @@ while continuer:
         elif event.type == KEYDOWN:
             coordPerso = niveau.findPersonnage()
             print(str(coordPerso[0]),str(coordPerso[1])+' '*5+'S line 32',sep=', ')
-            print(str(niveau.gameO[coordPerso[0]][coordPerso[1]].x),str(niveau.gameO[coordPerso[0]][coordPerso[1]].y)+' '*5+'S line 33',sep=', ')
+            #print(str(niveau.gameO[coordPerso[0]][coordPerso[1]].x),str(niveau.gameO[coordPerso[0]][coordPerso[1]].y)+' '*5+'S line 33',sep=', ')
             if event.key == K_RIGHT:
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau)
                 niveau.afficheNiveau(fenetre)

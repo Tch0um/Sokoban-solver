@@ -64,7 +64,7 @@ class Personnage(Sprite):
                     niveau.gameO[self.x][self.y+direction]=niveau.gameO[self.x][self.y]
                     niveau.gameO[self.x][self.y]=None
         print(str(self.x),str(self.y)+' '*5+'C line 66',sep=', ')
-        print(niveau)
+        print(niveau,str(niveau.gameO))
                     
 
 
@@ -128,15 +128,16 @@ class Niveau(object):
             
     def afficheNiveau(self,fen):
         fen.blit(fond,(0,0))
-        for x in self.gameP:
-            for y in x:
-                if y:
-                    y.displaySprite(fen)
-        for x in self.gameO:
-            for y in x:
-                if y:
-                    y.displaySprite(fen)
+        for x in range(len(self.gameP)):
+            for y in range(len(self.gameP[0])):
+                if self.gameP[x][y]:
+                    self.gameP[x][y].displaySprite(fen)
+        for x in range(len(self.gameO)):
+            for y in range(len(self.gameO[0])):
+                if self.gameO[x][y]:
+                    self.gameO[x][y].displaySprite(fen)
         pygame.display.flip()
+        
 
     def findPersonnage(self):
         for x in range (len(self.grilleO)):
@@ -152,7 +153,7 @@ class Niveau(object):
             for y in x:
                 if y:
                     if y.repr==' ':
-                        ch+='s '
+                        ch+='  '
                     else:
                         ch+=y.repr+' '
                 else:
@@ -221,9 +222,15 @@ class LevelCollection(object):
                 if self.structure[x][y] in ('@','#','$'):
                     lineO+=[self.structure[x][y]]
                     lineP+=[False]
-                else:
-                    lineP+=[self.structure[x][y]]
+                elif self.structure[x][y]=='*':
+                    lineO+=['$']
+                    lineP+=['+']
+                elif self.structure[x][y]=='.':
                     lineO+=[False]
+                    lineP+=['+']
+                else:
+                    lineO+=[False]
+                    lineP+=[self.structure[x][y]]
             grilleP+=[lineP]
             grilleO+=[lineO]
 

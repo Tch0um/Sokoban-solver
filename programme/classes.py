@@ -161,6 +161,13 @@ class Niveau(object):
                 if self.gameO[x][y].repr=='@':
                     return (x,y)
 
+    def checkTarget(self):
+        for x in range (len(self.gameO)):
+            for y in range(len(self.gameO[0])):
+                if self.gameP[x][y].repr=='+' and self.gameO[x][y].repr!='$':
+                    return False
+        return True
+
                 
     def __repr__(self):
         ch=''

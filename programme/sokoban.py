@@ -42,4 +42,7 @@ while continuer:
                 niveau.afficheNiveau(fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
+    if niveau.checkTarget():
+        print('vous avez gagné !!!')
+        continuer = 0
 pygame.quit()

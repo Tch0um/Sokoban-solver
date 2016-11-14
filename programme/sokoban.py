@@ -21,6 +21,7 @@ niveau.gameConstructor()
 niveau.afficheNiveau(fenetre)
 
 continuer = 1
+print(niveau)
 while continuer:
     pygame.time.Clock().tick(30) #limitation "fps"
     for event in pygame.event.get():
@@ -42,6 +43,7 @@ while continuer:
                 niveau.afficheNiveau(fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
+            print(niveau)
     if niveau.checkTarget():
         print('vous avez gagné !!!')
         continuer = 0

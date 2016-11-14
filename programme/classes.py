@@ -45,7 +45,16 @@ class Sprite(object):
 
 class Personnage(Sprite):
     def __init__(self,surface,x,y):
-        Sprite.__init__(self,surface,'@',x,y)
+        if taille_sprite==64:
+            self.size=2
+        else:
+            self.size=1
+        if style_perso<=4:
+            self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(style_perso-1),0,32*self.size*3,32*self.size*4)
+        else:
+            self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(style_perso-5),self.size*32*4,32*self.size*3,32*self.size*4)
+        Sprite.__init__(self,self.tilesetPerso.subsurface(32*self.size,2*32*self.size,self.size*32,self.size*32),'@',x,y)
+
 
     def deplace(self,direction,niveau,fen):#haut,bas,gauche,droite : -1,1,-2,2
         if direction**2==1:
@@ -53,7 +62,7 @@ class Personnage(Sprite):
                 if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau,fen):
                     niveau.gameO[self.x+direction][self.y]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
-                    self.setCoord(self.x+direction,self.y)
+                    self.displaySpriteWithAnim(direction,niveau,fen)
                     
         else:
             direction=int(direction/2)
@@ -61,7 +70,33 @@ class Personnage(Sprite):
                 if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau,fen):
                     niveau.gameO[self.x][self.y+direction]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
-                    self.setCoord(self.x,self.y+direction)
+                    self.displaySpriteWithAnim(direction*2,niveau,fen)
+
+
+    def displaySpriteWithAnim(self,direction,niveau,fen):
+        if direction**2==1:#haut, bas
+            for n in (2,1,0,1):
+                self.x+=direction/4
+                if direction==1:
+                    self.surface=self.tilesetPerso.subsurface(n*32*self.size,0,32*self.size,32*self.size)
+                else:
+                    self.surface=self.tilesetPerso.subsurface(n*32*self.size,3*32*self.size,32*self.size,32*self.size)
+                self.displaySprite(fen)
+                niveau.afficheNiveau(fen)
+                pygame.time.wait(speed)
+            self.x=int(round(self.x))
+        else:
+            direction=direction/2
+            for n in (2,1,0,1):
+                self.y+=direction/4
+                if direction==1:
+                    self.surface=self.tilesetPerso.subsurface(n*32*self.size,2*self.size*32,32*self.size,32*self.size)
+                else:
+                    self.surface=self.tilesetPerso.subsurface(n*32*self.size,32*self.size,32*self.size,32*self.size)
+                self.displaySprite(fen)
+                niveau.afficheNiveau(fen)
+                pygame.time.wait(speed)
+            self.y=int(round(self.y))
                     
 
 
@@ -73,7 +108,6 @@ class Caisse(Sprite):
                 niveau.gameO[self.x+direction][self.y]=self
                 niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                 self.displaySpriteWithAnim(direction,niveau,fen)
-                #self.setCoord(self.x+direction,self.y)
                 return True
                     
         else:
@@ -82,7 +116,6 @@ class Caisse(Sprite):
                 niveau.gameO[self.x][self.y+direction]=self
                 niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                 self.displaySpriteWithAnim(direction*2,niveau,fen)
-                #self.setCoord(self.x,self.y+direction)
                 return True
         return False
 
@@ -188,21 +221,7 @@ class Niveau(object):
         return ch
 
 
-##
-# rafraichit la fenetre pygame en fonction de perso et de niveaux
-# @param niveaux:la grille correspondant au niveau actuel
-# @param perso:l'instance du personnage
-# @param fenetre:l'instance de la fenetre à rafraichir
-def update(niveaux,perso,fenetre):
-    fenetre.blit(fond, (0,0))
-    niveaux.afficheLevel(fenetre)
-    fenetre.blit(perso.direction,(perso.x,perso.y))
-    pygame.display.flip()
-
-
-
-
-
+    
 class LevelCollection(object):
     ##
     # constructeur de la collection de niveaux

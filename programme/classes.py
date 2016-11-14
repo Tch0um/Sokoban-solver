@@ -38,7 +38,7 @@ class Sprite(object):
     def __getitem__(self,cle):
         return self
 
-    def deplace(self,direction,niveau):
+    def deplace(*args):
         return True
 
 
@@ -47,10 +47,10 @@ class Personnage(Sprite):
     def __init__(self,surface,x,y):
         Sprite.__init__(self,surface,'@',x,y)
 
-    def deplace(self,direction,niveau):#haut,bas,gauche,droite : -1,1,-2,2
+    def deplace(self,direction,niveau,fen):#haut,bas,gauche,droite : -1,1,-2,2
         if direction**2==1:
             if niveau.gameO[self.x+direction][self.y].repr!='#':
-                if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau):
+                if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau,fen):
                     niveau.gameO[self.x+direction][self.y]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.setCoord(self.x+direction,self.y)
@@ -58,7 +58,7 @@ class Personnage(Sprite):
         else:
             direction=int(direction/2)
             if niveau.gameO[self.x][self.y+direction].repr!='#':
-                if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau):
+                if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau,fen):
                     niveau.gameO[self.x][self.y+direction]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.setCoord(self.x,self.y+direction)
@@ -67,12 +67,13 @@ class Personnage(Sprite):
 
 
 class Caisse(Sprite):
-    def deplace(self,direction,niveau):#haut,bas,gauche,droite : -1,1,-2,2
-        if direction**2==1:
+    def deplace(self,direction,niveau,fen):#haut,bas,gauche,droite : -1,1,-2,2
+        if direction**2==1:#gauche,droite
             if niveau.gameO[self.x+direction][self.y].repr not in ('#','$'):
                 niveau.gameO[self.x+direction][self.y]=self
                 niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
-                self.setCoord(self.x+direction,self.y)
+                self.displaySpriteWithAnim(direction,niveau,fen)
+                #self.setCoord(self.x+direction,self.y)
                 return True
                     
         else:
@@ -80,11 +81,28 @@ class Caisse(Sprite):
             if niveau.gameO[self.x][self.y+direction].repr not in ('#','$'):
                 niveau.gameO[self.x][self.y+direction]=self
                 niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
-                self.setCoord(self.x,self.y+direction)
+                self.displaySpriteWithAnim(direction*2,niveau,fen)
+                #self.setCoord(self.x,self.y+direction)
                 return True
         return False
+
+    def displaySpriteWithAnim(self,direction,niveau,fen):
+        if direction**2==1:#gauche,droite
+            for n in range(3):
+                self.x+=direction/3
+                self.displaySprite(fen)
+                niveau.afficheNiveau(fen)
+            self.x=int(round(self.x))
+        else:
+            direction=direction/2
+            for n in range(3):
+                self.y+=direction/3
+                self.displaySprite(fen)
+                niveau.afficheNiveau(fen)
+            self.y=int(round(self.y))
             
-            
+
+
 
 class Niveau(object):
     def __init__(self,grillePlan,grilleObstacle):

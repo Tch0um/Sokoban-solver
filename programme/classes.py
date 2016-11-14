@@ -47,25 +47,26 @@ class Personnage(Sprite):
     def __init__(self,surface,x,y):
         Sprite.__init__(self,surface,'@',x,y)
 
-    def deplace(self,direction,niveau):
-        #print(direction,str(self.x)+str(self.y)+' '*5+'C line 51') ### debugger
+    def deplace(self,direction,niveau):#haut,bas,gauche,droite : -1,1,-2,2
+        print(direction,str(self.x),str(self.y)+' '*5+'C line 51',sep=', ') ### debugger
         if direction**2==1:
             if niveau.gameO[self.x+direction][self.y] and niveau.gameO[self.x+direction][self.y].repr!='#':
                 print('if 1 dir**2')
                 if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau):
                     print('if 2 dir**2')
                     niveau.gameO[self.x+direction][self.y]=self
-                    niveau.gameO[self.x][self.y]=None
+                    niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.setCoord(self.x+direction,self.y)
+                    print(direction,str(self.x),str(self.y)+' '*5+'C line 60',sep=', ') ### debugger
                     
         else:
             direction=int(direction/2)
             if niveau.gameO[self.x][self.y+direction] and niveau.gameO[self.x][self.y+direction].repr!='#':
                 print('if 1 dir/2')
-                if niveau.gameO[self.x][self.y+direction].deplace(direction,niveau):
+                if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau):
                     print('if 2 dir/2')
-                    niveau.gameO[self.x][self.y+direction]=niveau.gameO[self.x][self.y]
-                    niveau.gameO[self.x][self.y]=None
+                    niveau.gameO[self.x][self.y+direction]=self
+                    niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.setCoord(self.x,self.y+direction)
                     
 
@@ -73,18 +74,21 @@ class Personnage(Sprite):
 
 class Caisse(Sprite):
     def deplace(self,direction,niveau):#haut,bas,gauche,droite : -1,1,-2,2
-        '''if direction**2==1 and self.coordPossible(self.x+direction,self.y):
-            if not niveau.gameO[self.x+direction][self.y].repr:
-                niveau.gameO[self.x+direction][self.y]=niveau.gameO[self.x][self.y]
-                niveau.gameO[self.x][self.y]=None
+        if direction**2==1:
+            if niveau.gameO[self.x+direction][self.y].repr not in ('#','$'):
+                niveau.gameO[self.x+direction][self.y]=self
+                niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
+                self.setCoord(self.x+direction,self.y)
                 return True
-        elif self.coordPossible(self.x,self.y+int(direction/2)):
+                    
+        else:
             direction=int(direction/2)
-            if not niveau.gameO[self.x][self.y+direction].repr:
-                niveau.gameO[self.x][self.y+direction]=niveau.gameO[self.x][self.y]
-                niveau.gameO[self.x][self.y]=None
-                return True'''
-        return True
+            if niveau.gameO[self.x][self.y+direction].repr not in ('#','$'):
+                niveau.gameO[self.x][self.y+direction]=self
+                niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
+                self.setCoord(self.x,self.y+direction)
+                return True
+        return False
             
             
 
@@ -145,7 +149,7 @@ class Niveau(object):
     def findPersonnage(self):
         for x in range (len(self.grilleO)):
             for y in range(len(self.grilleO[0])):
-                if self.grilleO[x][y]=='@':
+                if self.gameO[x][y].repr=='@':
                     return (x,y)
 
                 
@@ -163,7 +167,7 @@ class Niveau(object):
         for x in self.gameO:
             ch+='|'
             for y in x:
-                    ch+=y.repr+' '
+                ch+=y.repr+' '
             ch+='|\n'
         return ch
 

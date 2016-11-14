@@ -48,23 +48,17 @@ class Personnage(Sprite):
         Sprite.__init__(self,surface,'@',x,y)
 
     def deplace(self,direction,niveau):#haut,bas,gauche,droite : -1,1,-2,2
-        print(direction,str(self.x),str(self.y)+' '*5+'C line 51',sep=', ') ### debugger
         if direction**2==1:
-            if niveau.gameO[self.x+direction][self.y] and niveau.gameO[self.x+direction][self.y].repr!='#':
-                print('if 1 dir**2')
+            if niveau.gameO[self.x+direction][self.y].repr!='#':
                 if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau):
-                    print('if 2 dir**2')
                     niveau.gameO[self.x+direction][self.y]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.setCoord(self.x+direction,self.y)
-                    print(direction,str(self.x),str(self.y)+' '*5+'C line 60',sep=', ') ### debugger
                     
         else:
             direction=int(direction/2)
-            if niveau.gameO[self.x][self.y+direction] and niveau.gameO[self.x][self.y+direction].repr!='#':
-                print('if 1 dir/2')
+            if niveau.gameO[self.x][self.y+direction].repr!='#':
                 if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau):
-                    print('if 2 dir/2')
                     niveau.gameO[self.x][self.y+direction]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.setCoord(self.x,self.y+direction)
@@ -136,14 +130,11 @@ class Niveau(object):
         fen.blit(fond,(0,0))
         for x in range(len(self.gameP)):
             for y in range(len(self.gameP[0])):
-                if self.gameP[x][y]:
-                    self.gameP[x][y].displaySprite(fen)
+                self.gameP[x][y].displaySprite(fen)
         for x in range(len(self.gameO)):
             for y in range(len(self.gameO[0])):
-                if self.gameO[x][y]:
-                    self.gameO[x][y].displaySprite(fen)
+                self.gameO[x][y].displaySprite(fen)
         pygame.display.flip()
-        print(self)
         
 
     def findPersonnage(self):

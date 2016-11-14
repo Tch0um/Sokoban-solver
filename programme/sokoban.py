@@ -18,7 +18,6 @@ niveau = Niveau(grilleNiveau[0],grilleNiveau[1])
 
 
 niveau.gameConstructor()
-#print(str(niveau.gameO),str(niveau.gameP),sep=('\n'*5)) ###debugger
 niveau.afficheNiveau(fenetre)
 
 continuer = 1
@@ -29,8 +28,6 @@ while continuer:
             continuer = 0
         elif event.type == KEYDOWN:
             coordPerso = niveau.findPersonnage()
-            #print(str(coordPerso[0]),str(coordPerso[1]),str(niveau.gameO[coordPerso[0]][coordPerso[1]].getCoord())+' '*5+'S line 32',sep=', ')
-            #print(str(niveau.gameO[coordPerso[0]][coordPerso[1]].x),str(niveau.gameO[coordPerso[0]][coordPerso[1]].y)+' '*5+'S line 33',sep=', ')
             if event.key == K_RIGHT:
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau)
                 niveau.afficheNiveau(fenetre)
@@ -45,7 +42,4 @@ while continuer:
                 niveau.afficheNiveau(fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
-            coordPerso = niveau.findPersonnage()
-            #print(str(coordPerso[0]),str(coordPerso[1]),str(niveau.gameO[coordPerso[0]][coordPerso[1]].getCoord())+' '*5+'S line 49',sep=', ')
-                
 pygame.quit()

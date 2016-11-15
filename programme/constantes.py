@@ -6,7 +6,6 @@ dHeight=21
 blank = pygame.Surface((0,0))
 
 #variables du personnage
-nb_pas = 3            #nb de boucle de 3 pas par changement de cases
 speed = 40         #miliseconds par pas
 style_perso = 8  #selection perso
 

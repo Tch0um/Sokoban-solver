@@ -3,6 +3,14 @@ import xml.etree.ElementTree as ET
 
 
 class Sprite(object):
+    ##
+    # constructeur des sprites
+    # @param surface:la surface qui represente le sprite
+    # @param rep:la representation du sprite
+    # @param x:coordonnée x du sprite
+    # @param y:coordonnée y du sprite
+    # @param xmax:maximum que la valeur x peut prendre
+    # @param ymax:maximum que la valeur y peut prendre
     def __init__(self,surface,rep,x,y,xmax=dWidth,ymax=dHeight):
         self.x=x
         self.y=y
@@ -14,36 +22,30 @@ class Sprite(object):
         else:
             self.repr=rep
 
-
+    ##
+    # test si les coordonnées se trouvent dans la fenetre actuelle
     def coordPossible(self,x,y):
         return x<self.xmax and x>0 and y>0 and y<self.ymax
 
-
+    ##
+    # deplace le sprite dans la fenetre fen
     def displaySprite(self,fen):
         fen.blit(self.surface,(self.y*taille_sprite,self.x*taille_sprite))
 
-    def setCoord(self,x,y):
-        if self.coordPossible(x,y):
-            self.x=x
-            self.y=y
-        else:
-            raise ValueError("coordonné impossible")
-
-    def getCoord(self):
-        return (self.x,self.y)
-
-    def getMax(self):
-        return (self.xmax,self.ymax)
 
     def __getitem__(self,cle):
         return self
 
+    ##
+    # sert à autoriser le déplacement du joueur et des caisses sur les sprites vides
     def deplace(*args):
         return True
 
 
 
 class Personnage(Sprite):
+    ##
+    # constructeur de la Classe Personnage
     def __init__(self,surface,x,y):
         if taille_sprite==64:
             self.size=2
@@ -55,7 +57,8 @@ class Personnage(Sprite):
             self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(style_perso-5),self.size*32*4,32*self.size*3,32*self.size*4)
         Sprite.__init__(self,self.tilesetPerso.subsurface(32*self.size,2*32*self.size,self.size*32,self.size*32),'@',x,y)
 
-
+    ##
+    # verifie et déplace le joueur quand c'est possible
     def deplace(self,direction,niveau,fen):#haut,bas,gauche,droite : -1,1,-2,2
         if direction**2==1:
             if niveau.gameO[self.x+direction][self.y].repr!='#':
@@ -72,7 +75,11 @@ class Personnage(Sprite):
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.displaySpriteWithAnim(direction*2,niveau,fen)
 
-
+    ##
+    # deplace et rafraichit le personnage avec une animation et un changement d'image a chaques frame
+    # @param direction:la direction du déplcament representé par -1,1,-2,2 pour haut, bas, gauche, droite
+    # @param niveau:le niveau actuellement chargé
+    # @param fen: la fenetre pygame
     def displaySpriteWithAnim(self,direction,niveau,fen):
         if direction**2==1:#haut, bas
             for n in (2,1,0,1):
@@ -102,6 +109,8 @@ class Personnage(Sprite):
 
 
 class Caisse(Sprite):
+    ##
+    # verifie et deplace la caisse quand c'est possible, autorise le déplacement du personnage en renvoyant True/false
     def deplace(self,direction,niveau,fen):#haut,bas,gauche,droite : -1,1,-2,2
         if direction**2==1:#gauche,droite
             if niveau.gameO[self.x+direction][self.y].repr not in ('#','$'):
@@ -119,6 +128,9 @@ class Caisse(Sprite):
                 return True
         return False
 
+
+    ##
+    # deplace et rafraichit la caisse avec une animation
     def displaySpriteWithAnim(self,direction,niveau,fen):
         if direction**2==1:#gauche,droite
             for n in range(3):
@@ -138,13 +150,18 @@ class Caisse(Sprite):
 
 
 class Niveau(object):
+    ##
+    # constructeur du niveau
+    # @param grillePlan:la grille du plan
+    # @param grilleObstacle:la grille des obstacles
     def __init__(self,grillePlan,grilleObstacle):
         self.grilleP=grillePlan #contient vides, platformes --- ' ', '+', False
         self.grilleO=grilleObstacle # contient murs, caisses --- '#', '$','@', False
         self.gameP=[]
         self.gameO=[]
 
-        
+    ##
+    # construit les grilles gameP et gameO avec les grille de plan et d'obstacle. gameP et gameO sont des grilles contenant que des Sprites, spécialisés ou non.
     def gameConstructor(self): # construit les grilles gameP et gameO avec des objets
         for x in range(len(self.grilleP)):
             line=[]
@@ -176,7 +193,8 @@ class Niveau(object):
                     line+=[Sprite(blank,':',x,y)]
             self.gameO+=[line]
 
-            
+    ##
+    # met en place graphiquement le niveau et rafraichit la fenetre
     def afficheNiveau(self,fen):
         fen.blit(fond,(0,0))
         for x in range(len(self.gameP)):
@@ -187,13 +205,18 @@ class Niveau(object):
                 self.gameO[x][y].displaySprite(fen)
         pygame.display.flip()
         
-
+    ##
+    # cherche le personnage dans la grille gameO
+    # @return: le tuple x,y de la position du personnage
     def findPersonnage(self):
         for x in range (len(self.grilleO)):
             for y in range(len(self.grilleO[0])):
                 if self.gameO[x][y].repr=='@':
                     return (x,y)
 
+    ##
+    # verifie si une caisse est presente sur chaque cibles.
+    # @return: vrai/faux
     def checkTarget(self):
         for x in range (len(self.gameO)):
             for y in range(len(self.gameO[0])):
@@ -234,13 +257,16 @@ class LevelCollection(object):
             self.height = 0
 
     ##
-    # charge un niveau parmit la collection de niveaux. change la taille de la fenetre en fonction de la taille du niveau
+    # charge un niveau de la collection de niveaux
     # @param level:numero du niveau dans la collection
     # @param fenetre:la fenetre à redimensionner
+    # @return: un tuple de grilles : la grille du plan et la grile des obstacles
     def loadLevel(self,level,fenetre):
         dicoAttrib = self.root[3][level].attrib
         self.width = int(dicoAttrib["Width"])
         self.height = int(dicoAttrib["Height"])
+        
+        #lecture du fichier slc
         for e in self.root[3][level]:
             line=[]
             chaine=e.text
@@ -252,6 +278,7 @@ class LevelCollection(object):
 
             
         grilleP,grilleO=[],[]
+        #creation de la grille du plan et de la grille d'obstacles
         for x in range(len(self.structure)):
             lineP,lineO=[],[]
             for y in range(len(self.structure[0])):

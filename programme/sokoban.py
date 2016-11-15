@@ -11,15 +11,17 @@ pygame.display.set_caption('Sokoban')
 
 
 
-
+#chargement du niveau
 niveaux = LevelCollection("levels/"+collection+".slc")
 grilleNiveau = niveaux.loadLevel(0,fenetre)
 niveau = Niveau(grilleNiveau[0],grilleNiveau[1])
-
-
 niveau.gameConstructor()
+
+#affichage de la première frame
 niveau.afficheNiveau(fenetre)
 
+
+#boucle pygame
 continuer = 1
 print(niveau)
 while continuer:
@@ -43,8 +45,8 @@ while continuer:
                 niveau.afficheNiveau(fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
-            print(niveau)
-    if niveau.checkTarget():
+            #print(niveau) #debugger dans la console
+    if niveau.checkTarget(): #test de victoire
         print('vous avez gagné !!!')
         continuer = 0
 pygame.quit()

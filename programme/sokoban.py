@@ -1,6 +1,7 @@
 from math import *
 from classes import * #importation de constante.py , pygame et constante pygame incluses
 
+
 pygame.init()
 
 #Création de la fenêtre avec ses attributs
@@ -48,5 +49,6 @@ while continuer:
             #print(niveau) #debugger dans la console
     if niveau.checkTarget(): #test de victoire
         print('vous avez gagné !!!')
+        
         continuer = 0
 pygame.quit()

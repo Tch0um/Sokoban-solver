@@ -1,6 +1,6 @@
 from math import *
 from classes import * #importation de constante.py , pygame et constante pygame incluses
-
+from sokobAstar import *
 
 pygame.init()
 
@@ -46,6 +46,9 @@ while continuer:
                 niveau.afficheNiveau(fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
+            if event.key == K_KP_MULTIPLY:
+                pass
+                #Astar(grilleNiveau,(coordPerso[0],coordPerso[1]),)
             #print(niveau) #debugger dans la console
     if niveau.checkTarget(): #test de victoire
         print('vous avez gagné !!!')

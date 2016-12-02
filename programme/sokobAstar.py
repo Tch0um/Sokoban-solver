@@ -1,6 +1,6 @@
 
 from copy import deepcopy
-
+    
 class Sommet(object):
 
     def __init__(self, x, y, F, direction = (0,0), predecesseur = None):

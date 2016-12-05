@@ -23,6 +23,7 @@ niveau.afficheNiveau(fenetre)
 
 
 #boucle pygame
+deplastar=None # deplastar = variable pour effectuer le déplacement du personnage avec A*
 continuer = 1
 print(niveau)
 while continuer:
@@ -32,23 +33,28 @@ while continuer:
             continuer = 0
         elif event.type == KEYDOWN:
             coordPerso = niveau.findPersonnage()
-            if event.key == K_RIGHT:
+            if event.key == K_RIGHT or deplastar==0: # deplastar = variable pour effectuer le déplacement du personnage
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau,fenetre)
                 niveau.afficheNiveau(fenetre)
-            if event.key == K_LEFT:
+            if event.key == K_LEFT or deplastar==1:
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-2,niveau,fenetre)
                 niveau.afficheNiveau(fenetre)
-            if event.key == K_UP:
+            if event.key == K_UP or deplastar==2:
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-1,niveau,fenetre)
                 niveau.afficheNiveau(fenetre)
-            if event.key == K_DOWN:
+            if event.key == K_DOWN or deplastar==3:
                 niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau,fenetre)
                 niveau.afficheNiveau(fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
-            if event.key == K_KP_MULTIPLY:
-                pass
-                #Astar(grilleNiveau,(coordPerso[0],coordPerso[1]),)
+            if event.key == K_KP_MULTIPLY:# appuyer sur * pour avoir le chemin
+                grille = niveau.grilleObstacle()
+                coordBarique = (5,7)#faire une fonction qui détecte les bariques NON PLACEES SUR DES STELLES
+                grille[coordBarique[1]][coordBarique[0]] = 1
+                coordStele = (5,2)#faire une fonction qui détecte les stelles libre (la plus adapté pour la caisse en cours de traitement si possible)
+                print(grille)
+                A = Astar(grille,coordBarique,coordStele,coordPerso)
+                print(A)
             #print(niveau) #debugger dans la console
     if niveau.checkTarget(): #test de victoire
         print('vous avez gagné !!!')

@@ -160,6 +160,20 @@ class Niveau(object):
         self.gameP=[]
         self.gameO=[]
 
+    def grilleObstacle(self):
+        grille = []
+        for i in range(len(self.grilleO)):          #Pour chaque ligne
+            LigneTmp = []
+            for j in range(len(self.grilleO[0])):   #Pour chaque colonne
+                if (self.grilleP[i][j] in [" ","+"] or not self.grilleP[i][j]) and (self.grilleO[i][j] == "@" or not self.grilleO[i][j]):
+                    LigneTmp.append(1)
+                else:
+                    LigneTmp.append(0)
+            grille.append(LigneTmp)
+        return grille
+            
+                
+
     ##
     # construit les grilles gameP et gameO avec les grille de plan et d'obstacle. gameP et gameO sont des grilles contenant que des Sprites, spécialisés ou non.
     def gameConstructor(self): # construit les grilles gameP et gameO avec des objets

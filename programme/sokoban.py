@@ -22,6 +22,15 @@ niveau.gameConstructor()
 niveau.afficheNiveau(fenetre)
 
 
+def triggerAstar():
+    liste = niveau.benzebute()
+    lsAstar = []
+    for z in range(len(liste[0])):
+        grille = niveau.grilleObstacle()
+        lsAstar.append(Astar(grille,(liste[0][z].x,liste[0][z].y),(liste[1][z].x,liste[1][z].y),coordPerso))
+        print(lsAstar[-1])
+
+
 #boucle pygame
 deplastar=None # deplastar = variable pour effectuer le déplacement du personnage avec A*
 continuer = 1
@@ -48,16 +57,10 @@ while continuer:
             if event.key == K_ESCAPE:
                 continuer = 0
             if event.key == K_KP_MULTIPLY:# appuyer sur * pour avoir le chemin
-                grille = niveau.grilleObstacle()
-                coordBarique = (5,7)#faire une fonction qui détecte les bariques NON PLACEES SUR DES STELLES
-                grille[coordBarique[1]][coordBarique[0]] = 1
-                coordStele = (5,2)#faire une fonction qui détecte les stelles libre (la plus adapté pour la caisse en cours de traitement si possible)
-                print(grille)
-                A = Astar(grille,coordBarique,coordStele,coordPerso)
-                print(A)
+                triggerAstar()
             #print(niveau) #debugger dans la console
     if niveau.checkTarget(): #test de victoire
         print('vous avez gagné !!!')
-        
         continuer = 0
+        
 pygame.quit()

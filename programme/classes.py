@@ -1,5 +1,6 @@
 from constantes import * #importation de pygame et constante de pygame incluses
 import xml.etree.ElementTree as ET
+import math
 
 
 class Sprite(object):
@@ -66,6 +67,7 @@ class Personnage(Sprite):
                     niveau.gameO[self.x+direction][self.y]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.displaySpriteWithAnim(direction,niveau,fen)
+                    print(str(self.x),str(self.y),sep=', ')
                     
         else:
             direction=int(direction/2)
@@ -74,6 +76,8 @@ class Personnage(Sprite):
                     niveau.gameO[self.x][self.y+direction]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.displaySpriteWithAnim(direction*2,niveau,fen)
+                    print(str(self.x),str(self.y),sep=', ')
+
 
     ##
     # deplace et rafraichit le personnage avec une animation et un changement d'image a chaques frame
@@ -162,18 +166,62 @@ class Niveau(object):
 
     def grilleObstacle(self):
         grille = []
-        for i in range(len(self.grilleO)):          #Pour chaque ligne
+        for i in range(len(self.gameO)):          #Pour chaque ligne
             LigneTmp = []
-            for j in range(len(self.grilleO[0])):   #Pour chaque colonne
-                if (self.grilleP[i][j] in [" ","+"] or not self.grilleP[i][j]) and (self.grilleO[i][j] == "@" or not self.grilleO[i][j]):
+            for j in range(len(self.gameO[0])):   #Pour chaque colonne
+                if self.gameO[i][j].repr==':':
                     LigneTmp.append(1)
+                    print('1',end='')
                 else:
                     LigneTmp.append(0)
+                    print('0',end='')
             grille.append(LigneTmp)
-        return grille
-            
-                
+            print()
 
+        return grille
+
+
+    ##
+    # verifie toute les caisses qui ne sont pas sur les caisses
+    # @return: la liste des references de toute les caisses qui verifie la condition
+    def caisseNotOnTarget(self):
+        ls=[]
+        for x in range(len(self.gameO)):
+            for y in range(len(self.gameO[0])):
+                if self.gameO[x][y].repr == "$" and self.gameP[x][y].repr != "+":
+                    ls.append(self.gameO[x][y])
+        return ls
+
+
+    def allTarget(self):
+        ls=[]
+        for x in range(len(self.gameP)):
+            for y in range(len(self.gameP[0])):
+                if self.gameP[x][y].repr == "+":
+                    ls.append(self.gameP[x][y])
+        return ls
+
+
+    def benzebute(self):
+        lsCaisse,lsTarget = self.caisseNotOnTarget(),self.allTarget()
+        
+        lsTmp = []
+        for caisse in lsCaisse:
+            x1,y1 = caisse.x,caisse.y
+            x = 100000
+            for n in range (len(lsTarget)):
+                x2,y2 = lsTarget[n].x,lsTarget[n].y
+                dist = math.sqrt((x2-x1)**2+(y2-y1)**2)
+                if dist<x:
+                    x = dist
+                    target = lsTarget[n]
+                    rang = n
+            lsTmp.append(target)
+            del lsTarget[rang]
+        return [lsCaisse,lsTmp]
+
+
+                                
     ##
     # construit les grilles gameP et gameO avec les grille de plan et d'obstacle. gameP et gameO sont des grilles contenant que des Sprites, spécialisés ou non.
     def gameConstructor(self): # construit les grilles gameP et gameO avec des objets

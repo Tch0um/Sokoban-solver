@@ -31,7 +31,81 @@ L2 informatique 2016-2017 Université de Caen Basse-Normandie
 
 
 \newpage
+\tableofcontents
 
+\newpage
+	\section{Préface}
+	
+	\section{Cahier de charges}
+		\subsection{Déroulé fonctionnel , objectif}
+		Le programme sera écrit en Python a l’aide de la librairie Pygame et répondra
+au critères suivants d’ici la version finale de son développement :
+			\subsubsection{Phase 1 :}
+			-Le jeu sera jouable par humain via un prototype non-définitif(changements
+possibles en phase2) , le joueur pourra se déplacer dans un niveau importé
+au format .slc dans lesquels figureront 5 types d’éléments différents : l’élément
+personnage que le joueur contrôle pour déplacer les caisses , les cases murs , les
+cases socles ou doivent être déplacées les caisses afin de terminer le niveau , et
+les cases vides sur lesquelles le personnage ou les caisses peuvent être déplacées
+			\subsubsection{Phase 2 :}
+			Le jeu se verra ajouter une fonctionnalité de résolution automatique grâce
+a l’algorithme A* et aux heuristiques, cet algorithme proposera un chemin optimal(dans
+la plupart des cas en fonction de la difficulté)pour compléter le niveau
+en le moins de coup possibles.Cet algorithme devra être anytime , càd capable
+de compléter un niveau quelque soit son point de départ.
+Les fonctionnalités additionnelles facultatives sont listées dans la catégorie
+"Fonctionnalités additionnelles"
+		\subsection{Contexte de réalisation}
+		Ce projet est réalisé dans le cadre de l’évaluation de la valeur "TPA" en L2
+info 2016-2017 de l’université de Caen
+		\subsection{Découpage}
+		Le programme sera composé des modules suivants :
+— Le module sokoban qui assurera le fonctionnement général du programme
+(moteur de jeu, conditions de victoire,interface graphique, importations
+des niveaux)
+— Le module classes qui comprendra toutes les classes et méthodes nécessaire
+au fonctionnement du jeu
+— Le module constantes stockant les importations d’images pour les personnages
+et les cases ainsi que les variables nécessaire pour les variations
+de tailles de niveaux a l’écran.
+Ce découpage pourra être modifié en fonction des choix de fonctionnalités additionnelles
+		\subsection{Pré-requis d'utilisation}
+		Le jeu fonctionnera sous n’importe quel système muni de python(2.7 a 3.5) et
+de la librairie Pygame. Le jeu sera intuitif d’utilisation et ne nécessitera aucune
+connaissance informatique avancée particulière .
+		\subsection{Règles du jeu}
+		le joueur déplace un personnage dans un niveau constitué de murs , de cases
+vides , de caisses et de socle pour les caisses.Il faudra déplacer les caisses dans
+le niveau afin de couvrir tous les socles pour terminer le niveau. Le joueur peut
+que pousser (pas tirer) , il ne peut pousser qu’une seule caisse a la fois Le joueur
+peut se retrouver bloqué
+		\subsection{Fonctionnalité additionnelles}
+			6 Fonctionnalité additionnelles :
+Les fonctionnalités suivantes seront susceptible d’être implémentée d’ici la
+version finale du programme :
+— Menu permettant le choix du niveau et la modifications d’éventuelles
+options(sons , design de la fenêtre...)
+— Bouton "undo" permettant d’annuler le dernier mouvement du joueur
+— Système de sauvegarde pour conserver son avancée dans un niveau
+		\subsection{Calendrier , dates fixées}
+		Le développement du jeu est découpé en deux phase :
+-phase 1/1er semestre : réalisation d’un jeu jouable par un humain et recherches
+sur l’ia (A* , heuristiques) , importation des niveaux
+-phase 2/2nd semestre : programmation de la résolution automatique anytime
+		\subsection{Internationalité}
+		8 Internationalité :
+Le jeu ne sera pas traduit et sera utilisable uniquement en Français.
+		\subsection{Priorités , importances relatives des fonctionnalités}
+		Le fonctionnement du jeu sans IA et la possibilité d’importation des niveaux
+sont prioritaires, la résolution automatique ne sera programmée qu’ensuite .Les
+fonctionnalités additionnelles ne seront développées qu’une fois les objectifs des
+eux phases remplies.
+	\section{détails du fonctionnement}
+		\subsection{Moteur de jeu}
+		\subsection{Astar}
+	\section{Perspectives d'améliorations en phase 2}
+	\section{Résumé , conclusion de la phase 1}
+	
 
 
 		

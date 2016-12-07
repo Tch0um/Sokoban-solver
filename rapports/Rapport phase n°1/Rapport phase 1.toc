@@ -1,19 +1,20 @@
 \select@language {french}
-\contentsline {section}{\numberline {1}Pr\IeC {\'e}face}{2}
-\contentsline {section}{\numberline {2}Cahier de charges}{2}
-\contentsline {subsection}{\numberline {2.1}D\IeC {\'e}roul\IeC {\'e} fonctionnel , objectif}{2}
-\contentsline {subsubsection}{\numberline {2.1.1}Phase 1 :}{2}
-\contentsline {subsubsection}{\numberline {2.1.2}Phase 2 :}{2}
-\contentsline {subsection}{\numberline {2.2}Contexte de r\IeC {\'e}alisation}{2}
-\contentsline {subsection}{\numberline {2.3}D\IeC {\'e}coupage}{2}
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Cahier de charges}{3}
+\contentsline {subsection}{\numberline {2.1}D\IeC {\'e}roul\IeC {\'e} fonctionnel , objectif}{3}
+\contentsline {subsubsection}{\numberline {2.1.1}Phase 1 :}{3}
+\contentsline {subsubsection}{\numberline {2.1.2}Phase 2 :}{3}
+\contentsline {subsection}{\numberline {2.2}Contexte de r\IeC {\'e}alisation}{3}
+\contentsline {subsection}{\numberline {2.3}D\IeC {\'e}coupage}{3}
 \contentsline {subsection}{\numberline {2.4}Pr\IeC {\'e}-requis d'utilisation}{3}
-\contentsline {subsection}{\numberline {2.5}R\IeC {\`e}gles du jeu}{3}
-\contentsline {subsection}{\numberline {2.6}Fonctionnalit\IeC {\'e} additionnelles}{3}
-\contentsline {subsection}{\numberline {2.7}Calendrier , dates fix\IeC {\'e}es}{3}
-\contentsline {subsection}{\numberline {2.8}Internationalit\IeC {\'e}}{3}
-\contentsline {subsection}{\numberline {2.9}Priorit\IeC {\'e}s , importances relatives des fonctionnalit\IeC {\'e}s}{3}
-\contentsline {section}{\numberline {3}d\IeC {\'e}tails du fonctionnement}{4}
-\contentsline {subsection}{\numberline {3.1}Moteur de jeu}{4}
-\contentsline {subsection}{\numberline {3.2}Astar}{4}
-\contentsline {section}{\numberline {4}Perspectives d'am\IeC {\'e}liorations en phase 2}{4}
-\contentsline {section}{\numberline {5}R\IeC {\'e}sum\IeC {\'e} , conclusion de la phase 1}{4}
+\contentsline {subsection}{\numberline {2.5}R\IeC {\`e}gles du jeu}{4}
+\contentsline {subsection}{\numberline {2.6}Fonctionnalit\IeC {\'e} additionnelles}{4}
+\contentsline {subsection}{\numberline {2.7}Calendrier , dates fix\IeC {\'e}es}{4}
+\contentsline {subsection}{\numberline {2.8}Internationalit\IeC {\'e}}{4}
+\contentsline {subsection}{\numberline {2.9}Priorit\IeC {\'e}s , importances relatives des fonctionnalit\IeC {\'e}s}{4}
+\contentsline {section}{\numberline {3}d\IeC {\'e}tails du fonctionnement}{5}
+\contentsline {subsection}{\numberline {3.1}Moteur de jeu}{5}
+\contentsline {subsection}{\numberline {3.2}Astar}{5}
+\contentsline {section}{\numberline {4}Perspectives d'am\IeC {\'e}liorations en phase 2}{6}
+\contentsline {section}{\numberline {5}Session de tests}{7}
+\contentsline {section}{\numberline {6}R\IeC {\'e}sum\IeC {\'e} , conclusion de la phase 1}{8}

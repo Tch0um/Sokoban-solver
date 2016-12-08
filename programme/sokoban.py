@@ -66,7 +66,7 @@ while continuer:
                 continuer = 0
             if event.key == K_KP_MULTIPLY:# appuyer sur * pour avoir le chemin
 ##                triggerAstar(coordPerso)
-                triggerIA(coordPerso,niveau,fenetre)
+                triggerIA(niveau,fenetre)
             #print(niveau) #debugger dans la console
     if niveau.checkTarget(): #test de victoire
         print('vous avez gagné !!!')

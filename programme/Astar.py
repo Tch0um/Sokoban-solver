@@ -1,11 +1,16 @@
 from classes import *
 
-def triggerIA(cPerso,niveau,fen):
+def triggerIA(niveau,fen):
     liste = niveau.selectTarget()
-    for z in range(len(liste[0])):
-        ls = deplCaisse((liste[0][z].x,liste[0][z].y),(liste[1][z].x,liste[1][z].y))
+    number = len(liste[0])
+    for z in range(number):
+        cPerso = niveau.findPersonnage()
+        caisseN = niveau.gameO[cPerso[0]][cPerso[1]].selectCaisse(liste[0])
+        ls = deplCaisse((liste[0][caisseN].x,liste[0][caisseN].y),(liste[1][caisseN].x,liste[1][caisseN].y))
         print(str(ls)+' '*5+'ligne 7')
-        commandePerso(ls,niveau.gameO[cPerso[0]][cPerso[1]],liste[0][z],niveau,fen)
+        commandePerso(ls,niveau.gameO[cPerso[0]][cPerso[1]],liste[0][caisseN],niveau,fen)
+        del liste[0][caisseN]
+        del liste[1][caisseN]
         
 
 def deplCaisse(dep,ar):
@@ -29,7 +34,10 @@ def commandePerso(ls,perso,caisse,niveau,fen):
             else:
                 deplacement(False,perso,(caisse.x,caisse.y+1),niveau,fen)
         elif x[0]==2:
-            deplacement(True,perso,(caisse.x,caisse.y-1),niveau,fen)
+            if perso.y>=caisse.y:
+                deplacement(False,perso,(caisse.x,caisse.y-1),niveau,fen)
+            else:
+                deplacement(True,perso,(caisse.x,caisse.y-1),niveau,fen)
         elif x[0]==1:
             deplacement(True,perso,(caisse.x-1,caisse.y),niveau,fen)
         else:

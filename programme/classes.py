@@ -81,13 +81,13 @@ class Personnage(Sprite):
     def selectCaisse(self,liste):
         distMin = 1000000
         best = None
-        for obj in liste[0]:
+        for n in range(len(liste)):
             x1,y1=self.x,self.y
-            x2,y2=obj.x,obj.y
+            x2,y2=liste[n].x,liste[n].y
             dist = math.sqrt((x2-x1)**2+(y2-y1)**2)
             if dist<distMin:
                 distMin = dist
-                best = obj
+                best = n
         return best
 
     ##

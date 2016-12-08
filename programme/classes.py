@@ -78,6 +78,17 @@ class Personnage(Sprite):
                     self.displaySpriteWithAnim(direction*2,niveau,fen)
                     print(str(self.x),str(self.y),sep=', ')
 
+    def selectCaisse(self,liste):
+        distMin = 1000000
+        best = None
+        for obj in liste[0]:
+            x1,y1=self.x,self.y
+            x2,y2=obj.x,obj.y
+            dist = math.sqrt((x2-x1)**2+(y2-y1)**2)
+            if dist<distMin:
+                distMin = dist
+                best = obj
+        return best
 
     ##
     # deplace et rafraichit le personnage avec une animation et un changement d'image a chaques frame
@@ -197,12 +208,12 @@ class Niveau(object):
         ls=[]
         for x in range(len(self.gameP)):
             for y in range(len(self.gameP[0])):
-                if self.gameP[x][y].repr == "+":
+                if self.gameP[x][y].repr == "+" and self.gameO[x][y].repr!="$":
                     ls.append(self.gameP[x][y])
         return ls
 
 
-    def benzebute(self):
+    def selectTarget(self):
         lsCaisse,lsTarget = self.caisseNotOnTarget(),self.allTarget()
         
         lsTmp = []

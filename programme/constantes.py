@@ -6,7 +6,7 @@ dHeight=21
 blank = pygame.Surface((0,0))
 
 #variables du personnage
-speed = 1        #milliseconds par pas
+speed = 50        #milliseconds par pas
 style_perso = 7  #selection perso
 
 

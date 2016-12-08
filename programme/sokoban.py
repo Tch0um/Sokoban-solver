@@ -1,6 +1,5 @@
-from math import *
-from classes import * #importation de constante.py , pygame et constante pygame incluses
-from sokobAstar import *
+##from sokobAstar import *
+from Astar import *# importation de constante.py , pygame, constante pygame, classes.py, math, Astar.py
 
 pygame.init()
 
@@ -22,13 +21,22 @@ niveau.gameConstructor()
 niveau.afficheNiveau(fenetre)
 
 
-def triggerAstar():
-    liste = niveau.benzebute()
-    lsAstar = []
-    for z in range(len(liste[0])):
-        grille = niveau.grilleObstacle()
-        lsAstar.append(Astar(grille,(liste[0][z].x,liste[0][z].y),(liste[1][z].x,liste[1][z].y),coordPerso))
-        print(lsAstar[-1])
+##def triggerAstar(cPerso):
+##    liste = niveau.selectTarget()
+##    lsAstarCaisse = []
+##    for z in range(len(liste[0])):
+##        grille = niveau.grilleObstacle()
+##        grille[liste[0][z].x][liste[0][z].y] = 1
+##        lsAstarCaisse.append(Astar(grille,(liste[0][z].x,liste[0][z].y),(liste[1][z].x,liste[1][z].y),coordPerso))
+##    print(lsAstarCaisse)
+##
+##    lsAstarPerso = []
+##    for el in range(len(lsAstarCaisse)):
+##        caisseChoisit = niveau.gameO[cPerso[0]][cPerso[1]].selectCaisse(liste)
+##        lsAstarPerso[el].append(Astar(grille,cPerso,(caisseChoisit.x,caisseChoisit.y),None,False))
+##        del 
+##        print(lsAstarPerso[el][-1])
+        
 
 
 #boucle pygame
@@ -57,7 +65,8 @@ while continuer:
             if event.key == K_ESCAPE:
                 continuer = 0
             if event.key == K_KP_MULTIPLY:# appuyer sur * pour avoir le chemin
-                triggerAstar()
+##                triggerAstar(coordPerso)
+                triggerIA(coordPerso,niveau,fenetre)
             #print(niveau) #debugger dans la console
     if niveau.checkTarget(): #test de victoire
         print('vous avez gagné !!!')

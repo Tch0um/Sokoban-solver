@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.11.2)  8 DEC 2016 12:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.11.2)  8 DEC 2016 12:05
 entering extended mode
-**"Rapport phase 1.tex"
-("Rapport phase 1.tex"
+**"Rapport 1.tex"
+("Rapport 1.tex"
 LaTeX2e <2015/10/01> patch level 1
 Babel <3.9m> and hyphenation patterns for 69 languages loaded.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
@@ -367,7 +367,8 @@ Package: layout 2014/10/28 v1.2c Show layout parameters
 \PositionX=\count121
 \PositionY=\count122
 \ArrowLength=\count123
-) ("Rapport phase 1.aux")
+)
+No file "Rapport 1".aux.
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
@@ -380,7 +381,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
- ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count124
 \scratchdimen=\dimen108
@@ -401,45 +402,30 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <14.4> on input line 16.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 16.
- <../Screenshots/main.jpg, id=1, 542.77782pt x 410.2828pt>
-File: ../Screenshots/main.jpg Graphic file (type jpg)
+ [1
 
-<use ../Screenshots/main.jpg>
-Package pdftex.def Info: ../Screenshots/main.jpg used on input line 25.
-(pdftex.def)             Requested size: 379.94188pt x 287.196pt.
-
-Overfull \hbox (34.94188pt too wide) in paragraph at lines 25--26
- [] 
- []
-
-[1
-
-{C:/Users/Tchoum/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <../Screens
-hots/main.jpg>] ("Rapport phase 1.toc"
+{C:/Users/Tchoum/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 4.
-)
-\tf@toc=\write3
- [1] [2] [3] [4] [5] [6] [7] [8]
-("Rapport phase 1.aux") ) 
+(Font)              <5> on input line 42.
+
+[1] ("Rapport 1.aux") ) 
 Here is how much of TeX's memory you used:
- 2697 strings out of 493636
- 34499 string characters out of 3143753
+ 2683 strings out of 493636
+ 34211 string characters out of 3143753
  99225 words of memory out of 3000000
- 6080 multiletter control sequences out of 15000+200000
- 9947 words of font info for 24 fonts, out of 3000000 for 9000
+ 6075 multiletter control sequences out of 15000+200000
+ 9171 words of font info for 23 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 28i,5n,30p,361b,439s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/cm-super/
-cm-super-t1.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/cm-super/sfbx10
-00.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/cm-super/sfbx1200.pfb><C
-:/Program Files/MiKTeX 2.9/fonts/type1/public/cm-super/sfbx1440.pfb><C:/Program
- Files/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1000.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/public/cm-super/sfrm1440.pfb><C:/Program Files/MiKTeX 2.9/
-fonts/type1/public/cm-super/sfrm2488.pfb>
-Output written on "Rapport phase 1.pdf" (9 pages, 225766 bytes).
+ 28i,4n,30p,318b,439s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/cm-super/cm
+-super-t1.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/cm-super/sfbx1200
+.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/cm-super/sfbx1440.pfb><C:/
+Program Files/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1000.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/cm-super/sfrm1440.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/cm-super/sfrm2488.pfb>
+Output written on "Rapport 1.pdf" (2 pages, 86039 bytes).
 PDF statistics:
- 58 PDF objects out of 1000 (max. 8388607)
+ 30 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

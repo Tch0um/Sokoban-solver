@@ -12,3 +12,14 @@
 \contentsline {subsection}{\numberline {2.7}Calendrier , dates fix\IeC {\'e}es}{4}
 \contentsline {subsection}{\numberline {2.8}Internationalit\IeC {\'e}}{4}
 \contentsline {subsection}{\numberline {2.9}Priorit\IeC {\'e}s , importances relatives des fonctionnalit\IeC {\'e}s}{4}
+\contentsline {section}{\numberline {3}D\IeC {\'e}tails du fonctionnement}{5}
+\contentsline {subsection}{\numberline {3.1}D\IeC {\'e}coupage et fonctionnement du moteur de jeu}{5}
+\contentsline {subsection}{\numberline {3.2}Communication joueur-jeu , utilisation du programme}{7}
+\contentsline {subsection}{\numberline {3.3}fonction et restriction de d\IeC {\'e}placement du personnage}{7}
+\contentsline {subsection}{\numberline {3.4}m\IeC {\'e}canique de d\IeC {\'e}placement des caisses}{7}
+\contentsline {subsection}{\numberline {3.5}Astar}{8}
+\contentsline {section}{\numberline {4}Sch\IeC {\'e}ma UML}{9}
+\contentsline {section}{\numberline {5}Perspectives d'am\IeC {\'e}liorations en phase 2}{10}
+\contentsline {section}{\numberline {6}Session de tests}{11}
+\contentsline {section}{\numberline {7}\IeC {\'E}tat du projet en fin de phase 1}{12}
+\contentsline {section}{\numberline {8}R\IeC {\'e}sum\IeC {\'e}}{12}

@@ -5,6 +5,7 @@
 \usepackage[francais]{babel}
 \usepackage{layout}
 \usepackage{caption}
+\usepackage{subcaption}
 
 \begin{document}
 \begin{titlepage}
@@ -97,6 +98,7 @@ version finale du programme :
 options(sons , design de la fenêtre...)
 — Bouton "undo" permettant d’annuler le dernier mouvement du joueur
 — Système de sauvegarde pour conserver son avancée dans un niveau
+
 		\subsection{Calendrier , dates fixées}
 		Le développement du jeu est découpé en deux phase :
 -phase 1/1er semestre : réalisation d’un jeu jouable par un humain et recherches
@@ -117,7 +119,8 @@ deux phases remplies.
 		Pour des raisons de clarté et de facilitation d'implémentation , nous avons choisi d'implémenter notre programme en orienté objet plutôt qu'en procédural .
 		\end{center}
 		\vspace{0.5cm}
-		\subsection{Moteur de jeu}
+		\subsection{Découpage et fonctionnement du moteur de jeu}
+		
 			Notre moteur de jeu repose sur 5 classes :
 			\begin{itemize}
 				\item Sprite 
@@ -136,24 +139,98 @@ deux phases remplies.
 					\item Les cases vides - Cases sur lesquels les personnage et caisses peuvent se déplacer
 				\end{itemize}
 				\vspace{0.5cm}
-				Pour construire notre plan de jeu , nous avons choisi de décomposer notre niveau en 2 grilles nommées GameP et GameO contenant a elles deux les objets cités plus haut ; la grille gameP(game plan)contient les cibles et les espaces vides tandis que la grille gameO(game Obstacle) contient les murs , les caisses et le personnage
-			\begin{figure}
-			\includegraphics[width=.48\linewidth]{../Screenshots/05.png}
-			\caption{sdfio}
-			\includegraphics[width=.48\linewidth{../Screenshots/06.png}
-			\caption{sdfio}
-			\end{figure}
+				La continuité du jeu est controlée par la variable continuer, celle-ci est établie a 1 au lancement du jeu et a 0 lorsque le joueur compléte le niveau : a ce moment , le jeu se ferme et affiche un message de victoire en console
 				
+				Pour construire notre plan de jeu , nous avons choisi de décomposer notre niveau en 2 grilles nommées GameP et GameO contenant a elles deux les objets cités plus haut ; la grille gameP(game plan)contient les cibles et les espaces vides tandis que la grille gameO(game Obstacle) contient les murs, les caisses et le personnage .L'affichage du niveau consiste donc en la superposition des deux plans et permet ainsi une vérification de victoire plus facile a la fin du jeu : 
+				\begin{figure}
+				
+				\begin{center}
+					\includegraphics[scale=0.25]{../Screenshots/05.png}
+						\caption{Apercu des deux grille superposées}
+					\includegraphics[scale=0.25]{../Screenshots/06.png}
+						\caption{Apercu de la grille GameO}
+					\includegraphics[scale=0.25]{../Screenshots/07.png}
+						\caption{Apercu de la grille GameP}
+				\end{center}
+				\end{figure}
+				\newpage
+		\subsection{Communication joueur-jeu , utilisation du programme}
+		
+			Pour les déplacements du personnage nous utilisons la méthode event.key de PyGame qui permet de gérer des événements liées a l'utilisation du touches du clavier , 6 touches événement sont actuellement gérés : touche directionnelle droite(K-RIGHT : déplacement du personnage vers la droite) ,touche directionnelle gauche(K-LEFT : déplacement du personnage vers la gauche) ,touche directionnelle haut(K-UP : déplacement du personnage vers le haut) ,touche directionnelle bas(K-DOWN: déplacement du personnage vers le bas) ,   pavé numérique(KP-MULTIPLY: lance la résolution automatique du niveau avec Astar) et la touche échap(KP-ESCAPE : fermeture du jeu)
+		\subsection{fonction et restriction de déplacement du personnage}		
+		Lorsque le joueur presse une des touche événement de déplacement citées plus ci-dessus , la méthode spéciale déplace() de la classe Personnage retournant un booléen est appelée pour vérifier si le déplacement est autorisé de la maniére suivante:
+	\vspace{0.5cm}
+	\begin{center}
+
+			\includegraphics[scale=0.25]{../Screenshots/01.png}
+				
+	\end{center}
+		\subsection{mécanique de déplacement des caisses}
+			Le déplacement des caisses est régie selon les règles suivantes : 
+			\begin{itemize}
+				
+				\item Le joueur ne peux pas tirer les caisses, Le joueur perd donc la partie si il pousse une caisse sur une case de coin qui n'est pas une stelle
+				\item Le joueur ne peux pousser qu'une seule caisse a la fois 
+				
+				\end{itemize}
+				
+				
+				
+				
+	\begin{figure}		
+	
+Dans le même ordre idée que pour la classe Personnage , la classe Caisse est dotée d'une méthode spéciale déplace() vérifiant si le déplacment d'une caisse est autorisé:
+ A partir de la position du joueur et de la direction du déplacement demandé , la fonction vérifie d'abord si la prochaine case est bien une caisse et ensuite si la case suivante est une case vide ou une case stelle , si cette condition est vérifié le déplacement de la caisse s'effectue comme exposé ci dessous:
+
+	\begin{center}
+	\begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{../Screenshots/02.png}
+    \caption{déplacement autorisé}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{../Screenshots/04.png}
+    \caption{déplacement impossible}
+  \end{minipage}
+				
+				
+							
+	\end{center}
+	\end{figure}	
+		
+		
+		
+		
+			
+	\newpage
 		\subsection{Astar}
+		
 		\newpage
 	\section{Schéma UML}
 	\newpage
+	\begin{center}
 	\section{Perspectives d'améliorations en phase 2}
+	\end{center}
+	\vspace{1cm}
+	 Aprés l'implémentation des heuristiques d'Astar , nous pourrons travailler sur les éventuelles possibilités d'améliorations évoquées dans le cahier des charges :
+	 \vspace{0.5cm}
+	 \begin{itemize}
+	 	\item\underline{Ajout d'un menu principal:} Un menu s'affichant au lancement du jeu répertoriant plusieurs catégories ; le menu de jeu dans lequel on choisira le niveau dans lequel on souhaite jouer , un menu d'option pour régler des paramètres d'affichage ou changer le sprite de son personnage et un menu statistiques dans lequel le joueur pourra consulter ses haut-faits ou ses meilleurs scores sur les niveaux
+	 	\vspace{0.5cm}
+	 	\item\underline{Sons et musique:}Agrémenter le jeu d'une bande son ainsi que d'effets sonores correspondant au actions du personnage paramétrable  dans les options 
+	 	\vspace{0.5cm}
+	 	\item\underline{Fonctionnalité "undo":}Possibilité pour le joueur d'annuler son dernier coup si jamais il se retrouve bloqué ou souhaite optimiser son parcours
+	 	\vspace{0.5cm}
+	 	\item\underline{Interface HUD:}Interface en jeu donnant au joueur un certain nombre d'informations relatives a ses performances : temps de jeu depuis le lancement du niveau , nombre de coup joué , nombre de stelles restantes activer ...
+	 	\vspace{0.5cm}
+	 	\item\underline{Sauvegarde de l'avancement:}Pour les niveaux difficiles , le joueur pourra éventuellement sauvegarder sa partie et la reprendre plus tard grâce a un raccourci clavier ou a un bouton dans l'interface
+	 \end{itemize}
 	\newpage
 	\section{Session de tests}
 	\newpage
+	
 	\section{État du projet en fin de phase 1}
-	\section{Résumé , conclusion de la phase 1}
+	\section{Résumé}
 
 
 		

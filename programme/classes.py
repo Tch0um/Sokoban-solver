@@ -3,6 +3,24 @@ import xml.etree.ElementTree as ET
 import math
 
 
+class Noeud(object):
+
+    def __init__(self, x, y, C, direction = (0,0), predecesseur = None):
+
+        self.x = x
+        self.y = y
+        self.C = C
+        self.direction = direction  #Direction par lequel nous sommes arrivés à ce noeud
+        self.predecesseur = predecesseur
+
+    def __repr__(self):
+        if self.predecesseur == None:
+            precedent = "None"
+        else:
+            precedent = "("+str(self.predecesseur.x)+","+str(self.predecesseur.y)+")"
+        return "("+str(self.x)+","+str(self.y)+")  C = "+str(self.C)+"  prédécesseur = "+precedent
+
+
 class Sprite(object):
     ##
     # constructeur des sprites

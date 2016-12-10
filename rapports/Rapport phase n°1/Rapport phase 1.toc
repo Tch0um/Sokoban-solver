@@ -18,7 +18,7 @@
 \contentsline {subsection}{\numberline {3.3}fonction et restriction de d\IeC {\'e}placement du personnage}{7}
 \contentsline {subsection}{\numberline {3.4}m\IeC {\'e}canique de d\IeC {\'e}placement des caisses}{7}
 \contentsline {subsection}{\numberline {3.5}Astar}{8}
-\contentsline {section}{\numberline {4}Sch\IeC {\'e}ma UML}{9}
-\contentsline {section}{\numberline {5}Perspectives d'am\IeC {\'e}liorations en phase 2}{10}
-\contentsline {section}{\numberline {6}Session de tests}{11}
-\contentsline {section}{\numberline {7}\IeC {\'E}tat du projet en fin de phase 1}{12}
+\contentsline {section}{\numberline {4}Sch\IeC {\'e}ma UML}{11}
+\contentsline {section}{\numberline {5}Perspectives d'am\IeC {\'e}liorations en phase 2}{12}
+\contentsline {section}{\numberline {6}Session de tests}{13}
+\contentsline {section}{\numberline {7}\IeC {\'E}tat du projet en fin de phase 1 , Conclusion}{14}

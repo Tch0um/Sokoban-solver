@@ -10,11 +10,11 @@ with more challenging ones in the second half with those try to avoid
     <Level Id="AC_Diamonds_01" Width="11" Height="11">
       <L>    ###</L>
       <L>   #   #</L>
-      <L>  #     #</L>
-      <L> #       #</L>
-      <L>#    $    #</L>
+      <L>  #  .  #</L>
+      <L> #      .#</L>
+      <L># $  $  . #</L>
       <L>#  .  @   #</L>
-      <L>#        .#</L>
+      <L>#  $  $  .#</L>
       <L> #   $   #</L>
       <L>  #     #</L>
       <L>   #   #</L>

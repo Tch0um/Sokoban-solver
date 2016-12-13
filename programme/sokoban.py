@@ -21,24 +21,6 @@ niveau.gameConstructor()
 niveau.afficheNiveau(fenetre)
 
 
-##def triggerAstar(cPerso):
-##    liste = niveau.selectTarget()
-##    lsAstarCaisse = []
-##    for z in range(len(liste[0])):
-##        grille = niveau.grilleObstacle()
-##        grille[liste[0][z].x][liste[0][z].y] = 1
-##        lsAstarCaisse.append(Astar(grille,(liste[0][z].x,liste[0][z].y),(liste[1][z].x,liste[1][z].y),coordPerso))
-##    print(lsAstarCaisse)
-##
-##    lsAstarPerso = []
-##    for el in range(len(lsAstarCaisse)):
-##        caisseChoisit = niveau.gameO[cPerso[0]][cPerso[1]].selectCaisse(liste)
-##        lsAstarPerso[el].append(Astar(grille,cPerso,(caisseChoisit.x,caisseChoisit.y),None,False))
-##        del 
-##        print(lsAstarPerso[el][-1])
-        
-
-
 #boucle pygame
 deplastar=None # deplastar = variable pour effectuer le déplacement du personnage avec A*
 continuer = 1
@@ -64,7 +46,7 @@ while continuer:
                 niveau.afficheNiveau(fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
-            if event.key == K_KP_MULTIPLY:# appuyer sur * pour avoir le chemin
+            if event.key == K_SPACE:# appuyer sur * pour avoir le chemin
 ##                triggerAstar(coordPerso)
                 triggerIA(niveau,fenetre)
             #print(niveau) #debugger dans la console

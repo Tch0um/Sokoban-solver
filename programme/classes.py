@@ -406,3 +406,19 @@ class LevelCollection(object):
     # supprime le niveau chargé
     def deleteLevel(self):
         self.structure = []
+
+class ButtonMenu:
+    def __init__(self,surface,rep,function,x=0,y=0):
+        self.surface = surface
+        self.repr=rep
+        self.function = function
+        self.coord = (x,y)
+        self.dim = surface.get_size() #tuple (width,height)
+
+    def isOnButton(self,pos):
+        if pos[0]<self.coord[0]+self.dim[0] and pos[0]>self.coord[0] and pos[1]<self.coord[1]+self.dim[1] and pos[1]>self.coord[1]:
+            self.function()
+
+    def displayButton(self,fen):
+        fen.blit(self.surface,self.coord)
+

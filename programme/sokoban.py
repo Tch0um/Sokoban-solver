@@ -1,19 +1,41 @@
 ##from sokobAstar import *
 from Astar import *# importation de constante.py , pygame, constante pygame, classes.py, math, Astar.py
+from sauvegarde import *
 
 pygame.init()
 
 #Création de la fenêtre avec ses attributs
-fenetre= pygame.display.set_mode((640,480))
+fenetre= pygame.display.set_mode((800,600))
 icone = perso_sprite[0]
 pygame.display.set_icon(icone)
 pygame.display.set_caption('Sokoban')
 
 
+#menu principal
+def mainMenu():
+    fenetre.blit(pygame.image.load('images/menu_bg.png'),(0,0))
+    fenetre.blit(pygame.image.load('images/menu_title.png'),(200,50))
+    fenetre.blit(pygame.image.load('images/menu_screen.png'),(450,200))
+    menuButtons = []
+    for x in range(4):
+        print(buttonCollection[mainMenu[x]])
+        menuButtons+=[ButtonMenu(pygame.image.load('images/buttons/'+buttonCollection[mainMenuBtList[x]]+'.png'),buttonCollection[mainMenuBtList[x]],buttonFunctions[mainMenuBtList[x]],100,x*80+200)]
+        menuButtons[x].displayButton(fenetre)
+        
+    pygame.display.flip()
+    menu = True
+        
+    while menu:
+        pygame.time.Clock().tick(30)
+        for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                for x in menuButtons:
+                    x.isOnButton(event.pos)
+
 
 #chargement du niveau
 niveaux = LevelCollection("levels/"+collection+".slc")
-grilleNiveau = niveaux.loadLevel(0,fenetre)
+grilleNiveau = niveaux.loadLevel(1,fenetre)
 niveau = Niveau(grilleNiveau[0],grilleNiveau[1])
 niveau.gameConstructor()
 
@@ -46,6 +68,10 @@ while continuer:
                 niveau.afficheNiveau(fenetre)
             if event.key == K_ESCAPE:
                 continuer = 0
+            if event.key == K_F2:
+                saveGame(niveau,0,0)
+            if event.key == K_F3:
+                print(loadGame(0))
             if event.key == K_SPACE:# appuyer sur * pour avoir le chemin
 ##                triggerAstar(coordPerso)
                 triggerIA(niveau,fenetre)

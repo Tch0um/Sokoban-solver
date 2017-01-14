@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import buttons as bt
 
 dWidth=21
 dHeight=21
@@ -13,6 +14,14 @@ style_perso = 7  #selection perso
 
 collection = "AC_Diamonds"
 fond = pygame.image.load("images/"+collection+"_bg.png")
+buttonCollection = ['newGame','saveGame','loadGame','resume','yes','no','quit','options','2players','3player','4players','withAI','withoutAI']
+buttonFunctions = [bt.newGame,bt.saveGame,bt.loadGame,bt.resume,bt.yes,bt.no,bt.quitt,bt.options,bt.twoPlayers,bt.threePlayers,bt.fourPlayers,bt.withAI,bt.withoutAI]
+
+### menu
+mainMenuBtList = [0,2,7,6]
+levelMenuBtList = [11,12,8,9,10]
+pauseMenuBtList = [3,1,2,6]
+
 
 ### sprites taille normale
 tileset_perso = pygame.image.load('images/perso64.png')

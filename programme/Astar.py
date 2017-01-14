@@ -10,6 +10,9 @@ def triggerIA(niveau,fen):
         grille[liste[0][caisseN].x][liste[0][caisseN].y]=1
         ls = Astar(grille,(liste[0][caisseN].x,liste[0][caisseN].y),(liste[1][caisseN].x,liste[1][caisseN].y))
         print(str(ls)+' '*5+'ligne 12')
+        if not ls:
+            caisseN = niveau.gameO[cPerso[0]][cPerso[1]].selectCaisse(liste[0])
+            ls = Astar(grille,(liste[0][caisseN].x,liste[0][caisseN].y),(liste[1][caisseN].x,liste[1][caisseN].y))
         commandePerso(ls,niveau.gameO[cPerso[0]][cPerso[1]],liste[0][caisseN],niveau,fen)
         del liste[0][caisseN]
         del liste[1][caisseN]
@@ -22,6 +25,8 @@ def commandePerso(ls,perso,caisse,niveau,fen):
             print(str(((caisse.x-n[0],caisse.y-n[1]),(perso.x,perso.y)))+' '*5+'ligne 25')
             lsPerso = Astar(grille,(perso.x,perso.y),(caisse.x-n[0],caisse.y-n[1]))
             print(str(lsPerso)+' '*5+'ligne 27')
+            if not lsPerso:
+                break
             for dep in lsPerso:
                 deplacement(perso,(perso.x+dep[0],perso.y+dep[1]),niveau,fen,dep)
         deplacement(perso,(caisse.x,caisse.y),niveau,fen,n)

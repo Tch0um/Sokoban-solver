@@ -22,18 +22,19 @@ style_perso = 7  #selection perso
 
 
 collection = "AC_Diamonds"
-fond = None
+fond = pygame.image.load("images/"+'AC_Diamonds'+"_bg.png")
 
 
-buttonCollection = ['newGame','saveGame','loadGame','resume','yes','no','quit','options','2players','3players','4players','withAI','withoutAI','ok','cancel','previous','next','return','mainMenu','template']
+
+buttonCollection = ['newGame','saveGame','loadGame','resume','yes','no','quit','options','2players','3players','4players','withAI','withoutAI','ok','cancel','previous','next','return','mainMenu','template','inf','sup']
 
 ### menu
 mainMenuBtList = [0,2,7,6]
 mainMenuFonctions = [lambda: bt.collectionMenu(fenetre),lambda: bt.loadGame(fenetre),lambda: bt.options(fenetre),bt.quitt]
 levelMenuBtList = [11,12,8,9,10,17]
-levelMenuFonctions = [lambda: bt.withAI(fenetre),lambda: bt.withoutAI(fenetre),lambda: bt.twoPlayers(fenetre),lambda: bt.threePlayers(fenetre),lambda: bt.fourPlayers(fenetre), lambda: bt.mainMenu(fenetre)]
+levelMenuFonctions = [lambda: bt.withAI(fenetre),lambda: bt.withoutAI(fenetre),lambda: bt.twoPlayers(fenetre),lambda: bt.threePlayers(fenetre),lambda: bt.fourPlayers(fenetre), lambda: bt.collectionMenu(fenetre)]
 pauseMenuBtList = [3,1,2,6]
-collectionMenuBtList = [-1,17]
+collectionMenuBtList = [19,17]
 collectionMenuFonctions = [lambda: bt.mainMenu(fenetre)]
 
 

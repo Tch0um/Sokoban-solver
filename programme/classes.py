@@ -417,7 +417,10 @@ class ButtonMenu:
 
     def isOnButton(self,pos):
         if pos[0]<self.coord[0]+self.dim[0] and pos[0]>self.coord[0] and pos[1]<self.coord[1]+self.dim[1] and pos[1]>self.coord[1]:
-            self.function()
+            if self.function !=None:
+                self.function()
+            else:
+                return True
 
     def displayButton(self,fen):
         fen.blit(self.surface,self.coord)

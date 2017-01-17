@@ -1,26 +1,41 @@
 import pygame
 from pygame.locals import *
-import buttons as bt
+import GUI as bt
 
 dWidth=21
 dHeight=21
 blank = pygame.Surface((0,0))
 
+pygame.init()
+
+#Création de la fenêtre avec ses attributs
+fenetre= pygame.display.set_mode((800,600))
+#icone = perso_sprite[0]
+#pygame.display.set_icon(icone)
+pygame.display.set_caption('Sokoban')
+
+
 #variables du personnage
-speed = 0        #milliseconds par pas
+speed = 50        #milliseconds par pas
 style_perso = 7  #selection perso
 
 
 
 collection = "AC_Diamonds"
-fond = pygame.image.load("images/"+collection+"_bg.png")
-buttonCollection = ['newGame','saveGame','loadGame','resume','yes','no','quit','options','2players','3player','4players','withAI','withoutAI']
-buttonFunctions = [bt.newGame,bt.saveGame,bt.loadGame,bt.resume,bt.yes,bt.no,bt.quitt,bt.options,bt.twoPlayers,bt.threePlayers,bt.fourPlayers,bt.withAI,bt.withoutAI]
+fond = None
+
+
+buttonCollection = ['newGame','saveGame','loadGame','resume','yes','no','quit','options','2players','3players','4players','withAI','withoutAI','ok','cancel','previous','next','return','mainMenu','template']
 
 ### menu
 mainMenuBtList = [0,2,7,6]
-levelMenuBtList = [11,12,8,9,10]
+mainMenuFonctions = [lambda: bt.collectionMenu(fenetre),lambda: bt.loadGame(fenetre),lambda: bt.options(fenetre),bt.quitt]
+levelMenuBtList = [11,12,8,9,10,17]
+levelMenuFonctions = [lambda: bt.withAI(fenetre),lambda: bt.withoutAI(fenetre),lambda: bt.twoPlayers(fenetre),lambda: bt.threePlayers(fenetre),lambda: bt.fourPlayers(fenetre), lambda: bt.mainMenu(fenetre)]
 pauseMenuBtList = [3,1,2,6]
+collectionMenuBtList = [-1,17]
+collectionMenuFonctions = [lambda: bt.mainMenu(fenetre)]
+
 
 
 ### sprites taille normale

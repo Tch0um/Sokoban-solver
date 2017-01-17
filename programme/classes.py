@@ -422,3 +422,11 @@ class ButtonMenu:
     def displayButton(self,fen):
         fen.blit(self.surface,self.coord)
 
+class ButtonCollectionMenu(ButtonMenu):
+    def __init__(self,surface,rep,file,function,x=0,y=0):
+        ButtonMenu.__init__(self,surface,rep,function,x,y)
+        self.file = file
+
+    def isOnButton(self,pos,fenetre):
+        if pos[0]<self.coord[0]+self.dim[0] and pos[0]>self.coord[0] and pos[1]<self.coord[1]+self.dim[1] and pos[1]>self.coord[1]:
+            self.function(fenetre,self.file)

@@ -1,6 +1,7 @@
-def saveGame(niveau,port,nbNiveau):
+def saveGame(niveau,port,nbNiveau,collection):
     fichier=open('sauvegardes/save'+str(port)+'.txt','w')
-    fichier.write(str(nbNiveau)+'\n')
+    fichier.write('--niv--'+str(nbNiveau)+'\n')
+    fichier.write('--col--'+collection+'\n')
     for x in range(len(niveau.gameO)):
         for y in range (len(niveau.gameO[0])):
             fichier.write(niveau.gameO[x][y].repr)
@@ -11,9 +12,12 @@ def loadGame(port):
     grilleO=[]
     fichier = open('sauvegardes/save'+str(port)+'.txt','r')
     for l in fichier:
-        if len(l)==2:
-            nbNiveau=int(l[0])
+        if l[:7]=='--niv--':
+            nbNiveau=int(l[7:-1])
+        elif l[:7]=='--col--':
+            collection=l[7:-1]
         else:
-            grilleO+=[l.split()]
+            grilleO+=[list(l[:-1])]
+            print(list(l[:-1]))
     fichier.close()
-    return grilleO,nbNiveau
+    return grilleO,nbNiveau,collection

@@ -131,10 +131,52 @@ def modeMenu(fenetre):
 
 
 def saveGame(niveau,port,nbNiveau,fenetre):
-    save.saveGame(niveau,port,nbNiveau)
+    save.saveGame(niveau,port,nbNiveau,collection)
 
 def loadGame(fenetre):
-    pass
+    tupl=save.loadGame(0)
+    global collection,niveaux
+    collection = tupl[2]
+    niveaux = cls.LevelCollection("levels/"+collection+".slc")
+    nbNiveau = tupl[1]
+    #print(len(niveaux.loadLevel(nbNiveau,fenetre)[0][0]),len(tupl[0][0]),sep=', ')
+    niveau = cls.Niveau(niveaux.loadLevel(nbNiveau,fenetre)[0],tupl[0])
+    niveau.gameConstructor()
+    #affichage de la première frame
+    niveau.afficheNiveau(fenetre)
+    
+    #boucle pygame
+    continuer = 1
+    print(niveau)
+    while continuer:
+        pygame.time.Clock().tick(30) #limitation "fps"
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                continuer = 0
+            elif event.type == KEYDOWN:
+                coordPerso = niveau.findPersonnage()
+                if event.key == K_RIGHT:
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau,fenetre)
+                    niveau.afficheNiveau(fenetre)
+                if event.key == K_LEFT:
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-2,niveau,fenetre)
+                    niveau.afficheNiveau(fenetre)
+                if event.key == K_UP:
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-1,niveau,fenetre)
+                    niveau.afficheNiveau(fenetre)
+                if event.key == K_DOWN:
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau,fenetre)
+                    niveau.afficheNiveau(fenetre)
+                if event.key == K_F2:
+                    saveGame(niveau,0,nbNiveau,fenetre)
+                if event.key == K_ESCAPE:
+                    continuer = 0
+        if niveau.checkTarget(): #test de victoire
+            print('vous avez gagné !!!')
+            continuer = 0
+            
+    pygame.quit()
+    
 
 def resume():
     pass
@@ -165,7 +207,9 @@ def withAI(fenetre):
     pass
 
 def withoutAI(fenetre):
-    niveau = cls.Niveau(niveaux.loadLevel(1,fenetre)[0],niveaux.loadLevel(1,fenetre)[1])
+    nbNiveau = 1
+    tupleG = niveaux.loadLevel(nbNiveau,fenetre)
+    niveau = cls.Niveau(tupleG[0],tupleG[1])
     niveau.gameConstructor()
     #affichage de la première frame
     niveau.afficheNiveau(fenetre)
@@ -192,6 +236,8 @@ def withoutAI(fenetre):
                 if event.key == K_DOWN:
                     niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau,fenetre)
                     niveau.afficheNiveau(fenetre)
+                if event.key == K_F2:
+                    saveGame(niveau,0,nbNiveau,fenetre)
                 if event.key == K_ESCAPE:
                     continuer = 0
         if niveau.checkTarget(): #test de victoire

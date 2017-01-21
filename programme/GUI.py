@@ -143,6 +143,7 @@ def loadGame(fenetre):
     niveaux = cls.LevelCollection("levels/"+collection+".slc")
     nbNiveau = tupl[1]
     variables['historyP'] = tupl[3]
+    variables['historyC'] = tupl[4]
     niveau = cls.Niveau(niveaux.loadLevel(nbNiveau,fenetre)[0],tupl[0])
     niveau.gameConstructor()
     
@@ -192,7 +193,7 @@ def withoutAI(fenetre):
     whileGame(fenetre,nbNiveau,niveau)
     
 
-def whileGame(fenetre,nbNiveau,niveau):
+def whileGame(fenetre,nbNiveau,niveau,AI=False):
     #boucle pygame
     continuer = 1
     print(niveau)
@@ -215,11 +216,15 @@ def whileGame(fenetre,nbNiveau,niveau):
                 if event.key == K_DOWN:
                     niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau,fenetre,variables)
                     niveau.afficheNiveau(fenetre)
+                if event.key == K_SPACE:
+                    print('return')
+                    if variables['historyP']!=[]:
+                        save.rewind(fenetre,variables,niveau,coordPerso)
                 if event.key == K_F2:
                     saveGame(niveau,0,nbNiveau,fenetre,variables)
                 if event.key == K_ESCAPE:
                     continuer = 0
-                print(variables['historyP'],variables['historyC'],sep='\n'*5)
+                print(variables['historyP'],variables['historyC'],len(variables['historyP']),sep='\n'*3)
         if niveau.checkTarget(): #test de victoire
             print('vous avez gagné !!!')
             continuer = 0

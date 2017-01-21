@@ -16,7 +16,7 @@ pygame.display.set_caption('Sokoban')
 
 
 #variables du personnage
-speed = 50        #milliseconds par pas
+speed = 0        #milliseconds par pas
 style_perso = 7  #selection perso
 
 variables = {'historyP':[],'historyC':[]}

@@ -78,19 +78,28 @@ class Personnage(Sprite):
 
     ##
     # verifie et déplace le joueur quand c'est possible
-    def deplace(self,direction,niveau,fen):#haut,bas,gauche,droite : -1,1,-2,2
+    def deplace(self,direction,niveau,fen,variables):#haut,bas,gauche,droite : -1,1,-2,2
         if direction**2==1:
+            if direction<0:
+                variables['historyP']+='h'
+            else:
+                variables['historyP']+='b'
             if niveau.gameO[self.x+direction][self.y].repr!='#':
-                if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau,fen):
+                if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau,fen,variables):
                     niveau.gameO[self.x+direction][self.y]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.displaySpriteWithAnim(direction,niveau,fen)
                     print(str(self.x),str(self.y),sep=', ')
                     
+                    
         else:
             direction=int(direction/2)
+            if direction<0:
+                variables['historyP']+='g'
+            else:
+                variables['historyP']+='d'
             if niveau.gameO[self.x][self.y+direction].repr!='#':
-                if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau,fen):
+                if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau,fen,variables):
                     niveau.gameO[self.x][self.y+direction]=self
                     niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                     self.displaySpriteWithAnim(direction*2,niveau,fen)
@@ -144,12 +153,14 @@ class Personnage(Sprite):
 class Caisse(Sprite):
     ##
     # verifie et deplace la caisse quand c'est possible, autorise le déplacement du personnage en renvoyant True/false
-    def deplace(self,direction,niveau,fen):#haut,bas,gauche,droite : -1,1,-2,2
+    def deplace(self,direction,niveau,fen,variables=False):#haut,bas,gauche,droite : -1,1,-2,2
         if direction**2==1:#gauche,droite
             if niveau.gameO[self.x+direction][self.y].repr not in ('#','$'):
                 niveau.gameO[self.x+direction][self.y]=self
                 niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                 self.displaySpriteWithAnim(direction,niveau,fen)
+                if variables:
+                    variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP'])-1)]]
                 return True
                     
         else:
@@ -158,6 +169,8 @@ class Caisse(Sprite):
                 niveau.gameO[self.x][self.y+direction]=self
                 niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                 self.displaySpriteWithAnim(direction*2,niveau,fen)
+                if variables:
+                    variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP'])-1)]]
                 return True
         return False
 

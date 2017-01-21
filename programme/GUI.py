@@ -1,9 +1,12 @@
 import pygame
 from pygame.locals import *
 import classes as cls
+import constantes as const
 import sauvegarde as save
 import os
 import sys
+
+variables = const.variables
 
 def loadCollection(fenetre,file):
     global collection,niveaux
@@ -130,52 +133,23 @@ def modeMenu(fenetre):
     whileLoop(menuButtons)
 
 
-def saveGame(niveau,port,nbNiveau,fenetre):
-    save.saveGame(niveau,port,nbNiveau,collection)
+def saveGame(niveau,port,nbNiveau,fenetre,variables):
+    save.saveGame(niveau,port,nbNiveau,collection,variables)
 
 def loadGame(fenetre):
     tupl=save.loadGame(0)
-    global collection,niveaux
+    global collection,niveaux,variables
     collection = tupl[2]
     niveaux = cls.LevelCollection("levels/"+collection+".slc")
     nbNiveau = tupl[1]
-    #print(len(niveaux.loadLevel(nbNiveau,fenetre)[0][0]),len(tupl[0][0]),sep=', ')
+    variables['historyP'] = tupl[3]
     niveau = cls.Niveau(niveaux.loadLevel(nbNiveau,fenetre)[0],tupl[0])
     niveau.gameConstructor()
+    
     #affichage de la première frame
     niveau.afficheNiveau(fenetre)
     
-    #boucle pygame
-    continuer = 1
-    print(niveau)
-    while continuer:
-        pygame.time.Clock().tick(30) #limitation "fps"
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                continuer = 0
-            elif event.type == KEYDOWN:
-                coordPerso = niveau.findPersonnage()
-                if event.key == K_RIGHT:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau,fenetre)
-                    niveau.afficheNiveau(fenetre)
-                if event.key == K_LEFT:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-2,niveau,fenetre)
-                    niveau.afficheNiveau(fenetre)
-                if event.key == K_UP:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-1,niveau,fenetre)
-                    niveau.afficheNiveau(fenetre)
-                if event.key == K_DOWN:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau,fenetre)
-                    niveau.afficheNiveau(fenetre)
-                if event.key == K_F2:
-                    saveGame(niveau,0,nbNiveau,fenetre)
-                if event.key == K_ESCAPE:
-                    continuer = 0
-        if niveau.checkTarget(): #test de victoire
-            print('vous avez gagné !!!')
-            continuer = 0
-            
-    pygame.quit()
+    whileGame(fenetre,nbNiveau,niveau)
     
 
 def resume():
@@ -207,13 +181,18 @@ def withAI(fenetre):
     pass
 
 def withoutAI(fenetre):
+    global variables
+    
     nbNiveau = 1
     tupleG = niveaux.loadLevel(nbNiveau,fenetre)
     niveau = cls.Niveau(tupleG[0],tupleG[1])
     niveau.gameConstructor()
     #affichage de la première frame
     niveau.afficheNiveau(fenetre)
+    whileGame(fenetre,nbNiveau,niveau)
     
+
+def whileGame(fenetre,nbNiveau,niveau):
     #boucle pygame
     continuer = 1
     print(niveau)
@@ -225,21 +204,22 @@ def withoutAI(fenetre):
             elif event.type == KEYDOWN:
                 coordPerso = niveau.findPersonnage()
                 if event.key == K_RIGHT:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau,fenetre)
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau,fenetre,variables)
                     niveau.afficheNiveau(fenetre)
                 if event.key == K_LEFT:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-2,niveau,fenetre)
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-2,niveau,fenetre,variables)
                     niveau.afficheNiveau(fenetre)
                 if event.key == K_UP:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-1,niveau,fenetre)
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-1,niveau,fenetre,variables)
                     niveau.afficheNiveau(fenetre)
                 if event.key == K_DOWN:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau,fenetre)
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau,fenetre,variables)
                     niveau.afficheNiveau(fenetre)
                 if event.key == K_F2:
-                    saveGame(niveau,0,nbNiveau,fenetre)
+                    saveGame(niveau,0,nbNiveau,fenetre,variables)
                 if event.key == K_ESCAPE:
                     continuer = 0
+                print(variables['historyP'],variables['historyC'],sep='\n'*5)
         if niveau.checkTarget(): #test de victoire
             print('vous avez gagné !!!')
             continuer = 0

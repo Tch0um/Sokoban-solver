@@ -19,10 +19,12 @@ pygame.display.set_caption('Sokoban')
 speed = 50        #milliseconds par pas
 style_perso = 7  #selection perso
 
+variables = {'historyP':[],'historyC':[]}
 
 
 collection = "AC_Diamonds"
 fond = pygame.image.load("images/"+'AC_Diamonds'+"_bg.png")
+history = []
 
 
 
@@ -30,7 +32,7 @@ buttonCollection = ['newGame','saveGame','loadGame','resume','yes','no','quit','
 
 ### menu
 mainMenuBtList = [0,2,7,6]
-mainMenuFonctions = [lambda: bt.collectionMenu(fenetre),lambda: bt.loadGame(fenetre),lambda: bt.options(fenetre),bt.quitt]
+mainMenuFonctions = [lambda: bt.collectionMenu(fenetre),lambda: bt.loadGame(fenetre),lambda: bt.options(fenetre),lambda:bt.quitt()]
 levelMenuBtList = [11,12,8,9,10,17]
 levelMenuFonctions = [lambda: bt.withAI(fenetre),lambda: bt.withoutAI(fenetre),lambda: bt.twoPlayers(fenetre),lambda: bt.threePlayers(fenetre),lambda: bt.fourPlayers(fenetre), lambda: bt.collectionMenu(fenetre)]
 pauseMenuBtList = [3,1,2,6]

@@ -43,12 +43,7 @@ A chaque étape de l'algorithme, les fonctions g(n) et h(n) sont exécutées pou
 \subsection{Etapes détaillées de l'algorithme:}
 Voici les étapes de l'algorithme en langage algorithmique: \newline
 Soient: OPEN la liste ouvert \newline
-
-
-POUR LA PARTIE ALGORITHME IL FAUT RÉUSSIR A INDENTER COMME IL FAUT.
-
-
-
+(La partie si dessous n'a pas pu être indentée correctement, attention donc!)
 Ajouter DEPART à OPEN \newline
 Tant que OPEN n'est pas vide:\newline
 	Choisir le N ayant le plus petit f(n)\newline
@@ -66,7 +61,20 @@ Tant que OPEN n'est pas vide:\newline
 FIN TANT QUE\newline
 \textit{Si on arrive ici, alors il n'y a pas de solutions.}
 			
-\subsection{Réflexion sur le design du menu}
+\section{Le cas du Sokoban:}
+\subsection{Cas général:}
+Dans le cas du sokoban, l'heuristique sera le minimum  de déplacements pour atteindre l'objectif si un chemin direct est possible. Or puisque l'on se déplace uniquemment à la verticale ou à l'horizontale, cette donnée sera la somme des déplacements horizontaux et verticaux à réaliser.
+\begin{center}
+\includegraphics[scale=1]{images/heuristic.png} \newline
+\textit{Ce shéma présente le minimum de déplacements pour aller du point rouge au point d'arrivé.}
+\end{center}
+Ainsi pour l'étape en vert:
+\begin{itemize}
+\item[g(n)= 1]
+\item[h(n)= 6]
+\item[f(n)= 1+6 = 7]
+\end{itemize}
+
 
 
 \newpage

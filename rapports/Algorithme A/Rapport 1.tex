@@ -21,8 +21,9 @@ Goron Nathan, De La Rosa Louis-David, Basset Emilien, Demé Quentin
 \newline
 \newline
 
-\Huge Algorithme A*, fonctionnement
-
+\Huge Algorithme A*, fonctionnement \newline
+\vspace{2cm}
+\includegraphics[scale=0.7]{images/exemple.png}
 \end{center}
 \end{titlepage}
 
@@ -74,8 +75,31 @@ Ainsi pour l'étape en vert:
 \item[h(n)= 6]
 \item[f(n)= 1+6 = 7]
 \end{itemize}
+\subsection{Implémentation:}
+Tout d'abord, nous avons besoin d'une structure pour les noeuds: \newpage
+class Node implements Comparable {\newline
+public Node parent;\newline
+public int move;\newline
+public Location where;\newline
+public int g;\newline
+public int h;\newline
+public int f(){return g+h;}\newline
+public Node(Location where, Node parent, int move);\newline
+public int compareTo(Object o);\newline
+}\newline
+
+Tout d'abord, il est plus pratique de garder la liste OPEN triée pour que l'on puisse avoir facilement accées à notre meilleur option. Il faut donc s'assurer que lorsqu'on ajoute un terme à la liste, celle-ci soit triée automatiquement (Pourquoi ne pas utliser un ABR??) \newline
+Ensuite il est efficace que nous puissons trouver des noeuds de la liste grâce à l'heure position sur la grille. Cela pour que nous puissons déterminer si 'n' est déjà dans OPEN ou dans CLOSE.
 
 
-
+\subsection{Note de l'auteur:}
+/* Les notes à suivre sont des notes de l'auteur qui n'utilise pas python */ \newline
+On peut éventuellement mettre la liste des mouvements en cache(?) pour éviter de la recalculer à chaque fois. \newline
+L'algorithme peu être modifier pour calculer uniquement 'x' déplacement à un moment donné. Pour cela il faut garder OPEN et CLOSE entre les appels. Il faut se rappeler renvoyait à l'appel et calculer jusqu'à (g(n)t - g(n)t')>x,(soit un instant t) puis retourner la meilleure option de la liste OPEN.
+\section{Sources:}
+http://www.talistreit.com/AStar.html
 \newpage
+\section{Annexe:}
+\subsection{Shéma de fonctionnement:}
+\includegraphics[scale=1]{images/shema.png}
 \end{document}

@@ -11,11 +11,6 @@ fic.close()
 log.basicConfig(filename='sokoban.log',level=log.DEBUG,format='%(levelname)s: %(message)s --- line %(lineno)d in %(filename)s')
 ### ####### ###
 
-
-
-dWidth=21
-dHeight=21
-
 pygame.init()
 
 #Création de la fenêtre avec ses attributs
@@ -26,7 +21,7 @@ pygame.display.set_caption('Sokoban')
 
 
 #variables du personnage
-variables['speed'] = 100        #milliseconds par pas
+variables['speed'] = 10        #milliseconds par pas
 variables['styleP'] = 8  #selection perso
 
 variables['historyP']=[]

@@ -204,23 +204,34 @@ def whileGame(fenetre,nbNiveau,niveau,AI=False):
                 if event.key == K_RIGHT:
                     niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau,fenetre,False)
                     niveau.afficheNiveau(fenetre)
+                    
                 if event.key == K_LEFT:
                     niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-2,niveau,fenetre,False)
                     niveau.afficheNiveau(fenetre)
+                    
                 if event.key == K_UP:
                     niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-1,niveau,fenetre,False)
                     niveau.afficheNiveau(fenetre)
+                    
                 if event.key == K_DOWN:
                     niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau,fenetre,False)
                     niveau.afficheNiveau(fenetre)
-                if event.key == K_SPACE:
+                    
+                if event.key == K_BACKSPACE:
                     ##print('return')
                     if variables['historyP']!=[]:
                         save.rewind(fenetre,variables,niveau,coordPerso)
+                    
+                if event.key == K_HOME:
+                    for n in range (len(variables['historyP'])):
+                        save.rewind(fenetre,variables,niveau,niveau.findPersonnage())
+                        
                 if event.key == K_F2:
                     saveGame(niveau,0,nbNiveau,fenetre,variables)
+                    
                 if event.key == K_ESCAPE:
                     continuer = 0
+                    
                 if event.key == K_KP0:
                     if variables['styleP']!=8:
                         variables['styleP']+=1
@@ -228,13 +239,16 @@ def whileGame(fenetre,nbNiveau,niveau,AI=False):
                         variables['styleP']=1
                     niveau.gameO[coordPerso[0]][coordPerso[1]].setTileset()
                     niveau.afficheNiveau(fenetre)
+                    
                 if event.key == K_KP_PLUS:
                     variables['speed']+=5
                     print(variables['speed'])
+                    
                 if event.key == K_KP_MINUS:
                     if variables['speed']>5:
                         variables['speed']-=5
                     print(variables['speed'])
+                    
                 #print(variables)
         if niveau.checkTarget(): #test de victoire
             print('vous avez gagné !!!')

@@ -29,24 +29,14 @@ class Sprite(object):
     # @param rep:la representation du sprite
     # @param x:coordonnée x du sprite
     # @param y:coordonnée y du sprite
-    # @param xmax:maximum que la valeur x peut prendre
-    # @param ymax:maximum que la valeur y peut prendre
-    def __init__(self,surface,rep,x,y,xmax=dWidth,ymax=dHeight):
+    def __init__(self,surface,rep,x,y):
         self.x=x
         self.y=y
-        self.xmax=xmax
-        self.ymax=ymax
         self.surface=surface
-        if rep not in ('#','$',' ','+','@','.',':'):
+        if rep not in ('#','$','+','@','.',':'):
             raise ValueError(rep+" ne peut pas être représenté")
         else:
             self.repr=rep
-
-    ##
-    # test si les coordonnées se trouvent dans la fenetre actuelle
-    def coordPossible(self,x,y):
-        return x<self.xmax and x>0 and y>0 and y<self.ymax
-
     ##
     # deplace le sprite dans la fenetre fen
     def displaySprite(self,fen):
@@ -419,7 +409,6 @@ class LevelCollection(object):
             fenetre= pygame.display.set_mode((self.width*variables['spriteSize']*32,self.height*variables['spriteSize']*32))
             
         const.setSurfaces()
-        dWidth,dHeight=self.width,self.height
         
         return (grilleP,grilleO)
         

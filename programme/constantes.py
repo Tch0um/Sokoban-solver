@@ -1,6 +1,18 @@
 import pygame
 from pygame.locals import *
 import GUI as bt
+variables = {}
+
+### logging ###
+import logging as log
+fic = open('sokoban.log','w')
+fic.close()
+
+log.basicConfig(filename='sokoban.log',level=log.DEBUG,format='%(levelname)s: %(message)s --- line %(lineno)d in %(filename)s')
+
+### ####### ###
+
+
 
 dWidth=21
 dHeight=21
@@ -16,13 +28,14 @@ pygame.display.set_caption('Sokoban')
 
 
 #variables du personnage
-speed = 0        #milliseconds par pas
-style_perso = 7  #selection perso
+variables['speed'] = 0        #milliseconds par pas
+variables['styleP'] = 8  #selection perso
 
-variables = {'historyP':[],'historyC':[]}
+variables['historyP']=[]
+variables['historyC']=[]
 
 
-collection = "AC_Diamonds"
+variables['collection'] = "AC_Diamonds"
 fond = pygame.image.load("images/"+'AC_Diamonds'+"_bg.png")
 history = []
 
@@ -43,7 +56,7 @@ collectionMenuFonctions = [lambda: bt.mainMenu(fenetre)]
 
 ### sprites taille normale
 tileset_perso = pygame.image.load('images/perso64.png')
-tileset_col = pygame.image.load('images/'+collection+'_style64.png')
+tileset_col = pygame.image.load('images/'+variables['collection']+'_style64.png')
 
 taille_sprite = 64
 space = tileset_col.subsurface(64,64,0,0)
@@ -58,7 +71,7 @@ perso_sprite = [tileset_perso.subsurface(448,192,64,64),tileset_perso.subsurface
 
 ### sprites taille reduite
 tileset_perso_mini = pygame.image.load('images/perso32.png')
-tileset_col_mini = pygame.image.load('images/'+collection+'_style32.png')
+tileset_col_mini = pygame.image.load('images/'+variables['collection']+'_style32.png')
 
 taille_sprite_mini=32
 space_mini = tileset_col_mini.subsurface(32,32,0,0)
@@ -69,4 +82,4 @@ elementOnTarget_mini = tileset_col_mini.subsurface(32,0,32,32)
 pOnTarget_mini = target
 
 perso_sprite_mini = [tileset_perso_mini.subsurface(224,96,32,32),tileset_perso_mini.subsurface(192,96,32,32),tileset_perso_mini.subsurface(256,96,32,32),tileset_perso_mini.subsurface(224,0,32,32),tileset_perso_mini.subsurface(192,0,32,32),tileset_perso_mini.subsurface(256,0,32,32),tileset_perso_mini.subsurface(224,32,32,32),tileset_perso_mini.subsurface(192,32,32,32),tileset_perso_mini.subsurface(256,32,32,32),tileset_perso_mini.subsurface(224,64,32,32),tileset_perso_mini.subsurface(192,64,32,32),tileset_perso_mini.subsurface(256,64,32,32)]
-
+log.debug(variables)

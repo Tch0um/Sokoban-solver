@@ -70,10 +70,10 @@ class Personnage(Sprite):
             self.size=2
         else:
             self.size=1
-        if style_perso<=4:
-            self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(style_perso-1),0,32*self.size*3,32*self.size*4)
+        if variables['styleP']<=4:
+            self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(variables['styleP']-1),0,32*self.size*3,32*self.size*4)
         else:
-            self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(style_perso-5),self.size*32*4,32*self.size*3,32*self.size*4)
+            self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(variables['styleP']-5),self.size*32*4,32*self.size*3,32*self.size*4)
         Sprite.__init__(self,self.tilesetPerso.subsurface(32*self.size,2*32*self.size,self.size*32,self.size*32),'@',x,y)
 
     ##
@@ -134,7 +134,7 @@ class Personnage(Sprite):
                     self.surface=self.tilesetPerso.subsurface(n*32*self.size,3*32*self.size,32*self.size,32*self.size)
                 self.displaySprite(fen)
                 niveau.afficheNiveau(fen)
-                pygame.time.wait(speed)
+                pygame.time.wait(variables['speed'])
             self.x=int(round(self.x))
         else:
             direction=direction/2
@@ -146,7 +146,7 @@ class Personnage(Sprite):
                     self.surface=self.tilesetPerso.subsurface(n*32*self.size,32*self.size,32*self.size,32*self.size)
                 self.displaySprite(fen)
                 niveau.afficheNiveau(fen)
-                pygame.time.wait(speed)
+                pygame.time.wait(variables['speed'])
             self.y=int(round(self.y))
                     
 
@@ -162,7 +162,7 @@ class Caisse(Sprite):
                 niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                 self.displaySpriteWithAnim(direction,niveau,fen)
                 if variables:
-                    variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP'])-1)]]
+                    variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
                 return True
                     
         else:
@@ -172,7 +172,7 @@ class Caisse(Sprite):
                 niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
                 self.displaySpriteWithAnim(direction*2,niveau,fen)
                 if variables:
-                    variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP'])-1)]]
+                    variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
                 return True
         return False
 

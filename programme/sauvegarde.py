@@ -1,7 +1,7 @@
-def saveGame(niveau,port,nbNiveau,collection,variables):
+def saveGame(niveau,port,nbNiveau,variables):
     fichier=open('sauvegardes/save'+str(port)+'.txt','w')
     fichier.write('--niv--'+str(nbNiveau)+'\n')
-    fichier.write('--col--'+collection+'\n')
+    fichier.write('--col--'+variables['collection']+'\n')
     fichier.write('--hsp--'+''.join(variables['historyP'])+'\n')
     for x in range(len(variables['historyC'])):
         fichier.write('--hsc->'+':'.join(variables['historyC'][x])+'\n')
@@ -12,7 +12,7 @@ def saveGame(niveau,port,nbNiveau,collection,variables):
     fichier.close()
 
 
-def loadGame(port):
+def loadGame(port,variables):
     grilleO=[]
     historyC=[]
     fichier = open('sauvegardes/save'+str(port)+'.txt','r')
@@ -20,7 +20,7 @@ def loadGame(port):
         if l[:7]=='--niv--':
             nbNiveau=int(l[7:-1])
         elif l[:7]=='--col--':
-            collection=l[7:-1]
+            variables['collection']=l[7:-1]
         elif l[:7]=='--hsp--':
             historyP=l[7:-1]
         elif l[:7]=='--hsc->':
@@ -29,7 +29,10 @@ def loadGame(port):
             grilleO+=[list(l[:-1])]
             print(list(l[:-1]))
     fichier.close()
-    return grilleO,nbNiveau,collection,list(historyP),historyC
+    
+    variables['historyP']=list(historyP)
+    variables['historyC']=historyC
+    return grilleO,nbNiveau
 
 
 def rewind(fenetre,variables,niveau,coordPerso):
@@ -46,8 +49,9 @@ def rewind(fenetre,variables,niveau,coordPerso):
         direction = -2
 
     niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(direction,niveau,fenetre)
-    niveau.afficheNiveau(fenetre)
     if variables['historyC']!=[] and len(variables['historyP']) == int(variables['historyC'][-1][2]):
         print('if2')
         niveau.gameO[int(variables['historyC'][-1][0])][int(variables['historyC'][-1][1])].deplace(direction,niveau,fenetre)
         del variables['historyC'][-1]
+        
+    niveau.afficheNiveau(fenetre)

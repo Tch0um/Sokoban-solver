@@ -9,10 +9,10 @@ import sys
 variables = const.variables
 
 def loadCollection(fenetre,file):
-    global collection,niveaux
-    collection = file[:-4]
-    niveaux = cls.LevelCollection("levels/"+collection+".slc")
-    print(collection)
+    global niveaux,variables
+    variables['collection'] = file[:-4]
+    niveaux = cls.LevelCollection("levels/"+variables['collection']+".slc")
+    print(variables['collection'])
     modeMenu(fenetre)
 
     
@@ -134,16 +134,13 @@ def modeMenu(fenetre):
 
 
 def saveGame(niveau,port,nbNiveau,fenetre,variables):
-    save.saveGame(niveau,port,nbNiveau,collection,variables)
+    save.saveGame(niveau,port,nbNiveau,variables)
 
 def loadGame(fenetre):
-    tupl=save.loadGame(0)
     global collection,niveaux,variables
-    collection = tupl[2]
-    niveaux = cls.LevelCollection("levels/"+collection+".slc")
+    tupl=save.loadGame(0,variables)
+    niveaux = cls.LevelCollection("levels/"+variables['collection']+".slc")
     nbNiveau = tupl[1]
-    variables['historyP'] = tupl[3]
-    variables['historyC'] = tupl[4]
     niveau = cls.Niveau(niveaux.loadLevel(nbNiveau,fenetre)[0],tupl[0])
     niveau.gameConstructor()
     

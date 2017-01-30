@@ -1,4 +1,5 @@
 from constantes import * #importation de pygame et constante de pygame incluses
+import constantes as const
 import xml.etree.ElementTree as ET
 import math
 
@@ -49,7 +50,7 @@ class Sprite(object):
     ##
     # deplace le sprite dans la fenetre fen
     def displaySprite(self,fen):
-        fen.blit(self.surface,(self.y*taille_sprite,self.x*taille_sprite))
+        fen.blit(self.surface,(self.y*variables['spriteSize']*32,self.x*variables['spriteSize']*32))
 
 
     def __getitem__(self,cle):
@@ -73,29 +74,25 @@ class Personnage(Sprite):
         self.setTileset()
         
     def setTileset(self):
-        if taille_sprite==64:
-            self.size=2
-        else:
-            self.size=1
         if variables['styleP']<=4:
-            self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(variables['styleP']-1),0,32*self.size*3,32*self.size*4)
+            self.tilesetPerso=variables['surfaces']['perso'].subsurface(32*variables['spriteSize']*3*(variables['styleP']-1),0,32*variables['spriteSize']*3,32*variables['spriteSize']*4)
         else:
-            self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(variables['styleP']-5),self.size*32*4,32*self.size*3,32*self.size*4)
-        self.setSurface(self.tilesetPerso.subsurface(32*self.size,2*32*self.size,self.size*32,self.size*32))
+            self.tilesetPerso=variables['surfaces']['perso'].subsurface(32*variables['spriteSize']*3*(variables['styleP']-5),variables['spriteSize']*32*4,32*variables['spriteSize']*3,32*variables['spriteSize']*4)
+        self.setSurface(self.tilesetPerso.subsurface(32*variables['spriteSize'],2*32*variables['spriteSize'],variables['spriteSize']*32,variables['spriteSize']*32))
 
     ##
     # verifie et déplace le joueur quand c'est possible
-    def deplace(self,direction,niveau,fen,variables=False):#haut,bas,gauche,droite : -1,1,-2,2
+    def deplace(self,direction,niveau,fen,rewind=True):#haut,bas,gauche,droite : -1,1,-2,2
         if direction**2==1:
             if niveau.gameO[self.x+direction][self.y].repr!='#':
-                if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau,fen,variables):
-                    if variables:
+                if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau,fen,rewind):
+                    if not rewind:
                         if direction<0:
                             variables['historyP']+='h'
                         else:
                             variables['historyP']+='b'
                     niveau.gameO[self.x+direction][self.y]=self
-                    niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
+                    niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
                     self.displaySpriteWithAnim(direction,niveau,fen)
                     print(str(self.x),str(self.y),sep=', ')
                     
@@ -103,14 +100,14 @@ class Personnage(Sprite):
         else:
             direction=int(direction/2)
             if niveau.gameO[self.x][self.y+direction].repr!='#':
-                if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau,fen,variables):
-                    if variables:
+                if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau,fen,rewind):
+                    if not rewind:
                         if direction<0:
                             variables['historyP']+='g'
                         else:
                             variables['historyP']+='d'
                     niveau.gameO[self.x][self.y+direction]=self
-                    niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
+                    niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
                     self.displaySpriteWithAnim(direction*2,niveau,fen)
                     print(str(self.x),str(self.y),sep=', ')
 
@@ -136,9 +133,9 @@ class Personnage(Sprite):
             for n in (2,1,0,1):
                 self.x+=direction/4
                 if direction==1:
-                    self.surface=self.tilesetPerso.subsurface(n*32*self.size,0,32*self.size,32*self.size)
+                    self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],0,32*variables['spriteSize'],32*variables['spriteSize'])
                 else:
-                    self.surface=self.tilesetPerso.subsurface(n*32*self.size,3*32*self.size,32*self.size,32*self.size)
+                    self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],3*32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'])
                 self.displaySprite(fen)
                 niveau.afficheNiveau(fen)
                 pygame.time.wait(variables['speed'])
@@ -148,9 +145,9 @@ class Personnage(Sprite):
             for n in (2,1,0,1):
                 self.y+=direction/4
                 if direction==1:
-                    self.surface=self.tilesetPerso.subsurface(n*32*self.size,2*self.size*32,32*self.size,32*self.size)
+                    self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],2*variables['spriteSize']*32,32*variables['spriteSize'],32*variables['spriteSize'])
                 else:
-                    self.surface=self.tilesetPerso.subsurface(n*32*self.size,32*self.size,32*self.size,32*self.size)
+                    self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'])
                 self.displaySprite(fen)
                 niveau.afficheNiveau(fen)
                 pygame.time.wait(variables['speed'])
@@ -162,13 +159,13 @@ class Personnage(Sprite):
 class Caisse(Sprite):
     ##
     # verifie et deplace la caisse quand c'est possible, autorise le déplacement du personnage en renvoyant True/false
-    def deplace(self,direction,niveau,fen,variables=False):#haut,bas,gauche,droite : -1,1,-2,2
+    def deplace(self,direction,niveau,fen,rewind=True):#haut,bas,gauche,droite : -1,1,-2,2
         if direction**2==1:#gauche,droite
             if niveau.gameO[self.x+direction][self.y].repr not in ('#','$'):
                 niveau.gameO[self.x+direction][self.y]=self
-                niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
+                niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
                 self.displaySpriteWithAnim(direction,niveau,fen)
-                if variables:
+                if not rewind:
                     variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
                 return True
                     
@@ -176,9 +173,9 @@ class Caisse(Sprite):
             direction=int(direction/2)
             if niveau.gameO[self.x][self.y+direction].repr not in ('#','$'):
                 niveau.gameO[self.x][self.y+direction]=self
-                niveau.gameO[self.x][self.y]=Sprite(blank,':',self.x,self.y)
+                niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
                 self.displaySpriteWithAnim(direction*2,niveau,fen)
-                if variables:
+                if not rewind:
                     variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
                 return True
         return False
@@ -280,30 +277,28 @@ class Niveau(object):
             line=[]
             for y in range(len(self.grilleP[0])):
                 if self.grilleP[x][y]:
-                    if self.grilleP[x][y]==' ':
-                        line+=[Sprite(space,' ',x,y)]
-                    elif self.grilleP[x][y]=='+':
-                        line+=[Sprite(target,'+',x,y)]
+                    if self.grilleP[x][y]=='+': ## stelle ##
+                        line+=[Sprite(variables['surfaces']['target'],'+',x,y)]
                     else:
-                        line+=[Sprite(blank,':',x,y)]
+                        line+=[Sprite(variables['surfaces']['blank'],':',x,y)]
                 else:
-                    line+=[Sprite(blank,':',x,y)]
+                    line+=[Sprite(variables['surfaces']['blank'],':',x,y)]
             self.gameP+=[line]
             
         for x in range(len(self.grilleO)):
             line=[]
             for y in range(len(self.grilleO[0])):
                 if self.grilleO[x][y]:
-                    if self.grilleO[x][y]=='$':
-                        line+=[Caisse(element,'$',x,y)]
-                    elif self.grilleO[x][y]=='#':
-                        line+=[Sprite(wall,'#',x,y)]
-                    elif self.grilleO[x][y]=='@':
-                        line+=[Personnage(perso_sprite[6],x,y)]
+                    if self.grilleO[x][y]=='$': ## caisse ##
+                        line+=[Caisse(variables['surfaces']['element'],'$',x,y)]
+                    elif self.grilleO[x][y]=='#': ## mur ##
+                        line+=[Sprite(variables['surfaces']['wall'],'#',x,y)]
+                    elif self.grilleO[x][y]=='@': ## personnage ##
+                        line+=[Personnage(None,x,y)]
                     else:
-                        line+=[Sprite(blank,':',x,y)]
+                        line+=[Sprite(variables['surfaces']['blank'],':',x,y)]
                 else:
-                    line+=[Sprite(blank,':',x,y)]
+                    line+=[Sprite(variables['surfaces']['blank'],':',x,y)]
             self.gameO+=[line]
 
     ##
@@ -317,6 +312,7 @@ class Niveau(object):
             for y in range(len(self.gameO[0])):
                 self.gameO[x][y].displaySprite(fen)
         pygame.display.flip()
+        #print(self)
         
     ##
     # cherche le personnage dans la grille gameO
@@ -415,10 +411,14 @@ class LevelCollection(object):
 
         #change la taille de la fenetre et des sprites en fonction de la taille du niveau
         if self.width>11 or self.height>11:
-            global taille_sprite,space,wall,target,element,elementOnTarget,pOnTarget,perso_sprite,dWidth,dHeight
-            taille_sprite,space,wall,target,element,elementOnTarget,pOnTarget,perso_sprite  =  taille_sprite_mini,space_mini,wall_mini,target_mini,element_mini,elementOnTarget_mini,pOnTarget_mini,perso_sprite_mini
+            global variables
+            variables['spriteSize']=1
+            fenetre= pygame.display.set_mode((self.width*variables['spriteSize']*32,self.height*variables['spriteSize']*32))
+        else:
+            variables['spriteSize']=2
+            fenetre= pygame.display.set_mode((self.width*variables['spriteSize']*32,self.height*variables['spriteSize']*32))
             
-        fenetre= pygame.display.set_mode((self.width*taille_sprite,self.height*taille_sprite))
+        const.setSurfaces()
         dWidth,dHeight=self.width,self.height
         
         return (grilleP,grilleO)

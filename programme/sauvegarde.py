@@ -10,6 +10,7 @@ def saveGame(niveau,port,nbNiveau,variables):
             fichier.write(niveau.gameO[x][y].repr)
         fichier.write('\n')
     fichier.close()
+    print('sauvegarde effectuée')
 
 
 def loadGame(port,variables):
@@ -27,7 +28,7 @@ def loadGame(port,variables):
             historyC+=[l[7:-1].split(':')]
         else:
             grilleO+=[list(l[:-1])]
-            print(list(l[:-1]))
+            #print(list(l[:-1]))
     fichier.close()
     
     variables['historyP']=list(historyP)
@@ -48,9 +49,10 @@ def rewind(fenetre,variables,niveau,coordPerso):
     elif direction=='d':
         direction = -2
 
+    #print(niveau.gameO[coordPerso[0]][coordPerso[1]].repr)
     niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(direction,niveau,fenetre)
     if variables['historyC']!=[] and len(variables['historyP']) == int(variables['historyC'][-1][2]):
-        print('if2')
+        #print('if2')
         niveau.gameO[int(variables['historyC'][-1][0])][int(variables['historyC'][-1][1])].deplace(direction,niveau,fenetre)
         del variables['historyC'][-1]
         

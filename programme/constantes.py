@@ -9,14 +9,12 @@ fic = open('sokoban.log','w')
 fic.close()
 
 log.basicConfig(filename='sokoban.log',level=log.DEBUG,format='%(levelname)s: %(message)s --- line %(lineno)d in %(filename)s')
-
 ### ####### ###
 
 
 
 dWidth=21
 dHeight=21
-blank = pygame.Surface((0,0))
 
 pygame.init()
 
@@ -28,7 +26,7 @@ pygame.display.set_caption('Sokoban')
 
 
 #variables du personnage
-variables['speed'] = 0        #milliseconds par pas
+variables['speed'] = 100        #milliseconds par pas
 variables['styleP'] = 8  #selection perso
 
 variables['historyP']=[]
@@ -36,8 +34,7 @@ variables['historyC']=[]
 
 
 variables['collection'] = "AC_Diamonds"
-fond = pygame.image.load("images/"+'AC_Diamonds'+"_bg.png")
-history = []
+fond = pygame.image.load("images/bg1.png")
 
 
 
@@ -55,31 +52,16 @@ collectionMenuFonctions = [lambda: bt.mainMenu(fenetre)]
 
 
 ### sprites taille normale
-tileset_perso = pygame.image.load('images/perso64.png')
-tileset_col = pygame.image.load('images/'+variables['collection']+'_style64.png')
+variables['spriteSize'] = 1
+variables['surfaces'] = {}
+def setSurfaces():
+    global variables
+    variables['surfaces']['perso'] = pygame.image.load('images/perso'+str(variables['spriteSize']*32)+'.png')
+    variables['surfaces']['world'] = pygame.image.load('images/style1_'+str(variables['spriteSize']*32)+'.png')
+    variables['surfaces']['blank'] = pygame.Surface((0,0))
+    variables['surfaces']['wall'] = variables['surfaces']['world'].subsurface(0,0,variables['spriteSize']*32,variables['spriteSize']*32)
+    variables['surfaces']['target'] = variables['surfaces']['world'].subsurface(0,variables['spriteSize']*32,variables['spriteSize']*32,variables['spriteSize']*32)
+    variables['surfaces']['element'] = variables['surfaces']['world'].subsurface(variables['spriteSize']*32,variables['spriteSize']*32,variables['spriteSize']*32,variables['spriteSize']*32)
+setSurfaces()
 
-taille_sprite = 64
-space = tileset_col.subsurface(64,64,0,0)
-wall = tileset_col.subsurface(0,0,64,64)
-target = tileset_col.subsurface(0,64,64,64)
-element = tileset_col.subsurface(64,64,64,64)
-elementOnTarget = tileset_col.subsurface(64,0,64,64)
-pOnTarget = target
-
-perso_sprite = [tileset_perso.subsurface(448,192,64,64),tileset_perso.subsurface(384,192,64,64),tileset_perso.subsurface(512,192,64,64),tileset_perso.subsurface(448,0,64,64),tileset_perso.subsurface(384,0,64,64),tileset_perso.subsurface(512,0,64,64),tileset_perso.subsurface(448,64,64,64),tileset_perso.subsurface(384,64,64,64),tileset_perso.subsurface(512,64,64,64),tileset_perso.subsurface(448,128,64,64),tileset_perso.subsurface(384,128,64,64),tileset_perso.subsurface(512,128,64,64)]
-
-
-### sprites taille reduite
-tileset_perso_mini = pygame.image.load('images/perso32.png')
-tileset_col_mini = pygame.image.load('images/'+variables['collection']+'_style32.png')
-
-taille_sprite_mini=32
-space_mini = tileset_col_mini.subsurface(32,32,0,0)
-wall_mini = tileset_col_mini.subsurface(0,0,32,32)
-target_mini = tileset_col_mini.subsurface(0,32,32,32)
-element_mini = tileset_col_mini.subsurface(32,32,32,32)
-elementOnTarget_mini = tileset_col_mini.subsurface(32,0,32,32)
-pOnTarget_mini = target
-
-perso_sprite_mini = [tileset_perso_mini.subsurface(224,96,32,32),tileset_perso_mini.subsurface(192,96,32,32),tileset_perso_mini.subsurface(256,96,32,32),tileset_perso_mini.subsurface(224,0,32,32),tileset_perso_mini.subsurface(192,0,32,32),tileset_perso_mini.subsurface(256,0,32,32),tileset_perso_mini.subsurface(224,32,32,32),tileset_perso_mini.subsurface(192,32,32,32),tileset_perso_mini.subsurface(256,32,32,32),tileset_perso_mini.subsurface(224,64,32,32),tileset_perso_mini.subsurface(192,64,32,32),tileset_perso_mini.subsurface(256,64,32,32)]
 log.debug(variables)

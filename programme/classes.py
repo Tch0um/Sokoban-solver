@@ -60,12 +60,19 @@ class Sprite(object):
     def deplace(*args):
         return True
 
+    def setSurface(self,surface):
+        self.surface = surface
+
 
 
 class Personnage(Sprite):
     ##
     # constructeur de la Classe Personnage
     def __init__(self,surface,x,y):
+        Sprite.__init__(self,None,'@',x,y)
+        self.setTileset()
+        
+    def setTileset(self):
         if taille_sprite==64:
             self.size=2
         else:
@@ -74,7 +81,7 @@ class Personnage(Sprite):
             self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(variables['styleP']-1),0,32*self.size*3,32*self.size*4)
         else:
             self.tilesetPerso=tileset_perso.subsurface(32*self.size*3*(variables['styleP']-5),self.size*32*4,32*self.size*3,32*self.size*4)
-        Sprite.__init__(self,self.tilesetPerso.subsurface(32*self.size,2*32*self.size,self.size*32,self.size*32),'@',x,y)
+        self.setSurface(self.tilesetPerso.subsurface(32*self.size,2*32*self.size,self.size*32,self.size*32))
 
     ##
     # verifie et déplace le joueur quand c'est possible

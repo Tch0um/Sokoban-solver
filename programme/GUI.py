@@ -221,6 +221,13 @@ def whileGame(fenetre,nbNiveau,niveau,AI=False):
                     saveGame(niveau,0,nbNiveau,fenetre,variables)
                 if event.key == K_ESCAPE:
                     continuer = 0
+                if event.key == K_KP0:
+                    if variables['styleP']!=8:
+                        variables['styleP']+=1
+                    else:
+                        variables['styleP']=1
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].setTileset()
+                    niveau.afficheNiveau(fenetre)
                 print(variables['historyP'],variables['historyC'],len(variables['historyP']),sep='\n'*3)
         if niveau.checkTarget(): #test de victoire
             print('vous avez gagné !!!')

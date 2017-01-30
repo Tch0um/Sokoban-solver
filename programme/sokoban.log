@@ -1,1 +1,1 @@
-DEBUG: {'speed': 0, 'historyP': [], 'collection': 'AC_Diamonds', 'styleP': 8, 'historyC': []} --- line 85 in constantes.py
+DEBUG: {'speed': 0, 'styleP': 8, 'historyP': [], 'collection': 'AC_Diamonds', 'historyC': []} --- line 85 in constantes.py

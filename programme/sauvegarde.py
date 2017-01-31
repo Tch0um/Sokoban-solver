@@ -41,13 +41,13 @@ def rewind(fenetre,variables,niveau,coordPerso):
     del variables['historyP'][-1]
 
     if direction=='h':
-        direction = 1
+        direction = (1,0)
     elif direction=='b':
-        direction = -1
+        direction = (-1,0)
     elif direction=='g':
-        direction = 2
+        direction = (0,1)
     elif direction=='d':
-        direction = -2
+        direction = (0,-1)
 
     #print(niveau.gameO[coordPerso[0]][coordPerso[1]].repr)
     niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(direction,niveau,fenetre)

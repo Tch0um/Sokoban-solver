@@ -72,34 +72,22 @@ class Personnage(Sprite):
 
     ##
     # verifie et déplace le joueur quand c'est possible
-    def deplace(self,direction,niveau,fen,rewind=True):#haut,bas,gauche,droite : -1,1,-2,2
-        if direction**2==1:
-            if niveau.gameO[self.x+direction][self.y].repr!='#':
-                if niveau.gameO[self.x+direction][self.y].deplace(direction,niveau,fen,rewind):
-                    if not rewind:
-                        if direction<0:
-                            variables['historyP']+='h'
-                        else:
-                            variables['historyP']+='b'
-                    niveau.gameO[self.x+direction][self.y]=self
-                    niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
-                    self.displaySpriteWithAnim(direction,niveau,fen)
-                    print(str(self.x),str(self.y),sep=', ')
-                    
-                    
-        else:
-            direction=int(direction/2)
-            if niveau.gameO[self.x][self.y+direction].repr!='#':
-                if niveau.gameO[self.x][self.y+direction].deplace(direction*2,niveau,fen,rewind):
-                    if not rewind:
-                        if direction<0:
-                            variables['historyP']+='g'
-                        else:
-                            variables['historyP']+='d'
-                    niveau.gameO[self.x][self.y+direction]=self
-                    niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
-                    self.displaySpriteWithAnim(direction*2,niveau,fen)
-                    print(str(self.x),str(self.y),sep=', ')
+    def deplace(self,direction,niveau,fen,rewind=True):
+        if niveau.gameO[self.x+direction[0]][self.y+direction[1]].repr!='#':
+            if niveau.gameO[self.x+direction[0]][self.y+direction[1]].deplace(direction,niveau,fen,rewind):
+                if not rewind:
+                    if direction==(-1,0):
+                        variables['historyP']+='h'
+                    elif direction==(1,0):
+                        variables['historyP']+='b'
+                    elif direction==(0,-1):
+                        variables['historyP']+='g'
+                    else:
+                        variables['historyP']+='d'
+                niveau.gameO[self.x+direction[0]][self.y+direction[1]]=self
+                niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
+                self.displaySpriteWithAnim(direction,niveau,fen)
+                print(str(self.x),str(self.y),sep=', ')
 
     def selectCaisse(self,liste):
         distMin = 1000000
@@ -119,77 +107,49 @@ class Personnage(Sprite):
     # @param niveau:le niveau actuellement chargé
     # @param fen: la fenetre pygame
     def displaySpriteWithAnim(self,direction,niveau,fen):
-        if direction**2==1:#haut, bas
-            for n in (2,1,0,1):
-                self.x+=direction/4
-                if direction==1:
-                    self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],0,32*variables['spriteSize'],32*variables['spriteSize'])
-                else:
-                    self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],3*32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'])
-                self.displaySprite(fen)
-                niveau.afficheNiveau(fen)
-                pygame.time.wait(variables['speed'])
-            self.x=int(round(self.x))
-        else:
-            direction=direction/2
-            for n in (2,1,0,1):
-                self.y+=direction/4
-                if direction==1:
-                    self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],2*variables['spriteSize']*32,32*variables['spriteSize'],32*variables['spriteSize'])
-                else:
-                    self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'])
-                self.displaySprite(fen)
-                niveau.afficheNiveau(fen)
-                pygame.time.wait(variables['speed'])
-            self.y=int(round(self.y))
+        for n in (2,1,0,1):
+            self.x+=direction[0]/4
+            self.y+=direction[1]/4
+            if direction==(1,0):
+                self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],0,32*variables['spriteSize'],32*variables['spriteSize'])
+            elif direction==(-1,0):
+                self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],3*32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'])
+            elif direction==(0,1):
+                self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],2*variables['spriteSize']*32,32*variables['spriteSize'],32*variables['spriteSize'])
+            else:
+                self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'])
+            self.displaySprite(fen)
+            niveau.afficheNiveau(fen)
+            pygame.time.wait(variables['speed'])
+        self.x=int(round(self.x))
+        self.y=int(round(self.y))
                     
-
 
 
 class Caisse(Sprite):
     ##
     # verifie et deplace la caisse quand c'est possible, autorise le déplacement du personnage en renvoyant True/false
     def deplace(self,direction,niveau,fen,rewind=True):#haut,bas,gauche,droite : -1,1,-2,2
-        if direction**2==1:#gauche,droite
-            if niveau.gameO[self.x+direction][self.y].repr not in ('#','$'):
-                niveau.gameO[self.x+direction][self.y]=self
-                niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
-                self.displaySpriteWithAnim(direction,niveau,fen)
-                if not rewind:
-                    variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
-                return True
-                    
-        else:
-            direction=int(direction/2)
-            if niveau.gameO[self.x][self.y+direction].repr not in ('#','$'):
-                niveau.gameO[self.x][self.y+direction]=self
-                niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
-                self.displaySpriteWithAnim(direction*2,niveau,fen)
-                if not rewind:
-                    variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
-                return True
+        if niveau.gameO[self.x+direction[0]][self.y+direction[1]].repr not in ('#','$'):
+            niveau.gameO[self.x+direction[0]][self.y+direction[1]]=self
+            niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
+            self.displaySpriteWithAnim(direction,niveau,fen)
+            if not rewind:
+                variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
+            return True
         return False
 
 
     ##
     # deplace et rafraichit la caisse avec une animation
     def displaySpriteWithAnim(self,direction,niveau,fen):
-        if direction**2==1:#gauche,droite
-            for n in range(3):
-                self.x+=direction/3
-                self.displaySprite(fen)
-                niveau.afficheNiveau(fen)
-            self.x=int(round(self.x))
-        else:
-            direction=direction/2
-            for n in range(3):
-                self.y+=direction/3
-                self.displaySprite(fen)
-                niveau.afficheNiveau(fen)
-            self.y=int(round(self.y))
-            
-
-
+        for n in range(3):
+            self.x+=direction[0]/3
+            self.y+=direction[1]/3
+            self.displaySprite(fen)
+            niveau.afficheNiveau(fen)
+        self.x=int(round(self.x))
+        self.y=int(round(self.y))
 
 class Niveau(object):
     ##

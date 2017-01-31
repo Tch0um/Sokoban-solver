@@ -202,19 +202,19 @@ def whileGame(fenetre,nbNiveau,niveau,AI=False):
             elif event.type == KEYDOWN:
                 coordPerso = niveau.findPersonnage()
                 if event.key == K_RIGHT:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(2,niveau,fenetre,False)
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace((0,1),niveau,fenetre,False)
                     niveau.afficheNiveau(fenetre)
                     
                 if event.key == K_LEFT:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-2,niveau,fenetre,False)
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace((0,-1),niveau,fenetre,False)
                     niveau.afficheNiveau(fenetre)
                     
                 if event.key == K_UP:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(-1,niveau,fenetre,False)
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace((-1,0),niveau,fenetre,False)
                     niveau.afficheNiveau(fenetre)
                     
                 if event.key == K_DOWN:
-                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace(1,niveau,fenetre,False)
+                    niveau.gameO[coordPerso[0]][coordPerso[1]].deplace((1,0),niveau,fenetre,False)
                     niveau.afficheNiveau(fenetre)
                     
                 if event.key == K_BACKSPACE:

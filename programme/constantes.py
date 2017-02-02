@@ -55,6 +55,7 @@ def setSurfaces():
     variables['surfaces']['world'] = pygame.image.load('images/style1_'+str(variables['spriteSize']*32)+'.png')
     variables['surfaces']['blank'] = pygame.Surface((0,0))
     variables['surfaces']['wall'] = variables['surfaces']['world'].subsurface(0,0,variables['spriteSize']*32,variables['spriteSize']*32)
+    variables['surfaces']['space'] = variables['surfaces']['world'].subsurface(variables['spriteSize']*32,0,variables['spriteSize']*32,variables['spriteSize']*32)
     variables['surfaces']['target'] = variables['surfaces']['world'].subsurface(0,variables['spriteSize']*32,variables['spriteSize']*32,variables['spriteSize']*32)
     variables['surfaces']['element'] = variables['surfaces']['world'].subsurface(variables['spriteSize']*32,variables['spriteSize']*32,variables['spriteSize']*32,variables['spriteSize']*32)
 setSurfaces()

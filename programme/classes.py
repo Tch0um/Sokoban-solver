@@ -33,7 +33,7 @@ class Sprite(object):
         self.x=x
         self.y=y
         self.surface=surface
-        if rep not in ('#','$','+','@','.',':'):
+        if rep not in ('#','$','+','@','.',':',' '):
             raise ValueError(rep+" ne peut pas être représenté")
         else:
             self.repr=rep
@@ -230,9 +230,9 @@ class Niveau(object):
                     if self.grilleP[x][y]=='+': ## stelle ##
                         line+=[Sprite(variables['surfaces']['target'],'+',x,y)]
                     else:
-                        line+=[Sprite(variables['surfaces']['blank'],':',x,y)]
+                        line+=[Sprite(variables['surfaces']['space'],' ',x,y)]
                 else:
-                    line+=[Sprite(variables['surfaces']['blank'],':',x,y)]
+                    line+=[Sprite(variables['surfaces']['space'],' ',x,y)]
             self.gameP+=[line]
             
         for x in range(len(self.grilleO)):

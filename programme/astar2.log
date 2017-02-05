@@ -1,0 +1,85 @@
+INFO: (2, 3)  (0, 0)         --- line 50 in astar2.py
+DEBUG: nCoord 2, 3         --- line 63 in astar2.py
+DEBUG: nDist 12         --- line 67 in astar2.py
+INFO: nSelected:2, 3         --- line 74 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: noeud absent dans la closedList         --- line 90 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: noeud absent dans la closedList         --- line 90 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: noeud absent dans la closedList         --- line 90 in astar2.py
+DEBUG: neighbors 3         --- line 93 in astar2.py
+DEBUG: openList 3         --- line 100 in astar2.py
+DEBUG: nCoord 1, 3         --- line 63 in astar2.py
+DEBUG: nDist 5         --- line 67 in astar2.py
+DEBUG: nCoord 3, 3         --- line 63 in astar2.py
+DEBUG: nDist 5         --- line 67 in astar2.py
+DEBUG: nCoord 2, 4         --- line 63 in astar2.py
+DEBUG: nDist 5         --- line 67 in astar2.py
+INFO: nSelected:1, 3         --- line 74 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: noeud absent dans la closedList         --- line 90 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: noeud absent dans la closedList         --- line 90 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: neighbors 2         --- line 93 in astar2.py
+DEBUG: openList 4         --- line 100 in astar2.py
+DEBUG: nCoord 3, 3         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 2, 4         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 0, 3         --- line 63 in astar2.py
+DEBUG: nDist 4         --- line 67 in astar2.py
+DEBUG: nCoord 1, 2         --- line 63 in astar2.py
+DEBUG: nDist 4         --- line 67 in astar2.py
+INFO: nSelected:1, 2         --- line 74 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: noeud absent dans la closedList         --- line 90 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: neighbors 1         --- line 93 in astar2.py
+DEBUG: openList 4         --- line 100 in astar2.py
+DEBUG: nCoord 3, 3         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 2, 4         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 0, 3         --- line 63 in astar2.py
+DEBUG: nDist 4         --- line 67 in astar2.py
+DEBUG: nCoord 0, 2         --- line 63 in astar2.py
+DEBUG: nDist 3         --- line 67 in astar2.py
+INFO: nSelected:0, 2         --- line 74 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: noeud absent dans la closedList         --- line 90 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: noeud absent dans la closedList         --- line 90 in astar2.py
+DEBUG: neighbors 2         --- line 93 in astar2.py
+DEBUG: openList 4         --- line 100 in astar2.py
+DEBUG: nCoord 3, 3         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 2, 4         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 0, 3         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 0, 1         --- line 63 in astar2.py
+DEBUG: nDist 2         --- line 67 in astar2.py
+INFO: nSelected:0, 1         --- line 74 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: noeud absent dans la closedList         --- line 90 in astar2.py
+DEBUG: dans la grille         --- line 88 in astar2.py
+DEBUG: neighbors 1         --- line 93 in astar2.py
+DEBUG: openList 4         --- line 100 in astar2.py
+DEBUG: nCoord 3, 3         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 2, 4         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 0, 3         --- line 63 in astar2.py
+DEBUG: nDist 7         --- line 67 in astar2.py
+DEBUG: nCoord 0, 0         --- line 63 in astar2.py
+DEBUG: nDist 1         --- line 67 in astar2.py
+INFO: nSelected:0, 0         --- line 74 in astar2.py
+INFO: chemin trouvé         --- line 76 in astar2.py

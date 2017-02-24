@@ -11,38 +11,33 @@ fic.close()
 log.basicConfig(filename='sokoban.log',level=log.DEBUG,format='%(levelname)s: %(message)s --- line %(lineno)d in %(filename)s')
 ### ####### ###
 
+
 pygame.init()
-
 #Création de la fenêtre avec ses attributs
-fenetre= pygame.display.set_mode((800,600))
-#icone = perso_sprite[0]
-#pygame.display.set_icon(icone)
-pygame.display.set_caption('Sokoban')
-
+variables['fenetre'] = pygame.display.set_mode((800,600))
 
 #variables du personnage
 variables['speed'] = 10        #milliseconds par pas
 variables['styleP'] = 8  #selection perso
-
-variables['historyP']=[]
-variables['historyC']=[]
+variables['historyP']=[] #historique des déplacements du perso
+variables['historyC']=[] #historique des déplacements de chaque caisse
 
 
 variables['collection'] = "AC_Diamonds"
-fond = pygame.image.load("images/bg1.png")
-
-
 
 buttonCollection = ['newGame','saveGame','loadGame','resume','yes','no','quit','options','2players','3players','4players','withAI','withoutAI','ok','cancel','previous','next','return','mainMenu','template','inf','sup']
 
 ### menu
 mainMenuBtList = [0,2,7,6]
-mainMenuFonctions = [lambda: bt.collectionMenu(fenetre),lambda: bt.loadGame(fenetre),lambda: bt.options(fenetre),lambda:bt.quitt()]
+mainMenuFonctions = [lambda: bt.collectionMenu(),lambda: bt.loadGame(),lambda: bt.options(),lambda:bt.quitt()]
 levelMenuBtList = [11,12,8,9,10,17]
-levelMenuFonctions = [lambda: bt.withAI(fenetre),lambda: bt.withoutAI(fenetre),lambda: bt.twoPlayers(fenetre),lambda: bt.threePlayers(fenetre),lambda: bt.fourPlayers(fenetre), lambda: bt.collectionMenu(fenetre)]
-pauseMenuBtList = [3,1,2,6]
+levelMenuFonctions = [lambda: bt.withAI(),lambda: bt.withoutAI(),lambda: bt.twoPlayers(),lambda: bt.threePlayers(),lambda: bt.fourPlayers(), lambda: bt.collectionMenu()]
+pauseMenuBtList = [3,1,2,7,18]
+pauseMenuFonctions = [lambda: bt.resume(),lambda: bt.saveGame(0),lambda: bt.loadGame(),lambda: bt.options(alphaBg=True,fromPauseMenu=True),lambda: bt.mainMenu()]
 collectionMenuBtList = [19,17]
-collectionMenuFonctions = [lambda: bt.mainMenu(fenetre)]
+collectionMenuFonctions = [lambda: bt.mainMenu()]
+optionMenuBtList = [17]
+optionMenuFonctions = [lambda: bt.mainMenu()]
 
 
 
@@ -61,3 +56,9 @@ def setSurfaces():
 setSurfaces()
 
 log.debug(variables)
+
+
+pygame.display.set_icon(variables['surfaces']['element'])#icone de la fenetre
+pygame.display.set_caption('Sokoban')#nom de la fenetre
+
+

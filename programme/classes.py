@@ -3,6 +3,7 @@ import constantes as const
 import xml.etree.ElementTree as ET
 import math
 
+variables = const.variables
 
 class Noeud(object):
 
@@ -39,8 +40,8 @@ class Sprite(object):
             self.repr=rep
     ##
     # deplace le sprite dans la fenetre fen
-    def displaySprite(self,fen):
-        fen.blit(self.surface,(self.y*variables['spriteSize']*32,self.x*variables['spriteSize']*32))
+    def displaySprite(self):
+        variables['fenetre'].blit(self.surface,(self.y*variables['spriteSize']*32,self.x*variables['spriteSize']*32))
 
 
     def __getitem__(self,cle):
@@ -72,9 +73,9 @@ class Personnage(Sprite):
 
     ##
     # verifie et déplace le joueur quand c'est possible
-    def deplace(self,direction,niveau,fen,rewind=True):
-        if niveau.gameO[self.x+direction[0]][self.y+direction[1]].repr!='#':
-            if niveau.gameO[self.x+direction[0]][self.y+direction[1]].deplace(direction,niveau,fen,rewind):
+    def deplace(self,direction,rewind=True):
+        if variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]].repr!='#':
+            if variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]].deplace(direction,rewind):
                 if not rewind:
                     if direction==(-1,0):
                         variables['historyP']+='h'
@@ -84,9 +85,9 @@ class Personnage(Sprite):
                         variables['historyP']+='g'
                     else:
                         variables['historyP']+='d'
-                niveau.gameO[self.x+direction[0]][self.y+direction[1]]=self
-                niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
-                self.displaySpriteWithAnim(direction,niveau,fen)
+                variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]]=self
+                variables['niveauObj'].gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
+                self.displaySpriteWithAnim(direction)
                 print(str(self.x),str(self.y),sep=', ')
 
     def selectCaisse(self,liste):
@@ -106,7 +107,7 @@ class Personnage(Sprite):
     # @param direction:la direction du déplcament representé par -1,1,-2,2 pour haut, bas, gauche, droite
     # @param niveau:le niveau actuellement chargé
     # @param fen: la fenetre pygame
-    def displaySpriteWithAnim(self,direction,niveau,fen):
+    def displaySpriteWithAnim(self,direction):
         for n in (2,1,0,1):
             self.x+=direction[0]/4
             self.y+=direction[1]/4
@@ -118,8 +119,8 @@ class Personnage(Sprite):
                 self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],2*variables['spriteSize']*32,32*variables['spriteSize'],32*variables['spriteSize'])
             else:
                 self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'])
-            self.displaySprite(fen)
-            niveau.afficheNiveau(fen)
+            self.displaySprite()
+            variables['niveauObj'].afficheNiveau()
             pygame.time.wait(variables['speed'])
         self.x=int(round(self.x))
         self.y=int(round(self.y))
@@ -129,11 +130,11 @@ class Personnage(Sprite):
 class Caisse(Sprite):
     ##
     # verifie et deplace la caisse quand c'est possible, autorise le déplacement du personnage en renvoyant True/false
-    def deplace(self,direction,niveau,fen,rewind=True):#haut,bas,gauche,droite : -1,1,-2,2
-        if niveau.gameO[self.x+direction[0]][self.y+direction[1]].repr not in ('#','$'):
-            niveau.gameO[self.x+direction[0]][self.y+direction[1]]=self
-            niveau.gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
-            self.displaySpriteWithAnim(direction,niveau,fen)
+    def deplace(self,direction,rewind=True):#haut,bas,gauche,droite : -1,1,-2,2
+        if variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]].repr not in ('#','$'):
+            variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]]=self
+            variables['niveauObj'].gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
+            self.displaySpriteWithAnim(direction)
             if not rewind:
                 variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
             return True
@@ -142,12 +143,12 @@ class Caisse(Sprite):
 
     ##
     # deplace et rafraichit la caisse avec une animation
-    def displaySpriteWithAnim(self,direction,niveau,fen):
+    def displaySpriteWithAnim(self,direction):
         for n in range(3):
             self.x+=direction[0]/3
             self.y+=direction[1]/3
-            self.displaySprite(fen)
-            niveau.afficheNiveau(fen)
+            self.displaySprite()
+            variables['niveauObj'].afficheNiveau()
         self.x=int(round(self.x))
         self.y=int(round(self.y))
 
@@ -253,14 +254,13 @@ class Niveau(object):
 
     ##
     # met en place graphiquement le niveau et rafraichit la fenetre
-    def afficheNiveau(self,fen):
-        fen.blit(fond,(0,0))
+    def afficheNiveau(self):
         for x in range(len(self.gameP)):
             for y in range(len(self.gameP[0])):
-                self.gameP[x][y].displaySprite(fen)
+                self.gameP[x][y].displaySprite()
         for x in range(len(self.gameO)):
             for y in range(len(self.gameO[0])):
-                self.gameO[x][y].displaySprite(fen)
+                self.gameO[x][y].displaySprite()
         pygame.display.flip()
         #print(self)
         
@@ -393,14 +393,14 @@ class ButtonMenu:
             else:
                 return True
 
-    def displayButton(self,fen):
-        fen.blit(self.surface,self.coord)
+    def displayButton(self):
+        variables['fenetre'].blit(self.surface,self.coord)
 
 class ButtonCollectionMenu(ButtonMenu):
     def __init__(self,surface,rep,file,function,x=0,y=0):
         ButtonMenu.__init__(self,surface,rep,function,x,y)
         self.file = file
 
-    def isOnButton(self,pos,fenetre):
+    def isOnButton(self,pos):
         if pos[0]<self.coord[0]+self.dim[0] and pos[0]>self.coord[0] and pos[1]<self.coord[1]+self.dim[1] and pos[1]>self.coord[1]:
-            self.function(fenetre,self.file)
+            self.function(self.file)

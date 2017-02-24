@@ -1,0 +1,8 @@
+toutes les caisses -> une liste.
+toutes les arrivées -> une liste.
+caisse par caisse : assigne toutes les arrivées possibles + deplacement -> une liste de tuples
+caisse par caisse : assigne une arrivée unique par caisse -> une liste de tuples
+verifier si toutes les caisses ont une arrivée, si oui astar a fini avec une solution.
+sinon :
+
+caisse par caisse : selectionner la 2eme arrivée la plus proche.

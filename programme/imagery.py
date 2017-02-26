@@ -3,7 +3,7 @@ from PIL import Image
 
 def ouvrir(nomimage):
     #Creer l'objet image a partir du fichier image, exemple : nomimage='lena.jpg'
-    img=Image.open(nomimage)
+    img=Image.open(nomimage).convert('RGBA')
     print(img.mode)
     #Renvoie l'objet image a partir du fichier image
     return img
@@ -25,4 +25,5 @@ def redimensionner2(img,sign=True):
             else:
                 pix2[i,j] = pix1[i//2,j//2]
     imageS.show()
+    imageS.save('test.png')
     return imageS

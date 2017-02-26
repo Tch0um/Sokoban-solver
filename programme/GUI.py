@@ -4,7 +4,6 @@ import classes as cls
 import constantes as const
 import sauvegarde as save
 import os
-import sys
 
 variables = const.variables
 
@@ -19,15 +18,15 @@ def loadCollection(file):
 
 def whileLoop(menuButtons,fenetre=None): #attend une action sur un bouton quelconque
     pygame.display.flip()
-    menu = True
-    while menu:
+    while  not variables['quit']:
         pygame.time.Clock().tick(30)
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONDOWN and event.button == 1:
+        eventIncr,event = 0,pygame.event.get()
+        while not variables['quit'] and eventIncr<len(event):
+            if event[eventIncr].type == MOUSEBUTTONDOWN and event[eventIncr].button == 1:
                 for x in menuButtons:
-                    x.isOnButton(event.pos)
-            elif event.type == pygame.QUIT:
-                menu = False
+                    x.isOnButton(event[eventIncr].pos)
+            eventIncr+=1
+    quitt()
 
 # menu principal
 def mainMenu():
@@ -44,9 +43,8 @@ def mainMenu():
 
 def collectionMenu():
     lsFic = os.listdir('levels/')
-    font = pygame.font.SysFont('Courrier', 25)
 
-    
+    ### liste des nom de fichiers ###
     lsFicRender = []
     for chaine1 in lsFic:
         chaine2 = ''
@@ -63,11 +61,12 @@ def collectionMenu():
                 else:
                     chaine2+=char
         lsFicRender+=[chaine2]
+    ### ########################## ###
 
     page=1
     pagination = True
     print((len(lsFic)//6)+1)
-    while pagination:
+    while not variables['quit'] and pagination:
         print('page = '+str(page))
         variables['fenetre'].blit(pygame.image.load('images/menu_bg.png'),(0,0))
         variables['fenetre'].blit(pygame.image.load('images/menu_title.png'),(200,50)) 
@@ -78,7 +77,7 @@ def collectionMenu():
                 z=300
             menuButtons+=[cls.ButtonCollectionMenu(pygame.image.load('images/buttons/template.png'),'ButtonCollectionMenu',lsFic[(page-1)*6+x],loadCollection,150+z,x%3*80+200)]
             menuButtons[x].displayButton()
-            variables['fenetre'].blit(font.render(lsFicRender[x+6*(page-1)][:-4],True,(20,20,20)),(190+z,x%3*80+210))
+            variables['fenetre'].blit(variables['font'].render(lsFicRender[x+6*(page-1)][:-4],True,(20,20,20)),(190+z,x%3*80+210))
 
         menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/inf.png'),'inf',None,50,300),cls.ButtonMenu(pygame.image.load('images/buttons/sup.png'),'sup',None,700,300)]
         menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',cls.collectionMenuFonctions[0],150,500)]
@@ -88,30 +87,27 @@ def collectionMenu():
 
         pygame.display.flip()
         menu = True
-        while menu:
+        while not variables['quit'] and menu:
             pygame.time.Clock().tick(30)
-            for event in pygame.event.get():
-                if event.type == MOUSEBUTTONDOWN and event.button == 1:
+            eventIncr,event = 0,pygame.event.get()
+            while not variables['quit'] and eventIncr<len(event):
+                if event[eventIncr].type == MOUSEBUTTONDOWN and event[eventIncr].button == 1:
                     for x in menuButtons:
                         if x.repr =='ButtonCollectionMenu':
-                            x.isOnButton(event.pos)
+                            x.isOnButton(event[eventIncr].pos)
                         else:
-                            if x.repr=='inf' and page>1 and x.isOnButton(event.pos):
+                            if x.repr=='inf' and page>1 and x.isOnButton(event[eventIncr].pos):
                                 menu=False
                                 page=page-1
                                 print('dans while inf, page = '+str(page))
-                            elif x.repr=='sup' and page<((len(lsFic)//6)+1)and x.isOnButton(event.pos):
+                            elif x.repr=='sup' and page<((len(lsFic)//6)+1)and x.isOnButton(event[eventIncr].pos):
                                 menu=False
                                 page=page+1
                                 print('dans while sup, page = '+str(page))
                             else:
-                                x.isOnButton(event.pos)
-                elif event.type == pygame.QUIT:
-                    pygame.quit()
-                    menu=False
-                    pagination = False
-            
-        
+                                x.isOnButton(event[eventIncr].pos)
+                eventIncr+=1
+
 
 
 def modeMenu():
@@ -132,6 +128,9 @@ def modeMenu():
 
 def saveGame(port):
     save.saveGame(port,variables)
+    fontTextSaving = pygame.font.SysFont('Courrier', 40)
+    variables['fenetre'].blit(fontTextSaving.render('Sauvegarde effectuée',True,(220,220,220)),(variables['fenetre'].get_size()[0]-350,variables['fenetre'].get_size()[1]-50))
+    pygame.display.flip()
 
 def loadGame():
     global collection,niveaux,variables
@@ -157,13 +156,17 @@ def yes():
 def no():
     pass
 
+def onLeave():
+    variables['quit']=True
+
 def quitt():
+    print('pygame.quit()')
     pygame.quit() ## ban là ça fait une erreur pygame mais on s'en fou vu
                   ## que c'est pour fermer le jeu.
 
 def options(alphaBg=False,fromPauseMenu=False):
     if alphaBg:
-        variables['niveauObj'].afficheNiveau()
+        variables['niveauObj'].afficheNiveau(display=False)
         bg = pygame.Surface((variables['fenetre'].get_size()))
         bg.fill((0,0,0))
         bg.convert_alpha()
@@ -196,7 +199,7 @@ def withAI():
     pass
 
 def pause():
-    variables['niveauObj'].afficheNiveau()
+    variables['niveauObj'].afficheNiveau(display=False)
     bg = pygame.Surface((variables['fenetre'].get_size()))
     bg.fill((0,0,0))
     bg.convert_alpha()
@@ -228,44 +231,43 @@ def withoutAI():
 def whileGame(AI=False):
     global variables
     #boucle pygame
-    continuer = 1
-    #print(niveau)
-    while continuer:
+    while not variables['quit']:
         pygame.time.Clock().tick(30) #limitation "fps"
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+        gameIncr,game = 0,pygame.event.get()
+        while not variables['quit'] and gameIncr<len(game):
+            if game[gameIncr].type == pygame.QUIT:
                 continuer = 0
-            elif event.type == KEYDOWN:
+            elif game[gameIncr].type == KEYDOWN:
                 coordPerso = variables['niveauObj'].findPersonnage()
-                if event.key == K_RIGHT:
+                if game[gameIncr].key == K_RIGHT:
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,1),False)
                     variables['niveauObj'].afficheNiveau()
                     
-                if event.key == K_LEFT:
+                if game[gameIncr].key == K_LEFT:
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,-1),False)
                     variables['niveauObj'].afficheNiveau()
                     
-                if event.key == K_UP:
+                if game[gameIncr].key == K_UP:
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((-1,0),False)
                     variables['niveauObj'].afficheNiveau()
                     
-                if event.key == K_DOWN:
+                if game[gameIncr].key == K_DOWN:
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((1,0),False)
                     variables['niveauObj'].afficheNiveau()
                     
-                if event.key == K_BACKSPACE:
+                if game[gameIncr].key == K_BACKSPACE:
                     ##print('return')
                     if variables['historyP']!=[]:
                         save.rewind(variables)
                     
-                if event.key == K_HOME:
+                if game[gameIncr].key == K_HOME:
                     for n in range (len(variables['historyP'])):
                         save.rewind(variables)
 
-                if event.key == K_ESCAPE:
+                if game[gameIncr].key == K_ESCAPE:
                     pause()
                     
-                if event.key == K_KP0:
+                if game[gameIncr].key == K_KP0:
                     if variables['styleP']!=8:
                         variables['styleP']+=1
                     else:
@@ -273,14 +275,15 @@ def whileGame(AI=False):
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].setTileset()
                     variables['niveauObj'].afficheNiveau()
                     
-                if event.key == K_KP_PLUS:
+                if game[gameIncr].key == K_KP_PLUS:
                     variables['speed']+=5
                     print(variables['speed'])
                     
-                if event.key == K_KP_MINUS:
+                if game[gameIncr].key == K_KP_MINUS:
                     if variables['speed']>5:
                         variables['speed']-=5
                     print(variables['speed'])
+            gameIncr+=1
                     
                 #print(variables)
         if variables['niveauObj'].checkTarget(): #test de victoire

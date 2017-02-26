@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import GUI as bt
+import sys
 variables = {}
 
 ### logging ###
@@ -15,6 +16,8 @@ log.basicConfig(filename='sokoban.log',level=log.DEBUG,format='%(levelname)s: %(
 pygame.init()
 #Création de la fenêtre avec ses attributs
 variables['fenetre'] = pygame.display.set_mode((800,600))
+variables['font'] = pygame.font.SysFont('Courrier', 25)
+variables['quit'] = False
 
 #variables du personnage
 variables['speed'] = 10        #milliseconds par pas
@@ -29,7 +32,7 @@ buttonCollection = ['newGame','saveGame','loadGame','resume','yes','no','quit','
 
 ### menu
 mainMenuBtList = [0,2,7,6]
-mainMenuFonctions = [lambda: bt.collectionMenu(),lambda: bt.loadGame(),lambda: bt.options(),lambda:bt.quitt()]
+mainMenuFonctions = [lambda: bt.collectionMenu(),lambda: bt.loadGame(),lambda: bt.options(),lambda:bt.onLeave()]
 levelMenuBtList = [11,12,8,9,10,17]
 levelMenuFonctions = [lambda: bt.withAI(),lambda: bt.withoutAI(),lambda: bt.twoPlayers(),lambda: bt.threePlayers(),lambda: bt.fourPlayers(), lambda: bt.collectionMenu()]
 pauseMenuBtList = [3,1,2,7,18]

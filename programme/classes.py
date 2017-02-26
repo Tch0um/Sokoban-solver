@@ -254,14 +254,15 @@ class Niveau(object):
 
     ##
     # met en place graphiquement le niveau et rafraichit la fenetre
-    def afficheNiveau(self):
+    def afficheNiveau(self,display=True):
         for x in range(len(self.gameP)):
             for y in range(len(self.gameP[0])):
                 self.gameP[x][y].displaySprite()
         for x in range(len(self.gameO)):
             for y in range(len(self.gameO[0])):
                 self.gameO[x][y].displaySprite()
-        pygame.display.flip()
+        if display:
+            pygame.display.flip()
         #print(self)
         
     ##

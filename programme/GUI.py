@@ -240,20 +240,13 @@ def whileGame(AI=False):
             elif game[gameIncr].type == KEYDOWN:
                 coordPerso = variables['niveauObj'].findPersonnage()
                 if game[gameIncr].key == K_RIGHT:
-                    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,1),False)
-                    variables['niveauObj'].afficheNiveau()
-                    
+                    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,1),False)                    
                 if game[gameIncr].key == K_LEFT:
-                    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,-1),False)
-                    variables['niveauObj'].afficheNiveau()
-                    
+                    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,-1),False)                    
                 if game[gameIncr].key == K_UP:
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((-1,0),False)
-                    variables['niveauObj'].afficheNiveau()
-                    
                 if game[gameIncr].key == K_DOWN:
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((1,0),False)
-                    variables['niveauObj'].afficheNiveau()
                     
                 if game[gameIncr].key == K_BACKSPACE:
                     ##print('return')

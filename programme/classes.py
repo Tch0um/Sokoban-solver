@@ -75,7 +75,8 @@ class Personnage(Sprite):
     # verifie et déplace le joueur quand c'est possible
     def deplace(self,direction,rewind=True):
         if variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]].repr!='#':
-            if variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]].deplace(direction,rewind):
+            depl = variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]].deplace(direction,rewind)
+            if depl in (True,"movable"): ## True si deplacement possible, movable si deplacement possible et deplacement de caisse
                 if not rewind:
                     if direction==(-1,0):
                         variables['historyP']+='h'
@@ -87,27 +88,33 @@ class Personnage(Sprite):
                         variables['historyP']+='d'
                 variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]]=self
                 variables['niveauObj'].gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
-                self.displaySpriteWithAnim(direction)
+                variables['niveauObj'].moved.append((self.x,self.y))
+                variables['niveauObj'].moved.append((self.x+direction[0],self.y+direction[1]))
+                self.displaySpriteWithAnim(direction,depl)
+                variables['niveauObj'].moved=[]
                 print(str(self.x),str(self.y),sep=', ')
 
-    def selectCaisse(self,liste):
-        distMin = 1000000
-        best = None
-        for n in range(len(liste)):
-            x1,y1=self.x,self.y
-            x2,y2=liste[n].x,liste[n].y
-            dist = math.sqrt((x2-x1)**2+(y2-y1)**2)
-            if dist<distMin:
-                distMin = dist
-                best = n
-        return best
+##    def selectCaisse(self,liste):
+##        distMin = 1000000
+##        best = None
+##        for n in range(len(liste)):
+##            x1,y1=self.x,self.y
+##            x2,y2=liste[n].x,liste[n].y
+##            dist = math.sqrt((x2-x1)**2+(y2-y1)**2)
+##            if dist<distMin:
+##                distMin = dist
+##                best = n
+##        return best
 
     ##
     # deplace et rafraichit le personnage avec une animation et un changement d'image a chaques frame
     # @param direction:la direction du déplcament representé par -1,1,-2,2 pour haut, bas, gauche, droite
     # @param niveau:le niveau actuellement chargé
     # @param fen: la fenetre pygame
-    def displaySpriteWithAnim(self,direction):
+    def displaySpriteWithAnim(self,direction,depl):
+        if depl=="movable":
+            caisse = variables['niveauObj'].gameO[self.x+direction[0]*2][self.y+direction[1]*2]
+            print(caisse)
         for n in (2,1,0,1):
             self.x+=direction[0]/4
             self.y+=direction[1]/4
@@ -120,10 +127,18 @@ class Personnage(Sprite):
             else:
                 self.surface=self.tilesetPerso.subsurface(n*32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'],32*variables['spriteSize'])
             self.displaySprite()
-            variables['niveauObj'].afficheNiveau()
+            if depl == "movable":
+                caisse.x+=direction[0]/4
+                caisse.y+=direction[1]/4
+                caisse.displaySprite()
+            variables['niveauObj'].afficheNiveau(inGame=True)
             pygame.time.wait(variables['speed'])
         self.x=int(round(self.x))
         self.y=int(round(self.y))
+        if depl=="movable":
+            caisse.x=int(round(caisse.x))
+            caisse.y=int(round(caisse.y))
+        
                     
 
 
@@ -134,23 +149,12 @@ class Caisse(Sprite):
         if variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]].repr not in ('#','$'):
             variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]]=self
             variables['niveauObj'].gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
-            self.displaySpriteWithAnim(direction)
+            variables['niveauObj'].moved.append((self.x+direction[0],self.y+direction[1]))
             if not rewind:
                 variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
-            return True
+            return "movable"
         return False
 
-
-    ##
-    # deplace et rafraichit la caisse avec une animation
-    def displaySpriteWithAnim(self,direction):
-        for n in range(3):
-            self.x+=direction[0]/3
-            self.y+=direction[1]/3
-            self.displaySprite()
-            variables['niveauObj'].afficheNiveau()
-        self.x=int(round(self.x))
-        self.y=int(round(self.y))
 
 class Niveau(object):
     ##
@@ -162,6 +166,7 @@ class Niveau(object):
         self.grilleO=grilleObstacle # contient murs, caisses --- '#', '$','@', False
         self.gameP=[]
         self.gameO=[]
+        self.moved=[]
 
     def grilleObstacle(self):
         grille = []
@@ -254,13 +259,21 @@ class Niveau(object):
 
     ##
     # met en place graphiquement le niveau et rafraichit la fenetre
-    def afficheNiveau(self,display=True):
-        for x in range(len(self.gameP)):
-            for y in range(len(self.gameP[0])):
-                self.gameP[x][y].displaySprite()
-        for x in range(len(self.gameO)):
-            for y in range(len(self.gameO[0])):
-                self.gameO[x][y].displaySprite()
+    def afficheNiveau(self,display=True,inGame=False):
+        if inGame:
+            for n in self.moved:
+                print(n)
+                self.gameP[n[0]][n[1]].displaySprite()
+            print()
+            for n in self.moved:
+                self.gameO[n[0]][n[1]].displaySprite()
+        else:
+            for x in range(len(self.gameP)):
+                for y in range(len(self.gameP[0])):
+                    self.gameP[x][y].displaySprite()
+            for x in range(len(self.gameO)):
+                for y in range(len(self.gameO[0])):
+                    self.gameO[x][y].displaySprite()
         if display:
             pygame.display.flip()
         #print(self)

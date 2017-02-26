@@ -1,0 +1,24 @@
+INFO: (47, 40)  (37, 46)         --- line 49 in astar4.py
+INFO: nSelected:47, 40         --- line 73 in astar4.py
+INFO: nSelected:46, 40         --- line 73 in astar4.py
+INFO: nSelected:45, 40         --- line 73 in astar4.py
+INFO: nSelected:45, 41         --- line 73 in astar4.py
+INFO: nSelected:45, 42         --- line 73 in astar4.py
+INFO: nSelected:45, 43         --- line 73 in astar4.py
+INFO: nSelected:44, 43         --- line 73 in astar4.py
+INFO: nSelected:44, 44         --- line 73 in astar4.py
+INFO: nSelected:44, 41         --- line 73 in astar4.py
+INFO: nSelected:43, 41         --- line 73 in astar4.py
+INFO: nSelected:42, 41         --- line 73 in astar4.py
+INFO: nSelected:42, 42         --- line 73 in astar4.py
+INFO: nSelected:42, 43         --- line 73 in astar4.py
+INFO: nSelected:42, 44         --- line 73 in astar4.py
+INFO: nSelected:42, 45         --- line 73 in astar4.py
+INFO: nSelected:42, 46         --- line 73 in astar4.py
+INFO: nSelected:41, 45         --- line 73 in astar4.py
+INFO: nSelected:40, 45         --- line 73 in astar4.py
+INFO: nSelected:39, 45         --- line 73 in astar4.py
+INFO: nSelected:39, 46         --- line 73 in astar4.py
+INFO: nSelected:38, 46         --- line 73 in astar4.py
+INFO: nSelected:37, 46         --- line 73 in astar4.py
+INFO: chemin trouvé         --- line 75 in astar4.py

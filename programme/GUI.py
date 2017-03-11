@@ -4,6 +4,7 @@ import classes as cls
 import constantes as const
 import sauvegarde as save
 import os
+import astar42
 
 variables = const.variables
 
@@ -219,7 +220,7 @@ def pause():
 def withoutAI():
     global variables
     
-    variables['nbNiveau'] = 1
+    variables['nbNiveau'] = 0
     tupleG = niveaux.loadLevel(variables['nbNiveau'],variables['fenetre'])
     variables['niveauObj'] = cls.Niveau(tupleG[0],tupleG[1])
     variables['niveauObj'].gameConstructor()
@@ -256,6 +257,9 @@ def whileGame(AI=False):
                 if game[gameIncr].key == K_HOME:
                     for n in range (len(variables['historyP'])):
                         save.rewind(variables)
+
+                if game[gameIncr].key == K_a:
+                    print(astar42.astar())
 
                 if game[gameIncr].key == K_ESCAPE:
                     pause()

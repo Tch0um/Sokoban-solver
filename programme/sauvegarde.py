@@ -54,8 +54,7 @@ def rewind(variables):
     #print(niveau.gameO[coordPerso[0]][coordPerso[1]].repr)
     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace(direction)
     if variables['historyC']!=[] and len(variables['historyP']) == int(variables['historyC'][-1][2]):
-        #print('if2')
+        print('if2')
+        print(variables['historyC'])
         variables['niveauObj'].gameO[int(variables['historyC'][-1][0])][int(variables['historyC'][-1][1])].deplace(direction)
         del variables['historyC'][-1]
-        
-    variables['niveauObj'].afficheNiveau()

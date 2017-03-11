@@ -150,8 +150,19 @@ class Caisse(Sprite):
             variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]]=self
             variables['niveauObj'].gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
             variables['niveauObj'].moved.append((self.x+direction[0],self.y+direction[1]))
+            print(str(self.x+direction[0]),str(self.y+direction[1]),'truc',sep=' ')
             if not rewind:
-                variables['historyC'] += [[str(self.x),str(self.y),str(len(variables['historyP']))]]
+                variables['historyC'] += [[str(self.x+direction[0]),str(self.y+direction[1]),str(len(variables['historyP']))]]
+            else:
+                variables['niveauObj'].moved.append((self.x,self.y))
+                for n in range(4):
+                    self.x+=direction[0]/4
+                    self.y+=direction[1]/4
+                    self.displaySprite()
+                    variables['niveauObj'].afficheNiveau(inGame=True)
+                variables['niveauObj'].moved=[]
+                self.x=int(round(self.x))
+                self.y=int(round(self.y))
             return "movable"
         return False
 
@@ -167,22 +178,25 @@ class Niveau(object):
         self.gameP=[]
         self.gameO=[]
         self.moved=[]
+        self.perso=None
+        self.caisses=[]
+        self.stelles=[]
 
-    def grilleObstacle(self):
-        grille = []
-        for i in range(len(self.gameO)):          #Pour chaque ligne
-            LigneTmp = []
-            for j in range(len(self.gameO[0])):   #Pour chaque colonne
-                if self.gameO[i][j].repr==':':
-                    LigneTmp.append(1)
-                    print('1',end='')
-                else:
-                    LigneTmp.append(0)
-                    print('0',end='')
-            grille.append(LigneTmp)
-            print()
-
-        return grille
+##    def grilleObstacle(self):
+##        grille = []
+##        for i in range(len(self.gameO)):          #Pour chaque ligne
+##            LigneTmp = []
+##            for j in range(len(self.gameO[0])):   #Pour chaque colonne
+##                if self.gameO[i][j].repr==':':
+##                    LigneTmp.append(1)
+##                    print('1',end='')
+##                else:
+##                    LigneTmp.append(0)
+##                    print('0',end='')
+##            grille.append(LigneTmp)
+##            print()
+##
+##        return grille
 
 
     ##
@@ -197,32 +211,32 @@ class Niveau(object):
         return ls
 
 
-    def allTarget(self):
-        ls=[]
-        for x in range(len(self.gameP)):
-            for y in range(len(self.gameP[0])):
-                if self.gameP[x][y].repr == "+" and self.gameO[x][y].repr!="$":
-                    ls.append(self.gameP[x][y])
-        return ls
+##    def allTarget(self):
+##        ls=[]
+##        for x in range(len(self.gameP)):
+##            for y in range(len(self.gameP[0])):
+##                if self.gameP[x][y].repr == "+" and self.gameO[x][y].repr!="$":
+##                    ls.append(self.gameP[x][y])
+##        return ls
 
 
-    def selectTarget(self):
-        lsCaisse,lsTarget = self.caisseNotOnTarget(),self.allTarget()
-        
-        lsTmp = []
-        for caisse in lsCaisse:
-            x1,y1 = caisse.x,caisse.y
-            x = 100000
-            for n in range (len(lsTarget)):
-                x2,y2 = lsTarget[n].x,lsTarget[n].y
-                dist = math.sqrt((x2-x1)**2+(y2-y1)**2)
-                if dist<x:
-                    x = dist
-                    target = lsTarget[n]
-                    rang = n
-            lsTmp.append(target)
-            del lsTarget[rang]
-        return [lsCaisse,lsTmp]
+##    def selectTarget(self):
+##        lsCaisse,lsTarget = self.caisseNotOnTarget(),self.allTarget()
+##        
+##        lsTmp = []
+##        for caisse in lsCaisse:
+##            x1,y1 = caisse.x,caisse.y
+##            x = 100000
+##            for n in range (len(lsTarget)):
+##                x2,y2 = lsTarget[n].x,lsTarget[n].y
+##                dist = math.sqrt((x2-x1)**2+(y2-y1)**2)
+##                if dist<x:
+##                    x = dist
+##                    target = lsTarget[n]
+##                    rang = n
+##            lsTmp.append(target)
+##            del lsTarget[rang]
+##        return [lsCaisse,lsTmp]
 
 
                                 
@@ -234,7 +248,10 @@ class Niveau(object):
             for y in range(len(self.grilleP[0])):
                 if self.grilleP[x][y]:
                     if self.grilleP[x][y]=='+': ## stelle ##
-                        line+=[Sprite(variables['surfaces']['target'],'+',x,y)]
+                        obj = Sprite(variables['surfaces']['target'],'+',x,y)
+                        line+=[obj]
+                        self.stelles.append(obj)
+                        
                     else:
                         line+=[Sprite(variables['surfaces']['space'],' ',x,y)]
                 else:
@@ -246,11 +263,15 @@ class Niveau(object):
             for y in range(len(self.grilleO[0])):
                 if self.grilleO[x][y]:
                     if self.grilleO[x][y]=='$': ## caisse ##
-                        line+=[Caisse(variables['surfaces']['element'],'$',x,y)]
+                        obj = Caisse(variables['surfaces']['element'],'$',x,y)
+                        line+=[obj]
+                        self.caisses.append(obj)
                     elif self.grilleO[x][y]=='#': ## mur ##
                         line+=[Sprite(variables['surfaces']['wall'],'#',x,y)]
                     elif self.grilleO[x][y]=='@': ## personnage ##
-                        line+=[Personnage(None,x,y)]
+                        perso = Personnage(None,x,y)
+                        line+=[perso]
+                        self.perso=perso
                     else:
                         line+=[Sprite(variables['surfaces']['blank'],':',x,y)]
                 else:

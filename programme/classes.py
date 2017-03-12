@@ -92,7 +92,7 @@ class Personnage(Sprite):
                 variables['niveauObj'].moved.append((self.x+direction[0],self.y+direction[1]))
                 self.displaySpriteWithAnim(direction,depl)
                 variables['niveauObj'].moved=[]
-                print(str(self.x),str(self.y),sep=', ')
+                #print(str(self.x),str(self.y),sep=', ')
 
 ##    def selectCaisse(self,liste):
 ##        distMin = 1000000
@@ -114,7 +114,7 @@ class Personnage(Sprite):
     def displaySpriteWithAnim(self,direction,depl):
         if depl=="movable":
             caisse = variables['niveauObj'].gameO[self.x+direction[0]*2][self.y+direction[1]*2]
-            print(caisse)
+            #print(caisse)
         for n in (2,1,0,1):
             self.x+=direction[0]/4
             self.y+=direction[1]/4
@@ -150,7 +150,7 @@ class Caisse(Sprite):
             variables['niveauObj'].gameO[self.x+direction[0]][self.y+direction[1]]=self
             variables['niveauObj'].gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
             variables['niveauObj'].moved.append((self.x+direction[0],self.y+direction[1]))
-            print(str(self.x+direction[0]),str(self.y+direction[1]),'truc',sep=' ')
+            #print(str(self.x+direction[0]),str(self.y+direction[1]),'truc',sep=' ')
             if not rewind:
                 variables['historyC'] += [[str(self.x+direction[0]),str(self.y+direction[1]),str(len(variables['historyP']))]]
             else:
@@ -283,9 +283,9 @@ class Niveau(object):
     def afficheNiveau(self,display=True,inGame=False):
         if inGame:
             for n in self.moved:
-                print(n)
+                #print(n)
                 self.gameP[n[0]][n[1]].displaySprite()
-            print()
+            #print()
             for n in self.moved:
                 self.gameO[n[0]][n[1]].displaySprite()
         else:

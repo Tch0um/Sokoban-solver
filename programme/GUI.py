@@ -260,11 +260,12 @@ def whileGame(AI=False):
 
                 if game[gameIncr].key == K_a:
                     lsDep = astar42.astar()
-                    lsDep.reverse()
                     print('lsDep '+str(lsDep))
-                    for x in lsDep:
-                        coordPerso = variables['niveauObj'].findPersonnage()
-                        variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace(x,False)
+                    if lsDep!=None:
+                        lsDep.reverse()
+                        for x in lsDep:
+                            coordPerso = variables['niveauObj'].findPersonnage()
+                            variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace(x,False)
 
                 if game[gameIncr].key == K_ESCAPE:
                     pause()
@@ -289,4 +290,4 @@ def whileGame(AI=False):
                     
                 #print(variables)
         if variables['niveauObj'].checkTarget(): #test de victoire
-            print('vous avez gagné !!!')
+            pass

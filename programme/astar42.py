@@ -15,6 +15,24 @@ class Node(object):
     def __repr__(self):
         return str(self.pos)+', '+str(self.parent)+'\n'
 
+class ABRNode(object):
+    def __init__(self,node,ga=None,dr=None):
+        self.node = node
+        self.ga = ga
+        self.dr = dr
+
+    def add(self,element):
+        if element.h<self.node.h:
+            self.ga.add(element)
+        elif element.h>self.node.h:
+            self.dr.add(element)
+
+    def remove(self,element):
+        if element.node.h<self.node.h:
+            self.ga.remove(element)
+        elif element.node.h>self.node.h:
+            self.dr.remove(element)
+
 
 def niveauToState():
     S = []
@@ -35,7 +53,10 @@ def niveauToState():
 
 
 def endTest(etat,S):
-    return etat.box==S
+    for box in etat.box:
+        if box not in S:
+            return False
+    return True
 
 
 def Hamming(start,end):
@@ -94,8 +115,9 @@ def astar():
     closedList = []
 
     openList.append(start)
-
+    cpt = 0
     while openList!=[]:
+        cpt+=1
         sSelected = Node([],(),1000000000)
         for state in openList:
             if state.h<sSelected.h:
@@ -105,8 +127,8 @@ def astar():
         openList.remove(sSelected)
 
         if endTest(sSelected,S):
-            print("chemin trouvé")
-            print(sSelected)
+            print("chemin trouvé en %s iterations" %(cpt))
+            #print(sSelected)
             return reconstructPath(sSelected)
         else:
             successeur(sSelected,S,M,openList,closedList)

@@ -9,10 +9,10 @@ it still interesting.
   <LevelCollection Copyright="Eric F Tchong" MaxWidth="13" MaxHeight="13">
     <Level Id="Aruba" Width="9" Height="7">
       <L>#########</L>
-      <L>#.   $ .#</L>
+      <L>#.$  $ .#</L>
       <L>#   #   #</L>
-      <L>#   $ . #</L>
-      <L>#  #  $ #</L>
+      <L>#.  $  *#</L>
+      <L>#  # $ .#</L>
       <L>#   @   #</L>
       <L>#########</L>
     </Level>

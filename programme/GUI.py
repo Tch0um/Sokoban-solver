@@ -259,7 +259,12 @@ def whileGame(AI=False):
                         save.rewind(variables)
 
                 if game[gameIncr].key == K_a:
-                    print(astar42.astar())
+                    lsDep = astar42.astar()
+                    lsDep.reverse()
+                    print('lsDep '+str(lsDep))
+                    for x in lsDep:
+                        coordPerso = variables['niveauObj'].findPersonnage()
+                        variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace(x,False)
 
                 if game[gameIncr].key == K_ESCAPE:
                     pause()

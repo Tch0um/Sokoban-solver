@@ -5,6 +5,12 @@ import constantes as const
 import sauvegarde as save
 import os
 import astar42
+import time
+from pygame import mixer
+
+pygame.mixer.init()
+deplacement=pygame.mixer.Sound("sons/pas.wav")
+pousser=pygame.mixer.Sound("sons/swoosh.wav")
 
 variables = const.variables
 
@@ -241,12 +247,20 @@ def whileGame(AI=False):
             elif game[gameIncr].type == KEYDOWN:
                 coordPerso = variables['niveauObj'].findPersonnage()
                 if game[gameIncr].key == K_RIGHT:
+                    deplacement.play()
+                    time.sleep(0.1)
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,1),False)                    
                 if game[gameIncr].key == K_LEFT:
+                    deplacement.play()
+                    time.sleep(0.1)
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,-1),False)                    
                 if game[gameIncr].key == K_UP:
+                    deplacement.play()
+                    time.sleep(0.1)
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((-1,0),False)
                 if game[gameIncr].key == K_DOWN:
+                    deplacement.play()
+                    time.sleep(0.1)
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((1,0),False)
                     
                 if game[gameIncr].key == K_BACKSPACE:

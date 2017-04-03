@@ -9,7 +9,7 @@ import time
 from pygame import mixer
 
 pygame.mixer.init()
-deplacement=pygame.mixer.Sound("sons/pas.wav")
+deplacement=pygame.mixer.Sound("sons/pas_cutted.wav")
 pousser=pygame.mixer.Sound("sons/swoosh.wav")
 
 variables = const.variables
@@ -171,6 +171,18 @@ def quitt():
     pygame.quit() ## ban là ça fait une erreur pygame mais on s'en fou vu
                   ## que c'est pour fermer le jeu.
 
+def previousStyle():
+    print('previousStyle')
+
+def nextStyle():
+    print('nextStyle')
+
+def previousSpeed():
+    print('previousSpeed')
+
+def nextSpeed():
+    print('nextSpeed')
+
 def options(alphaBg=False,fromPauseMenu=False):
     if alphaBg:
         variables['niveauObj'].afficheNiveau(display=False)
@@ -185,10 +197,17 @@ def options(alphaBg=False,fromPauseMenu=False):
     
     menuButtons = []
     for x in range(len(cls.optionMenuBtList)):
-        if cls.buttonCollection[cls.optionMenuBtList[x]] == 'return' and fromPauseMenu:
-            menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: pause(),150,500)]
+        if cls.buttonCollection[cls.optionMenuBtList[x]] == 'return':
+            if fromPauseMenu:
+                menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: pause(),150,500)]
+            else:
+                menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: mainMenu(),150,500)]
         else:
-            menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.optionMenuBtList[x]]+'.png'),cls.buttonCollection[cls.optionMenuBtList[x]],cls.optionMenuFonctions[x],150,500)]
+            if cls.buttonCollection[cls.optionMenuBtList[x]] == 'sup':
+                menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.optionMenuBtList[x]]+'.png'),cls.buttonCollection[cls.optionMenuBtList[x]],cls.optionMenuFonctions[x],600,(x-1)*100+200)]
+            else:
+                
+                menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.optionMenuBtList[x]]+'.png'),cls.buttonCollection[cls.optionMenuBtList[x]],cls.optionMenuFonctions[x],100,x*100+200)]
         menuButtons[x].displayButton()
     whileLoop(menuButtons)
 
@@ -248,19 +267,15 @@ def whileGame(AI=False):
                 coordPerso = variables['niveauObj'].findPersonnage()
                 if game[gameIncr].key == K_RIGHT:
                     deplacement.play()
-                    time.sleep(0.1)
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,1),False)                    
                 if game[gameIncr].key == K_LEFT:
                     deplacement.play()
-                    time.sleep(0.1)
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,-1),False)                    
                 if game[gameIncr].key == K_UP:
                     deplacement.play()
-                    time.sleep(0.1)
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((-1,0),False)
                 if game[gameIncr].key == K_DOWN:
                     deplacement.play()
-                    time.sleep(0.1)
                     variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((1,0),False)
                     
                 if game[gameIncr].key == K_BACKSPACE:

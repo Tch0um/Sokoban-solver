@@ -39,8 +39,8 @@ pauseMenuBtList = [3,1,2,7,18]
 pauseMenuFonctions = [lambda: bt.resume(),lambda: bt.saveGame(0),lambda: bt.loadGame(),lambda: bt.options(alphaBg=True,fromPauseMenu=True),lambda: bt.mainMenu()]
 collectionMenuBtList = [19,17]
 collectionMenuFonctions = [lambda: bt.mainMenu()]
-optionMenuBtList = [17]
-optionMenuFonctions = [lambda: bt.mainMenu()]
+optionMenuBtList = [20,21,20,21]
+optionMenuFonctions = [lambda: bt.previousStyle(),lambda: bt.nextStyle(),lambda: bt.previousSpeed(),lambda: bt.nextSpeed()]
 
 
 

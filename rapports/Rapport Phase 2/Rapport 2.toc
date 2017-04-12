@@ -1,0 +1,19 @@
+\select@language {french}
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Cahier des Charges}{3}
+\contentsline {subsection}{\numberline {2.1}R\IeC {\'e}sum\IeC {\'e} des objectifs:}{3}
+\contentsline {subsection}{\numberline {2.2}Librairies utilis\IeC {\'e}es:}{3}
+\contentsline {subsection}{\numberline {2.3}Pr\IeC {\'e}-requis d'utilisation}{3}
+\contentsline {subsection}{\numberline {2.4}Dates fix\IeC {\'e}es}{3}
+\contentsline {subsection}{\numberline {2.5}Recensement des fonctionnalit\IeC {\'e}s}{3}
+\contentsline {subsubsection}{\numberline {2.5.1}Fonctionnalit\IeC {\'e}s obligatoires}{3}
+\contentsline {subsubsection}{\numberline {2.5.2}Fonctionnalit\IeC {\'e}s additionnelles}{3}
+\contentsline {subsection}{\numberline {2.6}Priorit\IeC {\'e}s , importance relative des fonctionnalit\IeC {\'e}s}{3}
+\contentsline {section}{\numberline {3}Explication du programme , d\IeC {\'e}tails de conception}{4}
+\contentsline {subsection}{\numberline {3.1}Moteur de jeu}{4}
+\contentsline {subsection}{\numberline {3.2}Algorithme de r\IeC {\'e}solution A* et heuristique}{4}
+\contentsline {subsection}{\numberline {3.3}M\IeC {\'e}canique des fonctions additionnelles}{4}
+\contentsline {section}{\numberline {4}Sch\IeC {\'e}ma UML : diagramme de classe}{5}
+\contentsline {section}{\numberline {5}Tests}{6}
+\contentsline {section}{\numberline {6}Conclusion , difficult\IeC {\'e}s rencontr\IeC {\'e}es}{7}
+\contentsline {section}{\numberline {7}Bibliographies , sources}{8}

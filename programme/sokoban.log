@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 DEBUG: {'styleP': 1, 'historyP': [], 'fenetre': <Surface(800x600x32 SW)>, 'speed': 10, 'font': <pygame.font.Font object at 0x7f9b7df6f610>, 'surfaces': {'wall': <Surface(32x32x32 SW)>, 'perso': <Surface(384x256x8 SW)>, 'world': <Surface(64x64x32 SW)>, 'target': <Surface(32x32x32 SW)>, 'element': <Surface(32x32x32 SW)>, 'blank': <Surface(0x0x32 SW)>, 'space': <Surface(32x32x32 SW)>}, 'spriteSize': 1, 'historyC': [], 'quit': False, 'collection': 'AC_Diamonds'} --- line 61 in constantes.py
+=======
+DEBUG: {'spriteSize': 1, 'styleP': 8, 'speed': 10, 'historyP': [], 'surfaces': {'wall': <Surface(32x32x32 SW)>, 'blank': <Surface(0x0x32 SW)>, 'world': <Surface(64x64x32 SW)>, 'element': <Surface(32x32x32 SW)>, 'target': <Surface(32x32x32 SW)>, 'perso': <Surface(384x256x8 SW)>, 'space': <Surface(32x32x32 SW)>}, 'font': <pygame.font.Font object at 0x03B11D00>, 'fenetre': <Surface(800x600x32 SW)>, 'quit': False, 'collection': 'AC_Diamonds', 'historyC': []} --- line 61 in constantes.py
+>>>>>>> 4bdccf5ba109ab440b062e03a4bdb7ff6edbad8d

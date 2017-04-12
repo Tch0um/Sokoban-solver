@@ -41,7 +41,7 @@ class Sprite(object):
     ##
     # deplace le sprite dans la fenetre fen
     def displaySprite(self):
-        variables['fenetre'].blit(self.surface,(self.y*variables['spriteSize']*32,self.x*variables['spriteSize']*32))
+        variables['fenetre'].blit(self.surface,(self.y*variables['spriteSize']*32+variables['niveauObj'].offset[0],self.x*variables['spriteSize']*32+variables['niveauObj'].offset[1]))
 
 
     def __getitem__(self,cle):
@@ -172,7 +172,7 @@ class Niveau(object):
     # constructeur du niveau
     # @param grillePlan:la grille du plan
     # @param grilleObstacle:la grille des obstacles
-    def __init__(self,grillePlan,grilleObstacle):
+    def __init__(self,grillePlan,grilleObstacle,screenOffset=[0,0]):
         self.grilleP=grillePlan #contient vides, platformes --- ' ', '+', False
         self.grilleO=grilleObstacle # contient murs, caisses --- '#', '$','@', False
         self.gameP=[]
@@ -181,22 +181,7 @@ class Niveau(object):
         self.perso=None
         self.caisses=[]
         self.stelles=[]
-
-##    def grilleObstacle(self):
-##        grille = []
-##        for i in range(len(self.gameO)):          #Pour chaque ligne
-##            LigneTmp = []
-##            for j in range(len(self.gameO[0])):   #Pour chaque colonne
-##                if self.gameO[i][j].repr==':':
-##                    LigneTmp.append(1)
-##                    print('1',end='')
-##                else:
-##                    LigneTmp.append(0)
-##                    print('0',end='')
-##            grille.append(LigneTmp)
-##            print()
-##
-##        return grille
+        self.offset=screenOffset
 
 
     ##
@@ -209,36 +194,6 @@ class Niveau(object):
                 if self.gameO[x][y].repr == "$" and self.gameP[x][y].repr != "+":
                     ls.append(self.gameO[x][y])
         return ls
-
-
-##    def allTarget(self):
-##        ls=[]
-##        for x in range(len(self.gameP)):
-##            for y in range(len(self.gameP[0])):
-##                if self.gameP[x][y].repr == "+" and self.gameO[x][y].repr!="$":
-##                    ls.append(self.gameP[x][y])
-##        return ls
-
-
-##    def selectTarget(self):
-##        lsCaisse,lsTarget = self.caisseNotOnTarget(),self.allTarget()
-##        
-##        lsTmp = []
-##        for caisse in lsCaisse:
-##            x1,y1 = caisse.x,caisse.y
-##            x = 100000
-##            for n in range (len(lsTarget)):
-##                x2,y2 = lsTarget[n].x,lsTarget[n].y
-##                dist = math.sqrt((x2-x1)**2+(y2-y1)**2)
-##                if dist<x:
-##                    x = dist
-##                    target = lsTarget[n]
-##                    rang = n
-##            lsTmp.append(target)
-##            del lsTarget[rang]
-##        return [lsCaisse,lsTmp]
-
-
                                 
     ##
     # construit les grilles gameP et gameO avec les grille de plan et d'obstacle. gameP et gameO sont des grilles contenant que des Sprites, spécialisés ou non.
@@ -289,6 +244,7 @@ class Niveau(object):
             for n in self.moved:
                 self.gameO[n[0]][n[1]].displaySprite()
         else:
+            variables['fenetre'].blit(pygame.Surface(variables['fenetre'].get_size()),(0,0))
             for x in range(len(self.gameP)):
                 for y in range(len(self.gameP[0])):
                     self.gameP[x][y].displaySprite()
@@ -401,7 +357,7 @@ class LevelCollection(object):
             fenetre= pygame.display.set_mode((self.width*variables['spriteSize']*32,self.height*variables['spriteSize']*32))
         else:
             variables['spriteSize']=2
-            fenetre= pygame.display.set_mode((self.width*variables['spriteSize']*32,self.height*variables['spriteSize']*32))
+            fenetre= pygame.display.set_mode((800,600))
             
         const.setSurfaces()
         

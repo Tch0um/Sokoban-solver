@@ -7,6 +7,7 @@ import os
 import astar42
 import time
 from pygame import mixer
+import imagery as i
 
 pygame.mixer.init()
 deplacement=pygame.mixer.Sound("sons/pas_cutted.wav")
@@ -37,6 +38,7 @@ def whileLoop(menuButtons,fenetre=None): #attend une action sur un bouton quelco
 
 # menu principal
 def mainMenu():
+    variables['ingame']=False
     variables['fenetre'] = pygame.display.set_mode((800,600))
     variables['fenetre'].blit(pygame.image.load('images/menu_bg.png'),(0,0))
     variables['fenetre'].blit(pygame.image.load('images/menu_title.png'),(200,50))
@@ -146,6 +148,9 @@ def loadGame():
     variables['nbNiveau'] = tupl[1]
     variables['niveauObj'] = cls.Niveau(niveaux.loadLevel(variables['nbNiveau'],variables['fenetre'])[0],tupl[0])
     variables['niveauObj'].gameConstructor()
+    if variables['spriteSize']==2:
+        print('essaie')
+        variables['niveauObj'].offset=[(800-2*32*len(variables['niveauObj'].gameO[0]))//2,(600-2*32*len(variables['niveauObj'].gameO))//2]
     
     #affichage de la première frame
     variables['niveauObj'].afficheNiveau()
@@ -168,23 +173,37 @@ def onLeave():
 
 def quitt():
     print('pygame.quit()')
-    pygame.quit() ## ban là ça fait une erreur pygame mais on s'en fou vu
-                  ## que c'est pour fermer le jeu.
+    pygame.quit()
+
 
 def previousStyle():
     print('previousStyle')
+    if variables['styleP']!=1:
+        variables['styleP']-=1
+        options()
+    
 
 def nextStyle():
     print('nextStyle')
+    if variables['styleP']!=8:
+        variables['styleP']+=1
+        options()
 
 def previousSpeed():
-    print('previousSpeed')
+    if variables['speed']>5:
+        variables['speed']-=5
+    print(variables['speed'])
+    options()
 
 def nextSpeed():
-    print('nextSpeed')
+    variables['speed']+=5
+    print(variables['speed'])
+    options()
 
-def options(alphaBg=False,fromPauseMenu=False):
-    if alphaBg:
+def options():
+    if 'niveauObj' in variables:
+        variables['niveauObj'].perso.setTileset()
+    if variables['ingame']:
         variables['niveauObj'].afficheNiveau(display=False)
         bg = pygame.Surface((variables['fenetre'].get_size()))
         bg.fill((0,0,0))
@@ -198,7 +217,7 @@ def options(alphaBg=False,fromPauseMenu=False):
     menuButtons = []
     for x in range(len(cls.optionMenuBtList)):
         if cls.buttonCollection[cls.optionMenuBtList[x]] == 'return':
-            if fromPauseMenu:
+            if variables['ingame']:
                 menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: pause(),150,500)]
             else:
                 menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: mainMenu(),150,500)]
@@ -209,6 +228,11 @@ def options(alphaBg=False,fromPauseMenu=False):
                 
                 menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.optionMenuBtList[x]]+'.png'),cls.buttonCollection[cls.optionMenuBtList[x]],cls.optionMenuFonctions[x],100,x*100+200)]
         menuButtons[x].displayButton()
+    #resize personnage
+    if 'niveauObj' in variables:
+        variables['fenetre'].blit(i.scaleUpSurface(variables['niveauObj'].perso.surface),(320,150))
+        fontTextSaving = pygame.font.SysFont('Courrier', 40)
+        variables['fenetre'].blit(fontTextSaving.render(str(variables['speed'])+' ms',True,(220,220,220)),(320,400))
     whileLoop(menuButtons)
 
 
@@ -255,9 +279,8 @@ def withoutAI():
     
 
 def whileGame(AI=False):
-    global variables
-    #boucle pygame
     while not variables['quit']:
+        variables['ingame']=True
         pygame.time.Clock().tick(30) #limitation "fps"
         gameIncr,game = 0,pygame.event.get()
         while not variables['quit'] and gameIncr<len(game):
@@ -295,26 +318,9 @@ def whileGame(AI=False):
                         for x in lsDep:
                             coordPerso = variables['niveauObj'].findPersonnage()
                             variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace(x,False)
-
+                            
                 if game[gameIncr].key == K_ESCAPE:
                     pause()
-                    
-                if game[gameIncr].key == K_KP0:
-                    if variables['styleP']!=8:
-                        variables['styleP']+=1
-                    else:
-                        variables['styleP']=1
-                    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].setTileset()
-                    variables['niveauObj'].afficheNiveau()
-                    
-                if game[gameIncr].key == K_KP_PLUS:
-                    variables['speed']+=5
-                    print(variables['speed'])
-                    
-                if game[gameIncr].key == K_KP_MINUS:
-                    if variables['speed']>5:
-                        variables['speed']-=5
-                    print(variables['speed'])
             gameIncr+=1
                     
                 #print(variables)

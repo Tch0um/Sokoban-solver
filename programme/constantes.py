@@ -20,8 +20,8 @@ variables['font'] = pygame.font.SysFont('Courrier', 25)
 variables['quit'] = False
 
 #variables du personnage
-variables['speed'] = 10        #milliseconds par pas
-variables['styleP'] = 8  #selection perso
+variables['speed'] = 10 #milliseconds par pas
+variables['styleP'] = 1 #selection perso
 variables['historyP']=[] #historique des déplacements du perso
 variables['historyC']=[] #historique des déplacements de chaque caisse
 
@@ -36,10 +36,10 @@ mainMenuFonctions = [lambda: bt.collectionMenu(),lambda: bt.loadGame(),lambda: b
 levelMenuBtList = [11,12,8,9,10,17]
 levelMenuFonctions = [lambda: bt.withAI(),lambda: bt.withoutAI(),lambda: bt.twoPlayers(),lambda: bt.threePlayers(),lambda: bt.fourPlayers(), lambda: bt.collectionMenu()]
 pauseMenuBtList = [3,1,2,7,18]
-pauseMenuFonctions = [lambda: bt.resume(),lambda: bt.saveGame(0),lambda: bt.loadGame(),lambda: bt.options(alphaBg=True,fromPauseMenu=True),lambda: bt.mainMenu()]
+pauseMenuFonctions = [lambda: bt.resume(),lambda: bt.saveGame(0),lambda: bt.loadGame(),lambda: bt.options(),lambda: bt.mainMenu()]
 collectionMenuBtList = [19,17]
 collectionMenuFonctions = [lambda: bt.mainMenu()]
-optionMenuBtList = [20,21,20,21]
+optionMenuBtList = [20,21,20,21,17]
 optionMenuFonctions = [lambda: bt.previousStyle(),lambda: bt.nextStyle(),lambda: bt.previousSpeed(),lambda: bt.nextSpeed()]
 
 

@@ -224,9 +224,11 @@ class Niveau(object):
                     elif self.grilleO[x][y]=='#': ## mur ##
                         line+=[Sprite(variables['surfaces']['wall'],'#',x,y)]
                     elif self.grilleO[x][y]=='@': ## personnage ##
-                        perso = Personnage(None,x,y)
-                        line+=[perso]
-                        self.perso=perso
+                        variables['persoObj'].x = x
+                        variables['persoObj'].y = y
+                        variables['persoObj'].setTileset()
+                        line+=[variables['persoObj']]
+                        self.perso=variables['persoObj']
                     else:
                         line+=[Sprite(variables['surfaces']['blank'],':',x,y)]
                 else:
@@ -254,16 +256,7 @@ class Niveau(object):
         if display:
             pygame.display.flip()
         #print(self)
-        
-    ##
-    # cherche le personnage dans la grille gameO
-    # @return: le tuple x,y de la position du personnage
-    def findPersonnage(self):
-        for x in range (len(self.grilleO)):
-            for y in range(len(self.grilleO[0])):
-                if self.gameO[x][y].repr=='@':
-                    return (x,y)
-
+            
     ##
     # verifie si une caisse est presente sur chaque cibles.
     # @return: vrai/faux

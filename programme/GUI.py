@@ -38,6 +38,7 @@ def whileLoop(menuButtons,fenetre=None): #attend une action sur un bouton quelco
 
 # menu principal
 def mainMenu():
+    variables['persoObj']=cls.Personnage(None,0,0)
     variables['ingame']=False
     variables['fenetre'] = pygame.display.set_mode((800,600))
     variables['fenetre'].blit(pygame.image.load('images/menu_bg.png'),(0,0))
@@ -201,8 +202,7 @@ def nextSpeed():
     options()
 
 def options():
-    if 'niveauObj' in variables:
-        variables['niveauObj'].perso.setTileset()
+    variables['persoObj'].setTileset()
     if variables['ingame']:
         variables['niveauObj'].afficheNiveau(display=False)
         bg = pygame.Surface((variables['fenetre'].get_size()))
@@ -229,10 +229,13 @@ def options():
                 menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.optionMenuBtList[x]]+'.png'),cls.buttonCollection[cls.optionMenuBtList[x]],cls.optionMenuFonctions[x],100,x*100+200)]
         menuButtons[x].displayButton()
     #resize personnage
-    if 'niveauObj' in variables:
-        variables['fenetre'].blit(i.scaleUpSurface(variables['niveauObj'].perso.surface),(320,150))
-        fontTextSaving = pygame.font.SysFont('Courrier', 40)
-        variables['fenetre'].blit(fontTextSaving.render(str(variables['speed'])+' ms',True,(220,220,220)),(320,400))
+    if variables['spriteSize']==1:
+        
+        variables['fenetre'].blit(i.scaleUpSurface(i.scaleUpSurface(variables['persoObj'].surface)),(320,150))
+    else:
+        variables['fenetre'].blit(i.scaleUpSurface(variables['persoObj'].surface),(320,150))
+    fontTextSaving = pygame.font.SysFont('Courrier', 40)
+    variables['fenetre'].blit(fontTextSaving.render(str(variables['speed'])+' ms',True,(220,220,220)),(320,400))
     whileLoop(menuButtons)
 
 
@@ -287,19 +290,18 @@ def whileGame(AI=False):
             if game[gameIncr].type == pygame.QUIT:
                 continuer = 0
             elif game[gameIncr].type == KEYDOWN:
-                coordPerso = variables['niveauObj'].findPersonnage()
                 if game[gameIncr].key == K_RIGHT:
                     deplacement.play()
-                    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,1),False)                    
+                    variables['persoObj'].deplace((0,1),False)                    
                 if game[gameIncr].key == K_LEFT:
                     deplacement.play()
-                    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((0,-1),False)                    
+                    variables['persoObj'].deplace((0,-1),False)                    
                 if game[gameIncr].key == K_UP:
                     deplacement.play()
-                    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((-1,0),False)
+                    variables['persoObj'].deplace((-1,0),False)
                 if game[gameIncr].key == K_DOWN:
                     deplacement.play()
-                    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace((1,0),False)
+                    variables['persoObj'].deplace((1,0),False)
                     
                 if game[gameIncr].key == K_BACKSPACE:
                     ##print('return')
@@ -316,8 +318,7 @@ def whileGame(AI=False):
                     if lsDep!=None:
                         lsDep.reverse()
                         for x in lsDep:
-                            coordPerso = variables['niveauObj'].findPersonnage()
-                            variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace(x,False)
+                            variables['persoObj'].deplace(x,False)
                             
                 if game[gameIncr].key == K_ESCAPE:
                     pause()

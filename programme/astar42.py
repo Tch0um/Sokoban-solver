@@ -38,13 +38,11 @@ def niveauToState():
     S = []
     M = []
     caisses = []
-    perso = None
+    perso = (variables['persoObj'].x,variables['persoObj'].y)
     for x in range (len(variables['niveauObj'].gameO)):
         for y in range(len(variables['niveauObj'].gameO[0])):
             if variables['niveauObj'].gameO[x][y].repr == '$':
                 caisses.append((x,y))
-            elif variables['niveauObj'].gameO[x][y].repr == '@':
-                perso = (x,y)
             elif variables['niveauObj'].gameO[x][y].repr == '#':
                 M.append((x,y))
             if variables['niveauObj'].gameP[x][y].repr == '+':

@@ -38,7 +38,6 @@ def loadGame(port,variables):
 
 
 def rewind(variables):
-    coordPerso = variables['niveauObj'].findPersonnage()
     direction = variables['historyP'][-1]
     del variables['historyP'][-1]
 
@@ -52,9 +51,7 @@ def rewind(variables):
         direction = (0,-1)
 
     #print(niveau.gameO[coordPerso[0]][coordPerso[1]].repr)
-    variables['niveauObj'].gameO[coordPerso[0]][coordPerso[1]].deplace(direction)
+    variables['persoObj'].deplace(direction)
     if variables['historyC']!=[] and len(variables['historyP']) == int(variables['historyC'][-1][2]):
-        print('if2')
-        print(variables['historyC'])
         variables['niveauObj'].gameO[int(variables['historyC'][-1][0])][int(variables['historyC'][-1][1])].deplace(direction)
         del variables['historyC'][-1]

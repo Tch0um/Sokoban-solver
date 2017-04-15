@@ -20,7 +20,7 @@ variables['font'] = pygame.font.SysFont('Courrier', 25)
 variables['quit'] = False
 
 #variables du personnage
-variables['speed'] = 10 #milliseconds par pas
+variables['speed'] = 30 #milliseconds par pas
 variables['styleP'] = 1 #selection perso
 variables['historyP']=[] #historique des déplacements du perso
 variables['historyC']=[] #historique des déplacements de chaque caisse

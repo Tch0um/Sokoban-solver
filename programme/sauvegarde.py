@@ -1,7 +1,7 @@
 def saveGame(port,variables):
     niveau = variables['niveauObj']
     fichier=open('sauvegardes/save'+str(port)+'.txt','w')
-    fichier.write('--niv--'+str(variables['nbNiveau'])+'\n')
+    fichier.write('--niv--'+str(variables['levelNo'])+'\n')
     fichier.write('--col--'+variables['collection']+'\n')
     fichier.write('--hsp--'+''.join(variables['historyP'])+'\n')
     for x in range(len(variables['historyC'])):

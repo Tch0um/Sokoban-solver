@@ -2,6 +2,7 @@ from constantes import * #importation de pygame et constante de pygame incluses
 import constantes as const
 import xml.etree.ElementTree as ET
 import math
+import imagery as im
 
 variables = const.variables
 
@@ -256,7 +257,8 @@ class Niveau(object):
         if display:
             pygame.display.flip()
         #print(self)
-            
+
+    
     ##
     # verifie si une caisse est presente sur chaque cibles.
     # @return: vrai/faux
@@ -304,13 +306,13 @@ class LevelCollection(object):
     # @param level:numero du niveau dans la collection
     # @param fenetre:la fenetre à redimensionner
     # @return: un tuple de grilles : la grille du plan et la grile des obstacles
-    def loadLevel(self,level,fenetre):
-        dicoAttrib = self.root[3][level].attrib
+    def loadLevel(self):
+        dicoAttrib = self.root[3][variables['levelNo']].attrib
         self.width = int(dicoAttrib["Width"])
         self.height = int(dicoAttrib["Height"])
         
         #lecture du fichier slc
-        for e in self.root[3][level]:
+        for e in self.root[3][variables['levelNo']]:
             line=[]
             chaine=e.text
             if len(chaine)!=self.width:
@@ -345,16 +347,34 @@ class LevelCollection(object):
 
         #change la taille de la fenetre et des sprites en fonction de la taille du niveau
         if self.width>11 or self.height>11:
-            global variables
             variables['spriteSize']=1
-            fenetre= pygame.display.set_mode((self.width*variables['spriteSize']*32,self.height*variables['spriteSize']*32))
+##            variables['fenetre']= pygame.display.set_mode((self.width*variables['spriteSize']*32,self.height*variables['spriteSize']*32))
         else:
             variables['spriteSize']=2
-            fenetre= pygame.display.set_mode((800,600))
+##            variables['fenetre']= pygame.display.set_mode((800,600))
             
         const.setSurfaces()
         
         return (grilleP,grilleO)
+
+    def loadPreview(self):
+        grilleP,grilleO = self.loadLevel()
+        width,height = len(grilleP),len(grilleP[0])
+        mini = pygame.Surface((height*16,width*16))
+        for x in range(width):
+            for y in range(height):
+                if grilleP[x][y] in (' ',False):
+                    mini.blit(im.scaleDownSurface(variables['surfaces']['space']),(y*16,x*16))
+                elif grilleP[x][y]=='+':
+                    mini.blit(im.scaleDownSurface(variables['surfaces']['target']),(y*16,x*16))
+                if grilleO[x][y]=='#':
+                    mini.blit(im.scaleDownSurface(variables['surfaces']['wall']),(y*16,x*16))
+                if grilleO[x][y]=='$':
+                    mini.blit(im.scaleDownSurface(variables['surfaces']['element']),(y*16,x*16))
+                if grilleO[x][y]=='@':
+                    mini.blit(im.scaleDownSurface(variables['persoObj'].surface),(y*16,x*16))
+        return mini
+                    
         
 
     ##

@@ -14,13 +14,18 @@ deplacement=pygame.mixer.Sound("sons/pas_cutted.wav")
 pousser=pygame.mixer.Sound("sons/swoosh.wav")
 
 variables = const.variables
+def placeCenter(surf1,surf2):
+    x = (surf1.get_size()[0]//2)-(surf2.get_size()[0]//2)
+    y = (surf1.get_size()[1]//2)-(surf2.get_size()[1]//2)
+    return (x,y)
 
 def loadCollection(file):
     global niveaux,variables
     variables['collection'] = file[:-4]
     niveaux = cls.LevelCollection("levels/"+variables['collection']+".slc")
+    variables['levelNo'] = 1
     print(variables['collection'])
-    modeMenu()
+    levelMenu()
 
     
 
@@ -120,6 +125,34 @@ def collectionMenu():
 
 
 
+
+
+### menu niveau ###
+def nextLevel():
+    variables['levelNo']+=1
+    levelMenu()
+
+def previousLevel():
+    variables['levelNo']-=1
+
+
+def levelMenu():
+    fontTextLevel = pygame.font.SysFont('Courrier', 40)
+    variables['fenetre'].blit(pygame.image.load('images/menu_bg.png'),(0,0))
+    variables['fenetre'].blit(fontTextLevel.render('#'+str(variables['levelNo']),True,(220,220,220)),(380,70))
+    preview = niveaux.loadPreview()
+    variables['fenetre'].blit(preview,placeCenter(variables['fenetre'],preview))
+    menuButtons=[cls.ButtonMenu(pygame.image.load('images/buttons/inf.png'),'inf',lambda: previousLevel(),50,300),cls.ButtonMenu(pygame.image.load('images/buttons/sup.png'),'sup',lambda: nextLevel(),700,300)]
+    menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: collectionMenu(),150,500)]
+    for bt in menuButtons:
+        bt.displayButton()
+    whileLoop(menuButtons)
+
+
+
+
+
+### menu mode ###
 def modeMenu():
     variables['fenetre'].blit(pygame.image.load('images/menu_bg.png'),(0,0))
     variables['fenetre'].blit(pygame.image.load('images/menu_title.png'),(200,50))
@@ -136,6 +169,10 @@ def modeMenu():
     whileLoop(menuButtons)
 
 
+
+
+
+### menu sauvegarde ###
 def saveGame(port):
     save.saveGame(port,variables)
     fontTextSaving = pygame.font.SysFont('Courrier', 40)
@@ -146,7 +183,7 @@ def loadGame():
     global collection,niveaux,variables
     tupl=save.loadGame(0,variables)
     niveaux = cls.LevelCollection("levels/"+variables['collection']+".slc")
-    variables['nbNiveau'] = tupl[1]
+    variables['levelNo'] = tupl[1]
     variables['niveauObj'] = cls.Niveau(niveaux.loadLevel(variables['nbNiveau'],variables['fenetre'])[0],tupl[0])
     variables['niveauObj'].gameConstructor()
     if variables['spriteSize']==2:
@@ -159,6 +196,10 @@ def loadGame():
     whileGame()
     
 
+
+
+
+### menu pause ###
 def resume():
     variables['niveauObj'].afficheNiveau()
     whileGame()
@@ -177,6 +218,28 @@ def quitt():
     pygame.quit()
 
 
+def pause():
+    variables['niveauObj'].afficheNiveau(display=False)
+    bg = pygame.Surface((variables['fenetre'].get_size()))
+    bg.fill((0,0,0))
+    bg.convert_alpha()
+    bg.set_alpha(180)
+    variables['fenetre'].blit(bg,(0,0))
+    variables['fenetre'].blit(pygame.image.load('images/menu_title.png'),(200,50))
+    menuButtons = []
+    for x in range(len(cls.pauseMenuBtList)):
+        z=0
+        if x>=3:
+            z=300
+        menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.pauseMenuBtList[x]]+'.png'),cls.buttonCollection[cls.pauseMenuBtList[x]],cls.pauseMenuFonctions[x],150+z,x%3*80+200)]
+        menuButtons[x].displayButton()
+    whileLoop(menuButtons)
+    
+
+
+
+
+### menu options ###
 def previousStyle():
     print('previousStyle')
     if variables['styleP']!=1:
@@ -239,6 +302,10 @@ def options():
     whileLoop(menuButtons)
 
 
+
+
+
+### lancement de parties ###
 def twoPlayers():
     print('2 joueurs')
 
@@ -251,29 +318,11 @@ def fourPlayers():
 def withAI():
     pass
 
-def pause():
-    variables['niveauObj'].afficheNiveau(display=False)
-    bg = pygame.Surface((variables['fenetre'].get_size()))
-    bg.fill((0,0,0))
-    bg.convert_alpha()
-    bg.set_alpha(180)
-    variables['fenetre'].blit(bg,(0,0))
-    variables['fenetre'].blit(pygame.image.load('images/menu_title.png'),(200,50))
-    menuButtons = []
-    for x in range(len(cls.pauseMenuBtList)):
-        z=0
-        if x>=3:
-            z=300
-        menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.pauseMenuBtList[x]]+'.png'),cls.buttonCollection[cls.pauseMenuBtList[x]],cls.pauseMenuFonctions[x],150+z,x%3*80+200)]
-        menuButtons[x].displayButton()
-    whileLoop(menuButtons)
-    
 
 def withoutAI():
     global variables
     
-    variables['nbNiveau'] = 0
-    tupleG = niveaux.loadLevel(variables['nbNiveau'],variables['fenetre'])
+    tupleG = niveaux.loadLevel()
     variables['niveauObj'] = cls.Niveau(tupleG[0],tupleG[1])
     variables['niveauObj'].gameConstructor()
     #affichage de la première frame

@@ -14,6 +14,7 @@ log.basicConfig(filename='sokoban.log',level=log.DEBUG,format='%(levelname)s: %(
 
 
 pygame.init()
+pygame.mixer.init()
 #Création de la fenêtre avec ses attributs
 variables['fenetre'] = pygame.display.set_mode((800,600))
 variables['font'] = pygame.font.SysFont('Courrier', 25)
@@ -42,6 +43,10 @@ collectionMenuFonctions = [lambda: bt.mainMenu()]
 optionMenuBtList = [20,21,20,21,17]
 optionMenuFonctions = [lambda: bt.previousStyle(),lambda: bt.nextStyle(),lambda: bt.previousSpeed(),lambda: bt.nextSpeed()]
 
+### sons
+variables['sounds'] = {}
+variables['sounds']['moving']=pygame.mixer.Sound("sounds/pas_cutted.wav")
+variables['sounds']['push']=pygame.mixer.Sound("sounds/swoosh.wav")
 
 
 ### sprites taille normale

@@ -9,10 +9,6 @@ import time
 from pygame import mixer
 import imagery as i
 
-pygame.mixer.init()
-deplacement=pygame.mixer.Sound("sons/pas_cutted.wav")
-pousser=pygame.mixer.Sound("sons/swoosh.wav")
-
 variables = const.variables
 def placeCenter(surf1,surf2):
     x = (surf1.get_size()[0]//2)-(surf2.get_size()[0]//2)
@@ -43,6 +39,7 @@ def whileLoop(menuButtons,fenetre=None): #attend une action sur un bouton quelco
 
 # menu principal
 def mainMenu():
+    pygame.mixer.music.unpause()
     variables['persoObj']=cls.Personnage(None,0,0)
     variables['ingame']=False
     variables['fenetre'] = pygame.display.set_mode((800,600))
@@ -144,6 +141,7 @@ def levelMenu():
     variables['fenetre'].blit(preview,placeCenter(variables['fenetre'],preview))
     menuButtons=[cls.ButtonMenu(pygame.image.load('images/buttons/inf.png'),'inf',lambda: previousLevel(),50,300),cls.ButtonMenu(pygame.image.load('images/buttons/sup.png'),'sup',lambda: nextLevel(),700,300)]
     menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: collectionMenu(),150,500)]
+    menuButtons.append(cls.ButtonMenu(pygame.image.load('images/buttons/ok.png'),'ok',lambda: modeMenu(),450,500))
     for bt in menuButtons:
         bt.displayButton()
     whileLoop(menuButtons)
@@ -162,7 +160,7 @@ def modeMenu():
         if x>=3:
             z=300
         if cls.buttonCollection[cls.levelMenuBtList[x]] == 'return':
-            menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',cls.levelMenuFonctions[x],150,500)]
+            menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: levelMenu(),150,500)]
         else:
             menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.levelMenuBtList[x]]+'.png'),cls.buttonCollection[cls.levelMenuBtList[x]],cls.levelMenuFonctions[x],150+z,x%3*80+200)]
         menuButtons[x].displayButton()
@@ -331,6 +329,7 @@ def withoutAI():
     
 
 def whileGame(AI=False):
+    pygame.mixer.music.pause() #Met la musiue en pause
     while not variables['quit']:
         variables['ingame']=True
         pygame.time.Clock().tick(30) #limitation "fps"
@@ -340,16 +339,12 @@ def whileGame(AI=False):
                 continuer = 0
             elif game[gameIncr].type == KEYDOWN:
                 if game[gameIncr].key == K_RIGHT:
-                    deplacement.play()
                     variables['persoObj'].deplace((0,1),False)                    
                 if game[gameIncr].key == K_LEFT:
-                    deplacement.play()
                     variables['persoObj'].deplace((0,-1),False)                    
                 if game[gameIncr].key == K_UP:
-                    deplacement.play()
                     variables['persoObj'].deplace((-1,0),False)
                 if game[gameIncr].key == K_DOWN:
-                    deplacement.play()
                     variables['persoObj'].deplace((1,0),False)
                     
                 if game[gameIncr].key == K_BACKSPACE:

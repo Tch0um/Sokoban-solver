@@ -91,6 +91,7 @@ class Personnage(Sprite):
                 variables['niveauObj'].gameO[self.x][self.y]=Sprite(variables['surfaces']['blank'],':',self.x,self.y)
                 variables['niveauObj'].moved.append((self.x,self.y))
                 variables['niveauObj'].moved.append((self.x+direction[0],self.y+direction[1]))
+                variables['sounds']['moving'].play()
                 self.displaySpriteWithAnim(direction,depl)
                 variables['niveauObj'].moved=[]
                 #print(str(self.x),str(self.y),sep=', ')
@@ -115,6 +116,7 @@ class Personnage(Sprite):
     def displaySpriteWithAnim(self,direction,depl):
         if depl=="movable":
             caisse = variables['niveauObj'].gameO[self.x+direction[0]*2][self.y+direction[1]*2]
+            variables['sounds']['push'].play()
             #print(caisse)
         for n in (2,1,0,1):
             self.x+=direction[0]/4
@@ -310,6 +312,7 @@ class LevelCollection(object):
         dicoAttrib = self.root[3][variables['levelNo']].attrib
         self.width = int(dicoAttrib["Width"])
         self.height = int(dicoAttrib["Height"])
+        self.structure = []
         
         #lecture du fichier slc
         for e in self.root[3][variables['levelNo']]:
@@ -321,7 +324,6 @@ class LevelCollection(object):
                 line+=[char]
             self.structure+=[line]
 
-            
         grilleP,grilleO=[],[]
         #creation de la grille du plan et de la grille d'obstacles
         for x in range(len(self.structure)):
@@ -354,7 +356,7 @@ class LevelCollection(object):
 ##            variables['fenetre']= pygame.display.set_mode((800,600))
             
         const.setSurfaces()
-        
+
         return (grilleP,grilleO)
 
     def loadPreview(self):

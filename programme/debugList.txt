@@ -1,0 +1,10 @@
+## ce ficheir contient toutes les erreurs recontrés qui ne sont pas encore corrigé
+
+levelcollection mal parsé :
+	12 blocks
+	100boxes
+
+level trop gros à charger sur la fenetre
+menu mal foutu quand le niveau agrandit la fenetre ingame
+
+

@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 from GUI import *
 #chargement menu principal
-
+pygame.mixer.music.load("sounds/LeafShapedFeelings_7thGearRemix.mp3")
+pygame.mixer.music.play()
 
 mainMenu()

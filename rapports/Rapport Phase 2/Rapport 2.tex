@@ -66,7 +66,7 @@ méthodes facilitant les mécaniques de fonctionnement de base d’un jeu.
 		
 		\subsection{Pré-requis d'utilisation}
 		\vspace{1cm}
-		Le jeu fonctionnera sous n'importe quelle machine sous linux/windows munie de Python(2.7 a 3.5) ainsi que des modules Pygame et PIL .Le jeu sera intuitif d’utilisation et ne nécessitera aucune connaissance informatique particulière.
+		Le jeu fonctionnera sous n'importe quelle machine sous linux/windows munie de Python(2.7 a 3.5) ainsi que des modules Pygame et PIL .Le jeu sera intuitif d’utilisation , ne nécessitera aucune connaissance informatique particulière et sera donc accessible a tout type de public .
 
 		\subsection{Recensement des fonctionnalités}
 		\vspace{1cm}
@@ -207,8 +207,8 @@ Dans le même ordre idée que pour la classe \textbf{Personnage}, la classe \tex
 
 
 \subsection{Présentation et objectif:}
-L'algorithme A* est un algorithme souvent utilisé pour trouver des chemins dans la résolution de jeux. Il est dans notre cas implémenté sur une grille de Sokoban. En dehors du sokoban où cela nous importe peu, il peut être interrompue pendant son utilisation est relancé plus tard. C'est un algorithme de type "anytime".
-Le but de A* est de trouver le chemin \textit{le plus court} pour aller d'un point de départ, à un point d'arrivé. Pour cela l'algorithme garde une liste de toutes les étapes futurs que l'on appel "liste ouverte". Cette liste est établis par la fonction g(n). Ensuite, il choisit parmis cette liste une étape futur qui soit "à priori" la meilleure pour nous mener à l'objectif en un temps qui soit le plus court possible. Pour que cela puisse se faire, nous avons besoin d'une heuristique qui puisse nous aider à déterminer quelle est "à priori" la meilleure option. Une fois que cette option est choisis, l'algorithme passe à la "liste fermé". 
+L'algorithme A* est un algorithme souvent utilisé pour trouver des chemins dans la résolution de jeux. Il est dans notre cas implémenté sur une grille de Sokoban. En dehors du sokoban où cela nous importe peu, il peut être interrompu pendant son utilisation est relancé plus tard. C'est un algorithme de type "anytime".
+Le but de A* est de trouver le chemin \textit{le plus court} pour aller d'un point de départ à un point d'arrivé. Pour cela l'algorithme garde une liste de toutes les étapes futures que l'on appelle "liste ouverte". Cette liste est établie par la fonction g(n). Ensuite, l'algorithme choisit parmi cette liste une étape future qui soit "à priori" la meilleure pour nous mener à l'objectif en un temps qui soit le plus court possible. Pour que cela puisse se faire, nous avons besoin d'une heuristique qui puisse nous aider à déterminer qu'elle est "à priori" la meilleure option. Une fois que cette option est choisie, l'algorithme passe à la "liste fermée". 
 \subsection{Explication détaillée avec exemples.}
 \subsubsection{Fonctions g et h:}
 A chaque étape de l'algorithme, les fonctions g(n) et h(n) sont exécutées pour n étant un point d'arrivé. Cela nous donne les informations suivantes.
@@ -220,7 +220,7 @@ A chaque étape de l'algorithme, les fonctions g(n) et h(n) sont exécutées pou
 \subsubsection{Etapes détaillées de l'algorithme:}
 Voici les étapes de l'algorithme en langage algorithmique: \newline
 Soient: OPEN la liste ouvert \newline
-(La partie si dessous n'a pas pu être indentée correctement, attention donc!)
+
 Ajouter DEPART à OPEN \newline
 Tant que OPEN n'est pas vide:\newline
 	Choisir le N ayant le plus petit f(n)\newline
@@ -240,10 +240,10 @@ FIN TANT QUE\newline
 			
 \subsection{Le cas du Sokoban:}
 \subsubsection{Cas général:}
-Dans le cas du sokoban, l'heuristique sera le minimum  de déplacements pour atteindre l'objectif si un chemin direct est possible. Or puisque l'on se déplace uniquemment à la verticale ou à l'horizontale, cette donnée sera la somme des déplacements horizontaux et verticaux à réaliser.
+Dans le cas du sokoban, l'heuristique sera le minimum  de déplacements pour atteindre l'objectif si un chemin direct est possible. Or puisque l'on se déplace uniquement à la verticale ou à l'horizontale, cette donnée sera la somme des déplacements horizontaux et verticaux à réaliser.
 \begin{center}
 \includegraphics[scale=1]{img/heuristic.png} \newline
-\textit{Ce shéma présente le minimum de déplacements pour aller du point rouge au point d'arrivé.}
+\textit{Ce schéma présente le minimum de déplacements pour aller du point rouge au point d'arrivé.}
 \end{center}
 Ainsi pour l'étape en vert:
 \begin{itemize}
@@ -264,30 +264,21 @@ public Node(Location where, Node parent, int move);\newline
 public int compareTo(Object o);\newline
 }\newline
 
-Tout d'abord, il est plus pratique de garder la liste OPEN triée pour que l'on puisse avoir facilement accées à notre meilleur option. Il faut donc s'assurer que lorsqu'on ajoute un terme à la liste, celle-ci soit triée automatiquement (Pourquoi ne pas utliser un ABR??) \newline
-Ensuite il est efficace que nous puissions trouver des noeuds de la liste grâce à l'heure position sur la grille. Cela pour que nous puissons déterminer si 'n' est déjà dans OPEN ou dans CLOSE.
+Tout d'abord, il est plus pratique de garder la liste OPEN triée pour que l'on puisse avoir facilement accès à notre meilleur option. Il faut donc s'assurer que lorsqu'on ajoute un terme à la liste, celle-ci soit triée automatiquement  \newline
+Ensuite il est efficace que nous puissions trouver des noeuds de la liste grâce à l'heure position sur la grille. Cela pour que nous puissions déterminer si 'n' est déjà dans OPEN ou dans CLOSE.
 
 
 	\newpage	
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 \begin{center}
 	\section{\underline{Schéma UML : diagramme de classe}}
 \end{center}
-
+\begin{center}
+\vspace{ 4 cm}
+\includegraphics[scale=0.4]{img/dia.jpg}
+\end{center}
 \newpage
 
 \begin{center}
@@ -307,7 +298,7 @@ Ensuite il est efficace que nous puissions trouver des noeuds de la liste grâce
 	\item tests sur classe Niveau
 		\begin{itemize}
 		\item test sur grille incompatible (blocs différents aux même coordonnées) --> erreur lors des test de déplacement liés aux joueurs
-		\item test sur des grilles Plan et Obstacle de différentes taille -> erreur out of range si le personnage sort de la premiére grille
+		\item test sur des grilles Plan et Obstacle de différentes taille -> erreur out of range si le personnage sort de la première grille
 		\end{itemize}
 		\vspace{0.5cm}
 	\item tests sur le module Astar
@@ -338,7 +329,7 @@ Ensuite il est efficace que nous puissions trouver des noeuds de la liste grâce
   & &\\
   \hline
   & &\\
- AC Easy& 148 & 32 minutes \\
+ AC Easy& 148 & 30 minutes(environ) \\
   & &\\
   \hline
   & &\\
@@ -354,17 +345,12 @@ Ensuite il est efficace que nous puissions trouver des noeuds de la liste grâce
 
 
 
-Le score de difficulté est déterminé par le nombres de cases vides - le nombre d'obstacle * le nombres de caisse a placer pour compléter le niveau. Les niveaux dont le temps de résolution est indéterminé on été soumis a l'exécution d'astar pendant plus de 5 heures au minimum , sans résultats .
+Le score de difficulté est déterminé par ((le nombres de cases vides - le nombre d'obstacle) * le nombres de caisse a placer pour compléter le niveau). Les niveaux dont le temps de résolution est indéterminé on été soumis a l'exécution d'astar pendant plus de 5 heures au minimum , sans résultats .
 
  
  
 
 
-
-\newpage
-\begin{center}
-	\section{\underline{Bibliographies , sources}}
-\end{center}
 
 
 

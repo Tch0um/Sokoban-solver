@@ -48,7 +48,7 @@ def mainMenu():
     variables['fenetre'].blit(pygame.image.load('images/menu_screen.png'),(450,200))
     menuButtons = []
     for x in range(len(cls.mainMenuBtList)):
-        menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.mainMenuBtList[x]]+'.png'),cls.buttonCollection[cls.mainMenuBtList[x]],cls.mainMenuFonctions[x],100,x*80+200)]
+        menuButtons+=[cls.ButtonMenu(rep=variables['lang'][cls.buttonCollection[cls.mainMenuBtList[x]]],function=cls.mainMenuFonctions[x],x=100,y=x*80+200)]
         menuButtons[x].displayButton()
     whileLoop(menuButtons)
 
@@ -87,12 +87,12 @@ def collectionMenu():
             z=0
             if x>=3:
                 z=300
-            menuButtons+=[cls.ButtonCollectionMenu(pygame.image.load('images/buttons/template.png'),'ButtonCollectionMenu',lsFic[(page-1)*6+x],loadCollection,150+z,x%3*80+200)]
+            menuButtons+=[cls.ButtonMenu(rep=lsFicRender[x+6*(page-1)][:-4],function=loadCollection,x=150+z,y=x%3*80+200,file=lsFic[(page-1)*6+x])]
             menuButtons[x].displayButton()
-            variables['fenetre'].blit(variables['font'].render(lsFicRender[x+6*(page-1)][:-4],True,(20,20,20)),(190+z,x%3*80+210))
+            
 
-        menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/inf.png'),'inf',None,50,300),cls.ButtonMenu(pygame.image.load('images/buttons/sup.png'),'sup',None,700,300)]
-        menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',cls.collectionMenuFonctions[0],150,500)]
+        menuButtons+=[cls.ButtonMenu(surface=pygame.image.load('images/buttons/inf.png'),x=50,y=300),cls.ButtonMenu(surface=pygame.image.load('images/buttons/sup.png'),x=700,y=300)]
+        menuButtons+=[cls.ButtonMenu(rep=variables['lang']['return'],function=cls.collectionMenuFonctions[0],x=150,y=500)]
         menuButtons[-1].displayButton()
         menuButtons[-2].displayButton()
         menuButtons[-3].displayButton()
@@ -160,7 +160,7 @@ def modeMenu():
         if x>=3:
             z=300
         if cls.buttonCollection[cls.levelMenuBtList[x]] == 'return':
-            menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: levelMenu(),150,500)]
+            menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),variables['lang']['return'],lambda: levelMenu(),150,500)]
         else:
             menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.levelMenuBtList[x]]+'.png'),cls.buttonCollection[cls.levelMenuBtList[x]],cls.levelMenuFonctions[x],150+z,x%3*80+200)]
         menuButtons[x].displayButton()

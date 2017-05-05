@@ -355,28 +355,24 @@ class LevelCollection(object):
         self.structure = []
 
 class ButtonMenu:
-    def __init__(self,surface,rep,function,x=0,y=0):
+    def __init__(self,surface=pygame.image.load('images/buttons/template.png'),rep='',function=None,x=0,y=0,file=None):
         self.surface = surface
         self.repr=rep
         self.function = function
         self.coord = (x,y)
         self.dim = surface.get_size() #tuple (width,height)
+        self.file = file
 
     def isOnButton(self,pos):
         if pos[0]<self.coord[0]+self.dim[0] and pos[0]>self.coord[0] and pos[1]<self.coord[1]+self.dim[1] and pos[1]>self.coord[1]:
             if self.function !=None:
-                self.function()
+                if self.file!=None:
+                    self.function(self.file)
+                else:
+                    self.function()
             else:
                 return True
 
     def displayButton(self):
         variables['fenetre'].blit(self.surface,self.coord)
-
-class ButtonCollectionMenu(ButtonMenu):
-    def __init__(self,surface,rep,file,function,x=0,y=0):
-        ButtonMenu.__init__(self,surface,rep,function,x,y)
-        self.file = file
-
-    def isOnButton(self,pos):
-        if pos[0]<self.coord[0]+self.dim[0] and pos[0]>self.coord[0] and pos[1]<self.coord[1]+self.dim[1] and pos[1]>self.coord[1]:
-            self.function(self.file)
+        variables['fenetre'].blit(variables['font'].render(self.repr,True,(20,20,20)),(self.coord[0]+40,self.coord[1]+10))

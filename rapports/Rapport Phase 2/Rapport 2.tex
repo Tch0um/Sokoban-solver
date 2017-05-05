@@ -141,7 +141,7 @@ Les classes \textbf{Sprite}, \textbf{Personnage} et \textbf{Caisse} servent à r
 \end{itemize}
 
 			
-Pour construir notre plan de jeu, nous avons choisi de décomposer notre niveau en 2 grilles nommées \textit{GameP} et \textit{GameO} contenant à elles deux les objets cités plus haut. La grille \textit{gameP}(game Plan)contient les cibles et les espaces vides tandis que la grille \textit{gameO}(game Obstacle) contient les murs, les caisses et le personnage. L'affichage du niveau consiste donc en la superposition des deux plans et permet ainsi une vérification de victoire plus facile à la fin du jeu : 
+Pour construire notre plan de jeu, nous avons choisi de décomposer notre niveau en 2 grilles nommées \textit{GameP} et \textit{GameO} contenant à elles deux les objets cités plus haut. La grille \textit{gameP}(game Plan)contient les cibles et les espaces vides tandis que la grille \textit{gameO}(game Obstacle) contient les murs, les caisses et le personnage. L'affichage du niveau consiste donc en la superposition des deux plans et permet ainsi une vérification de victoire plus facile à la fin du jeu : 
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.25]{img/05.png}
@@ -253,23 +253,26 @@ L'algorithme fonctionne dans une boucle qui a pour condition d'arrêt la corresp
 \newline
 Pour commencer, l'algorithme lance une boucle finie sur les 4 positions autour du joueur.
 \begin{center}
-\includegraphics[scale=0.5]{img/a00.png} \newline
+\includegraphics[scale=0.3]{img/a00.png} \newline
 \textit{Les 4 directions scannées par A*}
 \end{center}
 Sur chaque position, il va regarder si il est possible de s'y déplacer (croix verte), de s'y déplacer à condition de déplacer une caisse (croix bleu) où si c'est impossible (croix rouge).
 \begin{center}
-\includegraphics[scale=0.5]{img/a01.png} \newline
+\includegraphics[scale=0.3]{img/a01.png} \newline
 \textit{Cas de rencontre d'une caisse}
 \end{center}
 A partir de là, s'il s'agit d'une caisse qu'il faut déplacer, il va mesurer la distance avec la stelle la plus proche. Ensuite il mesure cette distance une fois le déplacement effectué et verifie si le déplacement est intéressant. 
 Ce dernier verifie si l'etat actuel correspond à létat final.
 \begin{center}
-\includegraphics[scale=0.5]{img/a02.png} \newline
-\textit{Nouvelle position}
+\includegraphics[scale=0.3]{img/a02.png} \newline
+\textit{Nouvelle position}\newline
 Fin de la boucle, il relance à la nouvelle position du joueur.
 \end{center}
+\vspace{1 cm}
 \subsubsection{Implémentation:}
-Tout d'abord, nous avons besoin d'une structure pour les nœuds: \newpage
+\vspace{0.5 cm}
+
+Tout d'abord, nous avons besoin d'une structure pour les nœuds: \newline
 class Node implements Comparable {\newline
 public Node parent;\newline
 public int move;\newline
@@ -278,8 +281,9 @@ public int g;\newline
 public int h;\newline
 public int f(){return g+h;}\newline
 public Node(Location where, Node parent, int move);\newline
-public int compareTo(Object o);\newline
+public int compareTo(Object o);
 }\newline
+
 
 Tout d'abord, il est plus pratique de garder la liste OPEN triée pour que l'on puisse avoir facilement accès à notre meilleur option. Il faut donc s'assurer que lorsqu'on ajoute un terme à la liste, celle-ci soit triée automatiquement  \newline
 Ensuite il est efficace que nous puissions trouver des nœuds de la liste grâce à l'heure position sur la grille. Cela pour que nous puissions déterminer si 'n' est déjà dans OPEN ou dans CLOSE.
@@ -363,13 +367,27 @@ Ensuite il est efficace que nous puissions trouver des nœuds de la liste grâce
 
 
 Le score de difficulté est déterminé par ((le nombres de cases vides - le nombre d'obstacle) * le nombres de caisse a placer pour compléter le niveau). Les niveaux dont le temps de résolution est indéterminé on été soumis a l'exécution d'astar pendant plus de 5 heures au minimum , sans résultats .
-
+\newpage
  
  
+\begin{center}
+\section{\underline{Conclusion , sources}}
+\end{center}
 
+\vspace{1cm}
+Le programme final s'écarte donc légèrement du projet initial dans lequel le joueur pourrait se mesurer en temps réel a l'algorithme A* dans la complétion d'un niveau , mais le projet démontre néanmoins assez bien les capacités de la résolution automatique .
+\newline
+ Le projet final se voit agrémenté d'un certain nombres de fonctionnalités le rendant plus intuitif (interface graphique) , plus amusant(grand choix de niveaux , plusieurs styles de personnage disponible) et moins frustrant (fonction de sauvegarde et de retour en arrière).
 
-
-
+\vspace{2 cm}
+Le plus gros travail de recherche effectué s'est effectué autour de l'algorithme A* et de l'heuristique :
+\newline 
+\begin{itemize}
+\item http ://www.talistreit.com/AStar.html
+\item http://www.redblobgames.com/pathfinding/a-star/implementation.html
+\item http://www.pygame.org/project-AStar-195-.html
+\item http://stackoverflow.com/questions/9421928/another-simple-random-walk-simulation-using-pythontwo-dimensional
+\end{itemize}
 
 
 

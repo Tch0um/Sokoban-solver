@@ -4,7 +4,7 @@ import classes as cls
 import constantes as const
 import sauvegarde as save
 import os
-import astar42
+import IA
 import time
 from pygame import mixer
 import imagery as i
@@ -19,7 +19,7 @@ def loadCollection(file):
     global niveaux,variables
     variables['collection'] = file[:-4]
     niveaux = cls.LevelCollection("levels/"+variables['collection']+".slc")
-    variables['levelNo'] = 1
+    variables['levelNo'] = 0
     print(variables['collection'])
     levelMenu()
 
@@ -357,7 +357,7 @@ def whileGame(AI=False):
                         save.rewind(variables)
 
                 if game[gameIncr].key == K_a:
-                    lsDep = astar42.astar()
+                    lsDep = IA.astar()
                     print('lsDep '+str(lsDep))
                     if lsDep!=None:
                         lsDep.reverse()

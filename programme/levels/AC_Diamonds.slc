@@ -7,19 +7,6 @@ with more challenging ones in the second half with those try to avoid
   </Description>
   <Email>ACSokoban@Yandex.com</Email>
   <LevelCollection Copyright="Andrej Cerjak" MaxWidth="25" MaxHeight="25">
-    <Level Id="AC_Diamonds_01" Width="30" Height="30">
-      <L>    ##################</L>
-      <L>   #    .     .      #</L>
-      <L>  #  .      $  .  $  #</L>
-      <L> #                  .#</L>
-      <L># $  $         $     #</L>
-      <L>#  .  @              #</L>
-      <L>#     $       $     .#</L>
-      <L> #   $               #</L>
-      <L>  #    .   $   $  .  #</L>
-      <L>   #      .          #</L>
-      <L>    #################</L>
-    </Level>
     <Level Id="AC_Diamonds_02" Width="11" Height="11">
       <L>    ###</L>
       <L>   #   #</L>

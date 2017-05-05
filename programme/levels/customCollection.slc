@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SokobanLevels xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="SokobanLev.xsd">
+  <Title>custom collection</Title>
+  <Description>
+collection contenant des niveaux de test pour Astar
+  </Description>
+  <Email>basset.emilien@gmail.com</Email>
+  <LevelCollection Copyright="copyleft" MaxWidth="13" MaxHeight="13">
+    <Level Id="Aruba" Width="9" Height="7">
+      <L>#########</L>
+      <L>#.$  $ .#</L>
+      <L>#   #   #</L>
+      <L>#.  $  *#</L>
+      <L>#  # $ .#</L>
+      <L>#   @   #</L>
+      <L>#########</L>
+    </Level>
+  </LevelCollection>
+</SokobanLevels>

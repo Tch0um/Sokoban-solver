@@ -15,6 +15,7 @@ log.basicConfig(filename='sokoban.log',level=log.DEBUG,format='%(levelname)s: %(
 
 pygame.init()
 pygame.mixer.init()
+pygame.mixer.music.fadeout(4000) #Fondu à 4000ms de la fin des musiques
 #Création de la fenêtre avec ses attributs
 variables['fenetre'] = pygame.display.set_mode((800,600))
 variables['font'] = pygame.font.SysFont('Courrier', 25)

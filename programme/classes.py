@@ -6,24 +6,6 @@ import imagery as im
 
 variables = const.variables
 
-class Noeud(object):
-
-    def __init__(self, x, y, C, direction = (0,0), predecesseur = None):
-
-        self.x = x
-        self.y = y
-        self.C = C
-        self.direction = direction  #Direction par lequel nous sommes arrivés à ce noeud
-        self.predecesseur = predecesseur
-
-    def __repr__(self):
-        if self.predecesseur == None:
-            precedent = "None"
-        else:
-            precedent = "("+str(self.predecesseur.x)+","+str(self.predecesseur.y)+")"
-        return "("+str(self.x)+","+str(self.y)+")  C = "+str(self.C)+"  prédécesseur = "+precedent
-
-
 class Sprite(object):
     ##
     # constructeur des sprites
@@ -95,18 +77,6 @@ class Personnage(Sprite):
                 self.displaySpriteWithAnim(direction,depl)
                 variables['niveauObj'].moved=[]
                 #print(str(self.x),str(self.y),sep=', ')
-
-##    def selectCaisse(self,liste):
-##        distMin = 1000000
-##        best = None
-##        for n in range(len(liste)):
-##            x1,y1=self.x,self.y
-##            x2,y2=liste[n].x,liste[n].y
-##            dist = math.sqrt((x2-x1)**2+(y2-y1)**2)
-##            if dist<distMin:
-##                distMin = dist
-##                best = n
-##        return best
 
     ##
     # deplace et rafraichit le personnage avec une animation et un changement d'image a chaques frame

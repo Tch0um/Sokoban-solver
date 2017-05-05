@@ -1,0 +1,15 @@
+cas du sokoban.
+
+1 notion d'etat
+
+	supposons le cas ou on souhaite executer l'algorithme dans un plan 2D et parcourir le chemin le plus court d'un point A à un point B. un état serai alors défini par la position qui est actuellement lu. 0 partir de ceci, La position initial (donc l'état initial) serait les coordonnées du point A et l'état final serait les coordonnées du point B.
+	Dans notre cas, c'est différent car on ne souhaite pas parcourir une distance la plus court possible, on souhaite dans un premier temps trouver une solution à une combinaison de position pour des objets pouvant eventuellement rencontrer des obstacles. un état est donc une combinaison de la grille du jeu, c'est à dire une liste contenant la position de toutes les caisses et de toutes les stelles. à partir de ceci, on peut définir l'état initial comme la grille au moment où on execute A* et l'état final la combinaison de position pour laquelle sur chaque stelle, une caisse y correspond.
+
+2 fonctionnement
+
+l'algorithme fonctionne dans une boucle qui a pour condition d'arrêt la correspondance entre caisses et stelles expliqué precédement.
+	pour commencer, l'algorithme lance une boucle finie sur les 4 position autour du joueur.
+	sur chaque position, il va regarder si il est possible de s'y déplacer (croix verte), de s'y déplacer à condition de déplacer une caisse (croix bleu) où si c'est impossible (croix rouge).
+	à partir de là, si il s'agit d'une caisse qu'il faut déplacer, il va mesurer la distance avec la stelle la plus proche. ensuite il mesure cette distance une fois le déplacement effectué et verifie si le déplacement est interressant.
+	ce dernier verifie si l'etat actuel correspond à létat final
+	fin de la boucle, il relance à la nouvelle position du joueur.

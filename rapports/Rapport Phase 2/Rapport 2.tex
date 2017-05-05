@@ -241,18 +241,33 @@ FIN TANT QUE\newline
 \textit{Si on arrive ici, alors il n'y a pas de solutions.}
 			
 \subsection{Le cas du Sokoban:}
-\subsubsection{Cas général:}
-Dans le cas du sokoban, l'heuristique sera le minimum  de déplacements pour atteindre l'objectif si un chemin direct est possible. Or puisque l'on se déplace uniquement à la verticale ou à l'horizontale, cette donnée sera la somme des déplacements horizontaux et verticaux à réaliser.
+\subsubsection{Notion d'état}
+Supposons le cas ou l'on souhaite executer l'algorithme dans un plan 2D et parcourir le chemin le plus court d'un point A à un point B. Un état serait alors 
+définit par la position qui est actuellement lu. A partir de ceci, La position initial (donc l'état initial) serait les coordonnées du point A et l'état final serait les coordonnées du point B.
+\newline
+Dans notre cas, c'est différent car on ne souhaite pas parcourir une distance la plus court possible, on souhaite dans un premier temps trouver une solution à une combinaison de positions pour des
+objets pouvant eventuellement rencontrer des obstacles. Un état est donc une combinaison de la grille du jeu, c'est à dire une liste contenant la position de toutes les caisses et de toutes les stelles.
+A partir de ceci, on peut définir l'état initial comme la grille au moment où on execute A* et l'état final la combinaison de position pour laquelle sur chaque stelle, une caisse y correspond.
+\subsubsection{Fonctionnement}
+L'algorithme fonctionne dans une boucle qui a pour condition d'arrêt la correspondance entre caisses et stelles expliqué precédement.
+\newline
+Pour commencer, l'algorithme lance une boucle finie sur les 4 positions autour du joueur.
 \begin{center}
-\includegraphics[scale=1]{img/heuristic.png} \newline
-\textit{Ce schéma présente le minimum de déplacements pour aller du point rouge au point d'arrivé.}
+\includegraphics[scale=0.5]{img/a00.png} \newline
+\textit{Les 4 directions scannées par A*}
 \end{center}
-Ainsi pour l'étape en vert:
-\begin{itemize}
-\item[g(n)= 1]
-\item[h(n)= 6]
-\item[f(n)= 1+6 = 7]
-\end{itemize}
+Sur chaque position, il va regarder si il est possible de s'y déplacer (croix verte), de s'y déplacer à condition de déplacer une caisse (croix bleu) où si c'est impossible (croix rouge).
+\begin{center}
+\includegraphics[scale=0.5]{img/a01.png} \newline
+\textit{Cas de rencontre d'une caisse}
+\end{center}
+A partir de là, s'il s'agit d'une caisse qu'il faut déplacer, il va mesurer la distance avec la stelle la plus proche. Ensuite il mesure cette distance une fois le déplacement effectué et verifie si le déplacement est intéressant. 
+Ce dernier verifie si l'etat actuel correspond à létat final.
+\begin{center}
+\includegraphics[scale=0.5]{img/a02.png} \newline
+\textit{Nouvelle position}
+Fin de la boucle, il relance à la nouvelle position du joueur.
+\end{center}
 \subsubsection{Implémentation:}
 Tout d'abord, nous avons besoin d'une structure pour les nœuds: \newpage
 class Node implements Comparable {\newline

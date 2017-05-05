@@ -95,6 +95,7 @@ Ce découpage pourra être modifié en fonction des choix de fonctionnalités ad
 \item Le module GUI qui assurera la communication entre le joueur et l'interface.
 \item Le module sauvegarde qui permettra la sauvegarde et chargement d'une partie dans le dossier "/sauvegardes
 \item Le module imagery qui permettra le redimensionnement des niveau dans la fenêtre en fonction de la taille de ceux-ci via la librairie PIL
+\item Le module l10n contenant le dictionnaire des traductions pour assurer l'internationalité du programme
 		\end{itemize}
 
 \newpage
@@ -113,7 +114,7 @@ Ce découpage pourra être modifié en fonction des choix de fonctionnalités ad
 \item Le bouton \textbf{Option}, pour configurer certaines propriétés du jeu.
 \item Un bouton \textbf{Quitter}, pour quitter le jeu.
 \end{itemize}
-De plus, le menu se charge de jouer une musique d'introduction pour le joueur. Tout cela est commandé par la fonction \textbf{collectionMenu()}, elle est sans arguments et se présente comme un hub, au sens ou elle fait communiquer les autre fonctions entre elles, tout en gérant elle-même certains points. \newline
+De plus, le menu se charge de jouer une musique d'introduction pour le joueur. Tout cela est commandé par la fonction \textbf{collectionMenu()}. \newline
 Dans un premier temps la fonction se charge de placer les boutons et l'interface globale. Les boutons sont simplement des images que l'on vient coller sur l'interface. Pour finir, la fonction s'engage dans une boucle infinie en attendant un événement de la part de l'utilisateur. On obtient ainsi la fenêtre suivante: 
 \begin{figure}[!h]
 \centering
@@ -138,9 +139,9 @@ Les classes \textbf{Sprite}, \textbf{Personnage} et \textbf{Caisse} servent à r
 \item \textit{Les stèles}: représentent les emplacements sur lesquels le joueur doit placer les caisses.
 \item \textit{Les cases vides}: Cases sur lesquelles le personnage et les caisses peuvent être déplacées.
 \end{itemize}
-La continuité du jeu est contrôlée par la variable \textit{continuer}. Celle-ci est établie à \textbf{1} au lancement du jeu et à \textbf{0} lorsque le joueur complète le niveau. Une fois la valeur nulle le jeu se bloque et il faut revenir au menu pour changer de niveau. \newline
+
 			
-Pour construire notre plan de jeu, nous avons choisi de décomposer notre niveau en 2 grilles nommées \textit{GameP} et \textit{GameO} contenant à elles deux les objets cités plus haut. La grille \textit{gameP}(game Plan)contient les cibles et les espaces vides tandis que la grille \textit{gameO}(game Obstacle) contient les murs, les caisses et le personnage. L'affichage du niveau consiste donc en la superposition des deux plans et permet ainsi une vérification de victoire plus facile à la fin du jeu : 
+Pour construir notre plan de jeu, nous avons choisi de décomposer notre niveau en 2 grilles nommées \textit{GameP} et \textit{GameO} contenant à elles deux les objets cités plus haut. La grille \textit{gameP}(game Plan)contient les cibles et les espaces vides tandis que la grille \textit{gameO}(game Obstacle) contient les murs, les caisses et le personnage. L'affichage du niveau consiste donc en la superposition des deux plans et permet ainsi une vérification de victoire plus facile à la fin du jeu : 
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.25]{img/05.png}
@@ -158,9 +159,10 @@ Pour construire notre plan de jeu, nous avons choisi de décomposer notre niveau
 \includegraphics[scale=0.25]{img/07.png}
 \caption{Apercu de la grille GameP}
 \end{figure}
+\newpage
 		\subsubsection{Communication jeu/utilisateur et utilisation du programme}
 		
-			Pour les déplacements du personnage nous utilisons la méthode event.key de PyGame qui permet de gérer des événements liées a l'utilisation du touches du clavier , 6 touches événement sont actuellement gérés : touche directionnelle droite(K-RIGHT : déplacement du personnage vers la droite) ,touche directionnelle gauche(K-LEFT : déplacement du personnage vers la gauche) ,touche directionnelle haut(K-UP : déplacement du personnage vers le haut) ,touche directionnelle bas(K-DOWN: déplacement du personnage vers le bas) ,   pavé numérique(KP-MULTIPLY: lance la résolution automatique du niveau avec Astar) et la touche échap(KP-ESCAPE : fermeture du jeu)
+			Pour les déplacements du personnage nous utilisons la méthode event.key de PyGame qui permet de gérer des événements liées a l'utilisation du touches du clavier , 6 touches événement sont actuellement gérés : touche directionnelle droite(K-RIGHT : déplacement du personnage vers la droite) ,touche directionnelle gauche(K-LEFT : déplacement du personnage vers la gauche) ,touche directionnelle haut(K-UP : déplacement du personnage vers le haut) ,touche directionnelle bas(K-DOWN: déplacement du personnage vers le bas) , pavé numérique(KP-MULTIPLY: lance la résolution automatique du niveau avec Astar) et la touche échap(KP-ESCAPE : fermeture du jeu)
 		\subsubsection{Restriction de déplacement du personnage}		
 		Lorsque le joueur presse une des touche événement de déplacement citées plus ci-dessus , la méthode spéciale déplace() de la classe Personnage retournant un booléen est appelée pour vérifier si le déplacement est autorisé de la manière suivante:
 \begin{figure}[!h]
@@ -252,7 +254,7 @@ Ainsi pour l'étape en vert:
 \item[f(n)= 1+6 = 7]
 \end{itemize}
 \subsubsection{Implémentation:}
-Tout d'abord, nous avons besoin d'une structure pour les noeuds: \newpage
+Tout d'abord, nous avons besoin d'une structure pour les nœuds: \newpage
 class Node implements Comparable {\newline
 public Node parent;\newline
 public int move;\newline
@@ -265,7 +267,7 @@ public int compareTo(Object o);\newline
 }\newline
 
 Tout d'abord, il est plus pratique de garder la liste OPEN triée pour que l'on puisse avoir facilement accès à notre meilleur option. Il faut donc s'assurer que lorsqu'on ajoute un terme à la liste, celle-ci soit triée automatiquement  \newline
-Ensuite il est efficace que nous puissions trouver des noeuds de la liste grâce à l'heure position sur la grille. Cela pour que nous puissions déterminer si 'n' est déjà dans OPEN ou dans CLOSE.
+Ensuite il est efficace que nous puissions trouver des nœuds de la liste grâce à l'heure position sur la grille. Cela pour que nous puissions déterminer si 'n' est déjà dans OPEN ou dans CLOSE.
 
 
 	\newpage	

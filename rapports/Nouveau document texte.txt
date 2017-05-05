@@ -1,0 +1,12 @@
+                                         		ARUBA ERIC
+
+score difficulté (((nb de cases/nb de murs)*nombre de caisses) sans compter la bordure exterieure) :  75
+temps d'execution IA : 5.5 secondes
+temps d'execution humain (moyenne de 3 joueurs au premier essai) : 6 secondes
+nombre d'iterations d'A* : 2932
+
+								
+
+			
+
+

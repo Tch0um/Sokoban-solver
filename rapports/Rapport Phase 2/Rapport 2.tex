@@ -2,7 +2,6 @@
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[francais]{babel}
 \usepackage{layout}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -78,7 +77,8 @@ méthodes facilitant les mécaniques de fonctionnement de base d’un jeu.
 			\item Une interface graphique intuitive et simple d'utilisation , dotée d'un menu principal pour guider le joueur dans le choix du niveau et les autres options disponibles .
 			\item Un set de plusieurs styles pour le personnage et le niveau 
 			\item Une option de sauvegarde / chargement de partie
-			\item Une fonctionnalité de retour arrière suite a un mouvement involontaire ou a une erreur dans un niveau 
+			\item Une fonctionnalité de retour arrière suite a un mouvement involontaire ou a une erreur dans un niveau
+			\item La traduction du programme en français, anglais et allemand en prenant en compte des paramètre de langue de l'ordinateur
 			\end{itemize}
 		\subsection{Découpage de l'application}
 		\vspace{1cm}
@@ -111,17 +111,36 @@ Ce découpage pourra être modifié en fonction des choix de fonctionnalités ad
 \begin{itemize}
 \item Le bouton \textbf{Nouvelle Partie}, pour démarrer une partie.
 \item Le bouton \textbf{Charger Partie}, pour reprendre une partie sauvegardée.
-\item Le bouton \textbf{Option}, pour configurer certaines propriétés du jeu.
+\item Le bouton \textbf{Options}, pour configurer certaines propriétés du jeu.
 \item Un bouton \textbf{Quitter}, pour quitter le jeu.
 \end{itemize}
 De plus, le menu se charge de jouer une musique d'introduction pour le joueur. Tout cela est commandé par la fonction \textbf{collectionMenu()}. \newline
-Dans un premier temps la fonction se charge de placer les boutons et l'interface globale. Les boutons sont simplement des images que l'on vient coller sur l'interface. Pour finir, la fonction s'engage dans une boucle infinie en attendant un événement de la part de l'utilisateur. On obtient ainsi la fenêtre suivante: 
-\begin{figure}[!h]
-\centering
-\includegraphics[scale=0.5]{img/menu-interface.jpg}
-\caption{Menu du jeu Sokoban}
-\end{figure}
-\newline
+Dans un premier temps la fonction se charge de placer les boutons et l'interface globale. Les boutons sont des images que l'on vient coller sur l'interface. Pour finir, la fonction s'engage dans une boucle infinie en 
+attendant un événement de la part de l'utilisateur. On obtient ainsi la fenêtre suivante: 
+
+\begin{center}
+\includegraphics[scale=0.5]{img/menu-interface.jpg} \newline
+\textit{Menu principal du Sokoban}
+\end{center}
+
+			\subsubsection{Séquence de l'interface graphique}
+
+Il y a en tout 6 menus :
+\begin{itemize}
+ \item menu principal
+ \item options
+ \item selection de la collection de niveaux
+ \item selecteion du niveau
+ \item selection du mode de jeux
+ \item menu pause
+\end{itemize}
+Ci-dessous le diagramme de séquence de l'interface graphique, qui nous montre de manière générale la navigation possible entre les menus. Les flèche avec trait plein représentent les boutons normaux et les flèches pointillées représentent
+ les boutons de retour vers le menu précédent.
+
+\begin{center}
+\includegraphics[scale=0.3,angle=-90]{sequence/Diagramme1.eps}
+\end{center}
+
 		\subsubsection{Découpage et fonctionnement du moteur de jeu}
 Notre moteur de jeu repose sur 5 classes:
 \begin{itemize}
@@ -215,9 +234,9 @@ Le but de A* est de trouver le chemin \textit{le plus court} pour aller d'un poi
 \subsubsection{Fonctions g et h:}
 A chaque étape de l'algorithme, les fonctions g(n) et h(n) sont exécutées pour n étant un point d'arrivé. Cela nous donne les informations suivantes.
 \begin{itemize}
-\item[• g(n) = Le nombre d'étapes pour aller du point de départ à l'arrivée n.]
-\item[• h(n) = L'heuristique qui estime le coup pour aller de n à l'objectif final.]
-\item[• f(n) = g(n) + h(n): Le nombre minimum d'étapes si on choisit le point n.]
+\item g(n) = Le nombre d'étapes pour aller du point de départ à l'arrivée n
+\item h(n) = L'heuristique qui estime le coup pour aller de n à l'objectif final
+\item f(n) = g(n) + h(n): Le nombre minimum d'étapes si on choisit le point n
 \end{itemize}
 \subsubsection{Etapes détaillées de l'algorithme:}
 Voici les étapes de l'algorithme en langage algorithmique: \newline

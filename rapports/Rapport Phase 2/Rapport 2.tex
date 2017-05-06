@@ -5,6 +5,7 @@
 \usepackage{layout}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{url}
 
 \begin{document}
 \begin{titlepage}
@@ -114,7 +115,7 @@ Ce découpage pourra être modifié en fonction des choix de fonctionnalités ad
 \item Le bouton \textbf{Options}, pour configurer certaines propriétés du jeu.
 \item Un bouton \textbf{Quitter}, pour quitter le jeu.
 \end{itemize}
-De plus, le menu se charge de jouer une musique d'introduction pour le joueur. Tout cela est commandé par la fonction \textbf{collectionMenu()}. \newline
+De plus, le menu se charge de jouer une musique de fond, implémenté par le module \textbf{pygame.mixer.music}.\newline
 Dans un premier temps la fonction se charge de placer les boutons et l'interface globale. Les boutons sont des images que l'on vient coller sur l'interface. Pour finir, la fonction s'engage dans une boucle infinie en 
 attendant un événement de la part de l'utilisateur. On obtient ainsi la fenêtre suivante: 
 
@@ -141,7 +142,7 @@ Ci-dessous le diagramme de séquence de l'interface graphique, qui nous montre d
 \includegraphics[scale=0.3,angle=-90]{sequence/Diagramme1.eps}
 \end{center}
 
-		\subsubsection{Découpage et fonctionnement du moteur de jeu}
+		\subsubsection{Les classes}
 Notre moteur de jeu repose sur 5 classes:
 \begin{itemize}
 \item \textbf{Sprite} 
@@ -158,32 +159,53 @@ Les classes \textbf{Sprite}, \textbf{Personnage} et \textbf{Caisse} servent à r
 \item \textit{Les stèles}: représentent les emplacements sur lesquels le joueur doit placer les caisses.
 \item \textit{Les cases vides}: Cases sur lesquelles le personnage et les caisses peuvent être déplacées.
 \end{itemize}
+Ci dessous le diagramme \textbf{UML} de classes représentant les liens entre les classes existantes.
+\begin{center}
+\includegraphics[scale=0.4]{img/dia.jpg}
+\end{center}
 
-			
-Pour construire notre plan de jeu, nous avons choisi de décomposer notre niveau en 2 grilles nommées \textit{GameP} et \textit{GameO} contenant à elles deux les objets cités plus haut. La grille \textit{gameP}(game Plan)contient les cibles et les espaces vides tandis que la grille \textit{gameO}(game Obstacle) contient les murs, les caisses et le personnage. L'affichage du niveau consiste donc en la superposition des deux plans et permet ainsi une vérification de victoire plus facile à la fin du jeu : 
-\begin{figure}[!h]
-\centering
-\includegraphics[scale=0.25]{img/05.png}
-\caption{Apercu des deux grille superposées}
-\end{figure}
 
-\begin{figure}[!h]
-\centering
-\includegraphics[scale=0.25]{img/06.png}
-\caption{Apercu de la grille GameO}
-\end{figure}
-
-\begin{figure}[!h]
-\centering
-\includegraphics[scale=0.25]{img/07.png}
-\caption{Apercu de la grille GameP}
+		\subsubsection{Le moteur de jeu}	
+Pour construire notre plan de jeu, nous avons choisi de décomposer notre niveau en 2 grilles nommées 
+\textit{GameP} et \textit{GameO} contenant à elles deux les objets cités plus haut. La grille 
+\textit{gameP}(game Plan)contient les cibles et les espaces vides tandis que la grille 
+\textit{gameO}(game Obstacle) contient les murs, les caisses et le personnage. L'affichage du niveau 
+consiste donc en la superposition des deux plans et permet ainsi une vérification de victoire plus facile
+à la fin du jeu. Ci-dessous un aperçue de la configuration du plateau de jeux.
+\begin{figure}[h]
+\begin{center}
+\begin{minipage}[b]{0.4\textwidth}
+\includegraphics[width=\textwidth]{img/07.png}
+\caption{Aperçue de la grille GameP}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.4\textwidth}
+\includegraphics[width=\textwidth]{img/06.png}
+\caption{Aperçue de la grille GameO}
+\end{minipage}
+\begin{minipage}[b]{0.4\textwidth}
+\includegraphics[width=\textwidth]{img/05.png}
+\caption{Aperçue des deux grilles superposées}
+\end{minipage}
+\end{center}
 \end{figure}
 \newpage
 		\subsubsection{Communication jeu/utilisateur et utilisation du programme}
 		
-			Pour les déplacements du personnage nous utilisons la méthode event.key de PyGame qui permet de gérer des événements liées a l'utilisation du touches du clavier , 6 touches événement sont actuellement gérés : touche directionnelle droite(K-RIGHT : déplacement du personnage vers la droite) ,touche directionnelle gauche(K-LEFT : déplacement du personnage vers la gauche) ,touche directionnelle haut(K-UP : déplacement du personnage vers le haut) ,touche directionnelle bas(K-DOWN: déplacement du personnage vers le bas) , pavé numérique(KP-MULTIPLY: lance la résolution automatique du niveau avec Astar) et la touche échap(KP-ESCAPE : fermeture du jeu)
+			Pour les déplacements du personnage nous utilisons la méthode  \textbf{pygame.event.get()} qui retourne la liste des evenements sur les touches (enfoncement, relachement, clic de souris etc..). Alors, il n'y a
+			plus qu'à parcourir la liste et trier les evenements avec des conditions. \newline
+			Actuellement, 8 touches sont écoutés :
+			\begin{itemize}
+			 \item Echap : Accès au menu pause
+			 \item Haut Bas Gauche Droite : Directions du personnage
+			 \item Retour arrière : Annuler le dernier déplacement
+			 \item Home : Annuler tout les déplacements mémorisés
+			 \item A : Executer l'algorithme A*
+			\end{itemize}
+
 		\subsubsection{Restriction de déplacement du personnage}		
-		Lorsque le joueur presse une des touche événement de déplacement citées plus ci-dessus , la méthode spéciale déplace() de la classe Personnage retournant un booléen est appelée pour vérifier si le déplacement est autorisé de la manière suivante:
+		Lorsque le joueur presse une des touche événement de déplacement citées plus ci-dessus , la méthode spéciale déplace() de la classe Personnage retournant un booléen est appelée pour vérifier si le déplacement 
+		est autorisé de la manière suivante:
 \begin{figure}[!h]
 \centering
 \includegraphics[scale=0.25]{img/01.png}
@@ -195,7 +217,9 @@ Le déplacement des caisses est régie selon les règles suivantes :
 \item Le joueur ne peux pas tirer les caisses, il perd donc d'office la partie s'il pousse une caisse sur une case de coin qui n'est pas une stèle.
 \item Le joueur ne peux pousser qu'une seule caisse à la fois.
 \end{itemize}		
-Dans le même ordre idée que pour la classe \textbf{Personnage}, la classe \textbf{Caisse} est dotée d'une méthode spéciale \textit{déplace()} vérifiant si le déplacement d'une caisse est autorisé, à partir de la position du joueur et de la direction du déplacement demandé. La fonction vérifie d'abord si la prochaine case est bien une caisse et ensuite si la case suivante est une case vide ou une case stèle. Si cette condition est vérifiée le déplacement de la caisse s'effectue comme exposé ci dessous:
+Dans le même ordre idée que pour la classe \textbf{Personnage}, la classe \textbf{Caisse} est dotée d'une méthode spéciale \textit{déplace()} vérifiant si le déplacement 
+d'une caisse est autorisé, à partir de la position du joueur et de la direction du déplacement demandé. La fonction vérifie d'abord si la prochaine case est bien une caisse 
+et ensuite si la case suivante est une case vide ou une case stèle. Si cette condition est vérifiée le déplacement de la caisse s'effectue comme exposé ci dessous:
 \begin{figure}
 \begin{center}
 \begin{minipage}[b]{0.4\textwidth}
@@ -306,19 +330,6 @@ public int compareTo(Object o);
 
 Tout d'abord, il est plus pratique de garder la liste OPEN triée pour que l'on puisse avoir facilement accès à notre meilleur option. Il faut donc s'assurer que lorsqu'on ajoute un terme à la liste, celle-ci soit triée automatiquement  \newline
 Ensuite il est efficace que nous puissions trouver des nœuds de la liste grâce à l'heure position sur la grille. Cela pour que nous puissions déterminer si 'n' est déjà dans OPEN ou dans CLOSE.
-
-
-	\newpage	
-		
-		
-		
-\begin{center}
-	\section{\underline{Schéma UML : diagramme de classe}}
-\end{center}
-\begin{center}
-\vspace{ 4 cm}
-\includegraphics[scale=0.4]{img/dia.jpg}
-\end{center}
 \newpage
 
 \begin{center}
@@ -400,13 +411,22 @@ Le programme final s'écarte donc légèrement du projet initial dans lequel le 
 
 \vspace{2 cm}
 Le plus gros travail de recherche effectué s'est effectué autour de l'algorithme A* et de l'heuristique :
-\newline 
 \begin{itemize}
-\item http ://www.talistreit.com/AStar.html
-\item http://www.redblobgames.com/pathfinding/a-star/implementation.html
-\item http://www.pygame.org/project-AStar-195-.html
-\item http://stackoverflow.com/questions/9421928/another-simple-random-walk-simulation-using-pythontwo-dimensional
+ \item \url{http://www.talistreit.com/AStar.html}
+ \item \url{http://www.redblobgames.com/pathfinding/a-star/implementation.html}
+ \item \url{http://www.pygame.org/project-AStar-195-.html}
+ \item \url{http://stackoverflow.com/questions/9421928/another-simple-random-walk-simulation-using-pythontwo-dimensional}
+ \item \url{http://sokobano.de/wiki/index.php?title=Main_Page}
+ \item \url{https://sourceforge.net/projects/sokobanyasc/}
 \end{itemize}
+Certaines recherche pour utilitaires divers :
+\begin{itemize}
+ \item \url{https://doc.ubuntu-fr.org/dia}
+ \item \url{https://tex.stackexchange.com/questions/35408/rotate-eps-image-without-the-whole-page}
+ \item \url{http://graphviz.org/doc/info/attrs.html#d:fontname}
+ \item \url{https://openclassrooms.com/courses/redigez-des-documents-de-qualite-avec-latex/les-figures-1}
+\end{itemize}
+
 
 
 

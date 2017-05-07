@@ -91,7 +91,7 @@ def collectionMenu():
             menuButtons[x].displayButton()
             
 
-        menuButtons+=[cls.ButtonMenu(surface=pygame.image.load('images/buttons/inf.png'),x=50,y=300),cls.ButtonMenu(surface=pygame.image.load('images/buttons/sup.png'),x=700,y=300)]
+        menuButtons+=[cls.ButtonMenu(surface=pygame.image.load('images/buttons/inf.png'),file='inf',x=50,y=300),cls.ButtonMenu(surface=pygame.image.load('images/buttons/sup.png'),file='sup',x=700,y=300)]
         menuButtons+=[cls.ButtonMenu(rep=variables['lang']['return'],function=cls.collectionMenuFonctions[0],x=150,y=500)]
         menuButtons[-1].displayButton()
         menuButtons[-2].displayButton()
@@ -108,11 +108,11 @@ def collectionMenu():
                         if x.repr =='ButtonCollectionMenu':
                             x.isOnButton(event[eventIncr].pos)
                         else:
-                            if x.repr=='inf' and page>1 and x.isOnButton(event[eventIncr].pos):
+                            if x.file=='inf' and page>1 and x.isOnButton(event[eventIncr].pos):
                                 menu=False
                                 page=page-1
                                 print('dans while inf, page = '+str(page))
-                            elif x.repr=='sup' and page<((len(lsFic)//6)+1)and x.isOnButton(event[eventIncr].pos):
+                            elif x.file=='sup' and page<((len(lsFic)//6)+1)and x.isOnButton(event[eventIncr].pos):
                                 menu=False
                                 page=page+1
                                 print('dans while sup, page = '+str(page))
@@ -139,9 +139,9 @@ def levelMenu():
     variables['fenetre'].blit(fontTextLevel.render('#'+str(variables['levelNo']),True,(220,220,220)),(380,70))
     preview = niveaux.loadPreview()
     variables['fenetre'].blit(preview,placeCenter(variables['fenetre'],preview))
-    menuButtons=[cls.ButtonMenu(pygame.image.load('images/buttons/inf.png'),'inf',lambda: previousLevel(),50,300),cls.ButtonMenu(pygame.image.load('images/buttons/sup.png'),'sup',lambda: nextLevel(),700,300)]
-    menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: collectionMenu(),150,500)]
-    menuButtons.append(cls.ButtonMenu(pygame.image.load('images/buttons/ok.png'),'ok',lambda: modeMenu(),450,500))
+    menuButtons=[cls.ButtonMenu(surface=pygame.image.load('images/buttons/inf.png'),function=lambda: previousLevel(),x=50,y=300),cls.ButtonMenu(surface=pygame.image.load('images/buttons/sup.png'),function=lambda: nextLevel(),x=700,y=300)]
+    menuButtons+=[cls.ButtonMenu(function=lambda: collectionMenu(),rep=variables['lang']['return'],x=150,y=500)]
+    menuButtons.append(cls.ButtonMenu(surface=pygame.image.load('images/buttons/ok.png'),function=lambda: modeMenu(),x=450,y=500))
     for bt in menuButtons:
         bt.displayButton()
     whileLoop(menuButtons)
@@ -160,9 +160,9 @@ def modeMenu():
         if x>=3:
             z=300
         if cls.buttonCollection[cls.levelMenuBtList[x]] == 'return':
-            menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),variables['lang']['return'],lambda: levelMenu(),150,500)]
+            menuButtons+=[cls.ButtonMenu(rep=variables['lang']['return'],function=lambda: levelMenu(),x=150,y=500)]
         else:
-            menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.levelMenuBtList[x]]+'.png'),cls.buttonCollection[cls.levelMenuBtList[x]],cls.levelMenuFonctions[x],150+z,x%3*80+200)]
+            menuButtons+=[cls.ButtonMenu(rep=variables['lang'][cls.buttonCollection[cls.levelMenuBtList[x]]],function=cls.levelMenuFonctions[x],x=150+z,y=x%3*80+200)]
         menuButtons[x].displayButton()
     whileLoop(menuButtons)
 
@@ -174,7 +174,7 @@ def modeMenu():
 def saveGame(port):
     save.saveGame(port,variables)
     fontTextSaving = pygame.font.SysFont('Courrier', 40)
-    variables['fenetre'].blit(fontTextSaving.render('Sauvegarde effectuée',True,(220,220,220)),(variables['fenetre'].get_size()[0]-350,variables['fenetre'].get_size()[1]-50))
+    variables['fenetre'].blit(fontTextSaving.render(variables['lang']['saved'],True,(220,220,220)),(variables['fenetre'].get_size()[0]-350,variables['fenetre'].get_size()[1]-50))
     pygame.display.flip()
 
 def loadGame():
@@ -182,7 +182,7 @@ def loadGame():
     tupl=save.loadGame(0,variables)
     niveaux = cls.LevelCollection("levels/"+variables['collection']+".slc")
     variables['levelNo'] = tupl[1]
-    variables['niveauObj'] = cls.Niveau(niveaux.loadLevel(variables['nbNiveau'],variables['fenetre'])[0],tupl[0])
+    variables['niveauObj'] = cls.Niveau(niveaux.loadLevel()[0],tupl[0])
     variables['niveauObj'].gameConstructor()
     if variables['spriteSize']==2:
         print('essaie')
@@ -229,7 +229,7 @@ def pause():
         z=0
         if x>=3:
             z=300
-        menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.pauseMenuBtList[x]]+'.png'),cls.buttonCollection[cls.pauseMenuBtList[x]],cls.pauseMenuFonctions[x],150+z,x%3*80+200)]
+        menuButtons+=[cls.ButtonMenu(rep=variables['lang'][cls.buttonCollection[cls.pauseMenuBtList[x]]],function=cls.pauseMenuFonctions[x],x=150+z,y=x%3*80+200)]
         menuButtons[x].displayButton()
     whileLoop(menuButtons)
     
@@ -279,15 +279,15 @@ def options():
     for x in range(len(cls.optionMenuBtList)):
         if cls.buttonCollection[cls.optionMenuBtList[x]] == 'return':
             if variables['ingame']:
-                menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: pause(),150,500)]
+                menuButtons+=[cls.ButtonMenu(rep=variables['lang']['return'],function=lambda: pause(),x=150,y=500)]
             else:
-                menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/return.png'),'return',lambda: mainMenu(),150,500)]
+                menuButtons+=[cls.ButtonMenu(rep=variables['lang']['return'],function=lambda: mainMenu(),x=150,y=500)]
         else:
             if cls.buttonCollection[cls.optionMenuBtList[x]] == 'sup':
-                menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.optionMenuBtList[x]]+'.png'),cls.buttonCollection[cls.optionMenuBtList[x]],cls.optionMenuFonctions[x],600,(x-1)*100+200)]
+                menuButtons+=[cls.ButtonMenu(surface=pygame.image.load('images/buttons/'+cls.buttonCollection[cls.optionMenuBtList[x]]+'.png'),function=cls.optionMenuFonctions[x],x=600,y=(x-1)*100+200)]
             else:
                 
-                menuButtons+=[cls.ButtonMenu(pygame.image.load('images/buttons/'+cls.buttonCollection[cls.optionMenuBtList[x]]+'.png'),cls.buttonCollection[cls.optionMenuBtList[x]],cls.optionMenuFonctions[x],100,x*100+200)]
+                menuButtons+=[cls.ButtonMenu(surface=pygame.image.load('images/buttons/'+cls.buttonCollection[cls.optionMenuBtList[x]]+'.png'),function=cls.optionMenuFonctions[x],x=100,y=x*100+200)]
         menuButtons[x].displayButton()
     #resize personnage
     if variables['spriteSize']==1:

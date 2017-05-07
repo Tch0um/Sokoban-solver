@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import GUI as bt
 import sys
-import L10n
+from L10n import fr_FR
 variables = {}
 
 ### logging ###
@@ -30,8 +30,29 @@ variables['historyC']=[] #historique des déplacements de chaque caisse
 
 
 variables['collection'] = "AC_Diamonds"
-variables['lang']=L10n.fr_FR # ligne pour changer la langue du programme
-buttonCollection = ['newGame','saveGame','loadGame','resume','yes','no','quit','options','2players','3players','4players','withAI','withoutAI','ok','cancel','previous','next','return','mainMenu','template','inf','sup']
+variables['lang']=fr_FR # ligne pour changer la langue du programme
+buttonCollection = ['newGame',
+                    'save',
+                    'loadGame',
+                    'resume',
+                    'yes',
+                    'no',
+                    'quit',
+                    'options',
+                    '2Players',
+                    '3Players',
+                    '4Players',
+                    'withAI',
+                    'withoutAI',
+                    'ok',
+                    'cancel',
+                    'previous',
+                    'next',
+                    'return',
+                    'mainMenu',
+                    'template',
+                    'inf',
+                    'sup']
 
 ### menu
 mainMenuBtList = [0,2,7,6]

@@ -14,7 +14,8 @@ fr_FR = {
     '4Players':'4 Joueurs',
     'resume':'Reprendre',
     'save':'Sauvegarder',
-    'mainMenu':'Menu principal'
+    'mainMenu':'Menu principal',
+    'saved':'Sauvegarde effectuée'
     }
 
 en_US = {
@@ -30,5 +31,8 @@ en_US = {
     '4Players':'4 Players',
     'resume':'Resume',
     'save':'Save',
-    'mainMenu':'Main menu'
+    'mainMenu':'Main menu',
+    'saved':'Saved'
     }
+
+langageAvailable = {'fr_FR':fr_FR,'en_US':en_US}

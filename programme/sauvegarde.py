@@ -20,7 +20,7 @@ def loadGame(port,variables):
     fichier = open('sauvegardes/save'+str(port)+'.txt','r')
     for l in fichier:
         if l[:7]=='--niv--':
-            nbNiveau=int(l[7:-1])
+            levelNo=int(l[7:-1])
         elif l[:7]=='--col--':
             variables['collection']=l[7:-1]
         elif l[:7]=='--hsp--':
@@ -34,7 +34,7 @@ def loadGame(port,variables):
     
     variables['historyP']=list(historyP)
     variables['historyC']=historyC
-    return grilleO,nbNiveau
+    return grilleO,levelNo
 
 
 def rewind(variables):

@@ -35,4 +35,42 @@ en_US = {
     'saved':'Saved'
     }
 
-langageAvailable = {'fr_FR':fr_FR,'en_US':en_US}
+de_DE = {
+    'newGame':'neues Spiel',
+    'loadGame':'Last Backup',
+    'options':'Optionen',
+    'quit':'verlassen',
+    'return':'Rückkehr',
+    'withAI':'Solo (mit KI)',
+    'withoutAI':'Solo (ohne KI)',
+    '2Players':'2 Spieler',
+    '3Players':'3 Spieler',
+    '4Players':'4 Spieler',
+    'resume':'zurück',
+    'save':'speichern',
+    'mainMenu':'Hauptmenü',
+    'saved':'geschützt'
+    }
+
+langageAvailable = {'fr_FR':fr_FR,
+                    'fr_BE':fr_FR,
+                    'fr_CH':fr_FR,
+                    'fr_CA':fr_FR,
+                    'fr_LU':fr_FR,
+                    'en_US':en_US,
+                    'en_UK':en_US,
+                    'en_GB':en_US,
+                    'en_CA':en_US,
+                    'en_IN':en_US,
+                    'en_AU':en_US,
+                    'en_NZ':en_US,
+                    'en_ZA':en_US,
+                    'en_IE':en_US,
+                    'en_BZ':en_US,
+                    'en_JM':en_US,
+                    'en_TT':en_US,
+                    'de_DE':de_DE,
+                    'de_CH':de_DE,
+                    'de_LI':de_DE,
+                    'de_AT':de_DE,
+                    'de_LU':de_DE}
